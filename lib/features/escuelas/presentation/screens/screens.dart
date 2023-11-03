@@ -1,0 +1,1 @@
+export './escuelas_screen.dart';
