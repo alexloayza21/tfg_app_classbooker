@@ -1,5 +1,3 @@
-
-
 class Asiento {
     final int numeroAsiento;
     final String idAula;

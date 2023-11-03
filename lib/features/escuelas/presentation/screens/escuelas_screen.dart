@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tfg_app/features/escuelas/presentation/providers/escuelas_provider.dart';
-import 'package:tfg_app/features/escuelas/presentation/widgets/escuela_card.dart';
+import 'package:tfg_app/features/escuelas/presentation/widgets/widgets.dart';
 
 class EscuelasScreen extends StatelessWidget {
   const EscuelasScreen({super.key});
@@ -32,13 +33,18 @@ class _EscuelasViewState extends ConsumerState<_EscuelasView> {
     
     final escuelasState = ref.watch(escuelasProvider);
     
-    return ListView.builder(
+    return escuelasState.isLoading 
+    ? const Center(child: CircularProgressIndicator()) 
+    : ListView.builder(
       itemCount: escuelasState.escuelas.length,
       itemBuilder: (context, index) {
         final escuela = escuelasState.escuelas[index];
         return Column(
           children: [
-            EscuelaCard(escuela: escuela)
+            GestureDetector(
+              child: EscuelaCard(escuela: escuela),
+              onTap: () => context.push('/aulas/${escuela.idEscuela}'),
+            )
           ],
         );
 
