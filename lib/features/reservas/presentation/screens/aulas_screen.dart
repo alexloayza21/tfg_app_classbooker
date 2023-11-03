@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/aulas_provider.dart';
 import 'package:tfg_app/features/reservas/presentation/widgets/widgets.dart';
@@ -45,7 +46,7 @@ class _AulasView extends StatelessWidget {
           final aula = aulas[index];
           return GestureDetector(
             child: AulaGridCard(aula: aula),
-            onTap: () => print(aula.asientos.length),
+            onTap: () => context.push('/reservasForm/${aula.idAula}'),
           );
         },
       ),

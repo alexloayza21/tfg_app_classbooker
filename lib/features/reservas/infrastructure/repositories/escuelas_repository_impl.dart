@@ -19,4 +19,9 @@ class EscuelasRepositoryImpl extends EscuelasRepository {
     return datasource.getAulasByIdEscuela(idEscuela);
   }
   
+  @override
+  Future<Aula> getAulaById(String idAula) {
+    return datasource.getAulaById(idAula);
+  }
+  
 }

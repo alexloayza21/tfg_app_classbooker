@@ -1,8 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:tfg_app/features/reservas/presentation/screens/aulas_screen.dart';
 import 'package:tfg_app/features/reservas/presentation/screens/screens.dart';
 final appRouter = GoRouter(
-  initialLocation: '/escuelas', 
+  initialLocation: '/', 
   routes: [
 
     // GoRoute(
@@ -10,13 +9,18 @@ final appRouter = GoRouter(
     // ),
 
     GoRoute(
-      path: '/escuelas',
+      path: '/',
       builder: (context, state) => const EscuelasScreen(),
     ),
 
     GoRoute(
       path: '/aulas/:idEscuela',
       builder: (context, state) => AulasScreen(idEscuela: state.pathParameters['idEscuela'] ?? '',),
+    ),
+
+    GoRoute(
+      path: '/reservasForm/:idAula',
+      builder: (context, state) => ReservasScreen(idAula: state.pathParameters['idAula'] ?? '',),
     ),
 
   ]
