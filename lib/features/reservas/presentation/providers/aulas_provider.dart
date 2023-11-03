@@ -1,8 +1,8 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tfg_app/features/escuelas/domain/domain.dart';
-import 'package:tfg_app/features/escuelas/domain/repositories/escuelas_repository.dart';
-import 'package:tfg_app/features/escuelas/presentation/providers/escuelas_repository_provider.dart';
+import 'package:tfg_app/features/reservas/domain/domain.dart';
+import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repository.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/escuelas_repository_provider.dart';
 
 //* Cada vez que yo cierre la pantalla aulas se hará el autodispose del provider
 //* y cuando se vuelva a buscar las aulas el is loading estará en true

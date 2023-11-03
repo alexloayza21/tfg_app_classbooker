@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tfg_app/features/escuelas/domain/domain.dart';
-import 'package:tfg_app/features/escuelas/domain/repositories/escuelas_repository.dart';
-import 'package:tfg_app/features/escuelas/presentation/providers/escuelas_repository_provider.dart';
+import 'package:tfg_app/features/reservas/domain/domain.dart';
+import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repository.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/escuelas_repository_provider.dart';
 
 //* Provider
 final escuelasProvider = StateNotifierProvider<EscuelasNotifier, EscuelasState>((ref) {

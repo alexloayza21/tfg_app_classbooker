@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tfg_app/features/escuelas/domain/domain.dart';
+import 'package:tfg_app/features/reservas/domain/domain.dart';
 
 class AulaGridCard extends StatelessWidget {
   const AulaGridCard({super.key, required this.aula});

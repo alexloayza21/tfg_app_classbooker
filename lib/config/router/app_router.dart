@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:tfg_app/features/escuelas/presentation/screens/aulas_screen.dart';
-import 'package:tfg_app/features/escuelas/presentation/screens/screens.dart';
+import 'package:tfg_app/features/reservas/presentation/screens/aulas_screen.dart';
+import 'package:tfg_app/features/reservas/presentation/screens/screens.dart';
 final appRouter = GoRouter(
   initialLocation: '/escuelas', 
   routes: [

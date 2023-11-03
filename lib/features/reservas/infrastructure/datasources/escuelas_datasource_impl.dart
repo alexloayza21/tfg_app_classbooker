@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:tfg_app/config/constants/environment.dart';
-import 'package:tfg_app/features/escuelas/domain/datasource/escuelas_datasource.dart';
-import 'package:tfg_app/features/escuelas/domain/domain.dart';
+import 'package:tfg_app/features/reservas/domain/datasource/escuelas_datasource.dart';
+import 'package:tfg_app/features/reservas/domain/domain.dart';
 
 class EscuelasDatasourceImpl extends EscuelasDatasource {
 

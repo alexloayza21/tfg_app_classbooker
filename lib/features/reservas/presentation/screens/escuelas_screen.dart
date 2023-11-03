@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tfg_app/features/escuelas/presentation/providers/escuelas_provider.dart';
-import 'package:tfg_app/features/escuelas/presentation/widgets/widgets.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/escuelas_provider.dart';
+import 'package:tfg_app/features/reservas/presentation/widgets/widgets.dart';
 
 class EscuelasScreen extends StatelessWidget {
   const EscuelasScreen({super.key});

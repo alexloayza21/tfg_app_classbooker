@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tfg_app/features/escuelas/domain/domain.dart';
+import 'package:tfg_app/features/reservas/domain/domain.dart';
 
 class EscuelaCard extends StatelessWidget {
   const EscuelaCard({super.key, required this.escuela});

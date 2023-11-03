@@ -1,7 +1,7 @@
-import 'package:tfg_app/features/escuelas/domain/datasource/escuelas_datasource.dart';
-import 'package:tfg_app/features/escuelas/domain/entities/aula.dart';
-import 'package:tfg_app/features/escuelas/domain/entities/escuela.dart';
-import 'package:tfg_app/features/escuelas/domain/repositories/escuelas_repository.dart';
+import 'package:tfg_app/features/reservas/domain/datasource/escuelas_datasource.dart';
+import 'package:tfg_app/features/reservas/domain/entities/aula.dart';
+import 'package:tfg_app/features/reservas/domain/entities/escuela.dart';
+import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repository.dart';
 
 class EscuelasRepositoryImpl extends EscuelasRepository {
 

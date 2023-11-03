@@ -1,6 +1,6 @@
-import 'package:tfg_app/features/escuelas/domain/domain.dart';
+import 'package:tfg_app/features/reservas/domain/domain.dart';
 
-abstract class EscuelasRepository {
+abstract class EscuelasDatasource {
   Future<List<Escuela>> getAllEscuelas();
   Future<List<Aula>> getAulasByIdEscuela(String idEscuela);
 }
