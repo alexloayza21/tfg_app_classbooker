@@ -58,4 +58,18 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
     }
   }
   
+  @override
+  Future<List<Reserva>> getReservasByDate(String date) async{
+    try {
+      final response = await dio.get('/reservas/reservasPorFecha/$date');
+      final List<Reserva> reservas = [];
+      for (final reserva in response.data ?? []) {
+        reservas.add(Reserva.fromJson(reserva));
+      }
+      return reservas;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+  
 }

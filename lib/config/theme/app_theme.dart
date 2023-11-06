@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const colorSeed = Color(0xff5A8CFF); //*0xff es el # de rgb
+const colorSeed = Color(0xff0017FF); //*0xff es el # de rgb
 
 class AppTheme {
   
@@ -9,6 +9,10 @@ class AppTheme {
     //* general
     useMaterial3: true,
     colorSchemeSeed: colorSeed,
+
+    appBarTheme: AppBarTheme(
+      backgroundColor: colorSeed.withAlpha(135)
+    ),
 
     //* texts
     textTheme: TextTheme(
@@ -30,7 +34,7 @@ class AppTheme {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30)
       ),
-    )
+    ),
 
   );
 
