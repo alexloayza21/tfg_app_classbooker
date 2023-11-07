@@ -36,6 +36,15 @@ class ReservaNotifier extends StateNotifier<ReservaState> {
     );
     
   }
+
+  bool isGreen(int numero) {
+    if (numero % 2 == 0) {
+      return true;
+    }else {
+      return false;
+    }
+  }
+
 }
 
 //* state

@@ -36,6 +36,12 @@ class AppTheme {
       ),
     ),
 
+    filledButtonTheme: FilledButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: MaterialStatePropertyAll(colorSeed.withAlpha(155)),
+      )
+    )
+
   );
 
 }
