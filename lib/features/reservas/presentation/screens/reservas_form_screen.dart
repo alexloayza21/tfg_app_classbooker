@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/reservas_form_provider.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/reservas_provider.dart';
 
 class ReservasScreen extends ConsumerWidget {
   const ReservasScreen({super.key, required this.idAula});
@@ -49,16 +50,23 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
 
   String errorTexto = '';
 
-  late Color buttonColor;
-  late Function onPressed;
-
   @override
   Widget build(BuildContext context) {
     
     final textStyle = Theme.of(context).textTheme;
     final List<Asiento> asientos = widget.aula.asientos;
 
-    final stados = ref.watch(reservaFormProvider(widget.aula.idAula).notifier);
+    final reservasState = ref.watch(reservaProvider(_dateController.text));
+
+    late List<Asiento> asientosResevas = [];
+
+    for (var reserva in reservasState.reservas) {
+      for (var asiento in reserva.asientos) {
+        if (asiento.idAula == widget.aula.idAula) {
+          asientosResevas.add(asiento);
+        }
+      }
+    }
 
     return SingleChildScrollView(
       child: Column(
@@ -162,12 +170,33 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: 4, 
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: stados.isGreen(asientos[index].numeroAsiento) //TODO:
-                      ? IconButton.outlined(onPressed: () {}, icon: const Icon(Icons.chair_outlined), color: Colors.green,)
-                      : const IconButton.outlined(onPressed: null, icon: Icon(Icons.chair_outlined), disabledColor: Colors.red,)
-                  );
+
+                  for (var j = 0; j < asientosResevas.length; j++) {
+                    
+                    if(
+                      asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento 
+                      && (horaEntrada == asientosResevas[j].horaEntrada && horaSalida == asientosResevas[j].horaSalida)
+                      || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada!) && horaSalida == asientosResevas[j].horaSalida
+                        )
+                      || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                        horaEntrada == asientosResevas[j].horaEntrada && stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida!)
+                        )) {
+                      return _ButtonAsiento(
+                        colorButton: Colors.red, 
+                        onPressed: () {
+                         print('${asientos[index].numeroAsiento} -- ${asientosResevas[j].numeroAsiento}');
+                        },
+                      );
+                    }
+
+                  }
+
+                  return _ButtonAsiento(
+                    colorButton: Colors.green, 
+                    onPressed: () {
+                      
+                    },);
                 },
               ),
             ),
@@ -179,8 +208,11 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
             margin: EdgeInsets.only(right: 20, left: 20, bottom: 30),
             child: FilledButton(
               onPressed: () {
+                print('');
                 print('${_dateController.text}, $horaEntrada, $horaSalida');
-                // stados.checkReservas(_dateController.text, horaEntrada!, horaSalida!);
+                print('asientosReservas: ${asientosResevas.length}');
+                print('reservasState.length ${reservasState.reservas.length}');
+                print('');
               }, 
               child: Text('Reservar', style: textStyle.titleMedium,)
             ),
@@ -224,4 +256,31 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
 
   }
 
+  int stringNum(String hora){
+    List<String> horaFinal = hora.split(':');
+    if (horaFinal[0].isEmpty) horaFinal[0] = '0';
+    int numFinal = int.parse(horaFinal[0]);
+    return numFinal;
+  }
+
+}
+
+class _ButtonAsiento extends StatelessWidget {
+  const _ButtonAsiento({this.colorButton, this.onPressed});
+
+  final Color? colorButton;
+  final void Function()? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: IconButton.outlined(
+        onPressed: onPressed, 
+        icon: const Icon(Icons.chair_outlined), 
+        color: colorButton,
+        disabledColor: colorButton,
+      )
+    );
+  }
 }

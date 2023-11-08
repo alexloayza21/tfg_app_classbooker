@@ -4,22 +4,22 @@ import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repositor
 import 'package:tfg_app/features/reservas/presentation/providers/escuelas_repository_provider.dart';
 
 //*provider
-final reservaFormProvider = StateNotifierProvider.autoDispose.family<ReservaNotifier, ReservaState, String>((ref, idAula) {
+final reservaFormProvider = StateNotifierProvider.autoDispose.family<ReservaFormNotifier, ReservaFormState, String>((ref, idAula) {
   final escuelasRepository = ref.watch(escuelasRepositoryProvider);
-  return ReservaNotifier(
+  return ReservaFormNotifier(
     escuelasRepository: escuelasRepository, 
     idAula: idAula
   );
 });
 
 //* notifier
-class ReservaNotifier extends StateNotifier<ReservaState> {
+class ReservaFormNotifier extends StateNotifier<ReservaFormState> {
   final EscuelasRepository escuelasRepository;
 
-  ReservaNotifier({
+  ReservaFormNotifier({
     required this.escuelasRepository,
     required String idAula
-  }) : super(ReservaState(id: idAula)){
+  }) : super(ReservaFormState(id: idAula)){
     loadAula();
   }
 
@@ -37,33 +37,25 @@ class ReservaNotifier extends StateNotifier<ReservaState> {
     
   }
 
-  bool isGreen(int numero) {
-    if (numero % 2 == 0) {
-      return true;
-    }else {
-      return false;
-    }
-  }
-
 }
 
 //* state
-class ReservaState {
+class ReservaFormState {
   final String id;
   final bool isLoading;
   final Aula? aula;
 
-  ReservaState({
+  ReservaFormState({
     required this.id, 
     this.isLoading = false, 
     this.aula 
   });
 
-  ReservaState copyWith({
+  ReservaFormState copyWith({
     String? id,
     bool? isLoading,
     Aula? aula
-  }) => ReservaState(
+  }) => ReservaFormState(
     id: id ?? this.id,
     isLoading: isLoading ?? this.isLoading,
     aula: aula ?? this.aula
