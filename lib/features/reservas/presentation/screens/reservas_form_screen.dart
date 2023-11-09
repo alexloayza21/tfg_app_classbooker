@@ -70,6 +70,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
       }
     }
 
+    List<bool> isSelected = List.generate(asientos.length, (index) => false);
 
     return SingleChildScrollView(
       child: Column(
@@ -164,58 +165,50 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
           Text(errorTexto),
     
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: SizedBox(
-              height: 300,
-              width: double.infinity,
-              child: MasonryGridView.count(
-                itemCount: asientos.length,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 4, 
-                itemBuilder: (context, index) {
-                  for (var j = 0; j < asientosResevas.length; j++) {
-                    
-                    if(
-                      asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento 
-                      && (horaEntrada == asientosResevas[j].horaEntrada && horaSalida == asientosResevas[j].horaSalida)) {
-                      return const _ButtonAsiento(
-                        colorButton: Colors.red, 
-                        onPressed: null,
-                        isSelected: false,
-                      );
-                    }
-
-                    if ((asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada ?? '') && horaSalida == asientosResevas[j].horaSalida
-                        )
-                      || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                        horaEntrada == asientosResevas[j].horaEntrada && stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida ?? '')
-                        )) {
-                      return _ButtonAsiento(
-                        colorButton: Colors.deepPurple,
-                        isSelected: false, 
-                        onPressed: () {
-
-                        }
-                      );
-                    }
-
-                    if (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento) {
-                      isSelected;
-                    }
-
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Wrap(
+              children: List.generate(asientos.length, (index) {
+                for (var j = 0; j < asientosResevas.length; j++) {
+                  
+                  if(
+                    asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento 
+                    && (horaEntrada == asientosResevas[j].horaEntrada && horaSalida == asientosResevas[j].horaSalida)) {
+                    return const _ButtonAsiento(
+                      colorButton: Colors.red, 
+                      onPressed: null,
+                      isSelected: false,
+                    );
                   }
 
-                   
-                  return _ButtonAsiento(
-                    colorButton: Colors.green,
-                    isSelected: isSelected,
-                    onPressed: (){
-                      
-                    },
-                  );
-                },
-              ),
+                  if ((asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                      stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada ?? '') && horaSalida == asientosResevas[j].horaSalida
+                      )
+                    || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                      horaEntrada == asientosResevas[j].horaEntrada && stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida ?? '')
+                      )) {
+                    return _ButtonAsiento(
+                      colorButton: Colors.deepPurple,
+                      isSelected: false, 
+                      onPressed: () {
+                        showDialog(
+                          context: context, 
+                          builder: (context) {
+                            return Dialog();
+                          },
+                        );
+                      }
+                    );
+                  }
+                }
+
+                return _ButtonAsiento(
+                  colorButton: Colors.green,
+                  isSelected: false,
+                  onPressed: (){
+                    print(asientos[index].numeroAsiento);
+                  },
+                ); 
+              }),
             ),
           ),
     
@@ -301,6 +294,45 @@ class _ButtonAsiento extends StatelessWidget {
         color: colorButton,
         disabledColor: colorButton,
       )
+    );
+  }
+}
+
+class MyToggleButtons extends StatefulWidget {
+
+  
+  final List<bool> isSelected;
+  final List<Asiento> asientos;
+
+  const MyToggleButtons({super.key, required this.isSelected, required this.asientos});
+
+  @override
+  _MyToggleButtonsState createState() => _MyToggleButtonsState();
+}
+
+class _MyToggleButtonsState extends State<MyToggleButtons> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ToggleButtons(
+        isSelected: widget.isSelected,
+        onPressed: (int index) {
+          setState(() {
+            // Cambia el estado del índice seleccionado
+            widget.isSelected[index] = !widget.isSelected[index];
+          });
+        },
+        color: Colors.grey,
+        selectedColor: Colors.blue,
+        fillColor: Colors.blue.withOpacity(0.2),
+        borderColor: Colors.blue,
+        selectedBorderColor: Colors.blue,
+        borderRadius: BorderRadius.circular(10),
+        children: widget.asientos.map((e) {
+          return Icon(Icons.chair_outlined);
+        }).toList(),
+      ),
     );
   }
 }
