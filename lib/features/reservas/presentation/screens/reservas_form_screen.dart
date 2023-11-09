@@ -50,7 +50,14 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
   String? horaSalida = '';
 
   String errorTexto = '';
-  bool isSelected = false;
+  late List<bool> isSelected;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    isSelected= List.generate(widget.aula.asientos.length, (index) => false);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +77,6 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
       }
     }
 
-    List<bool> isSelected = List.generate(asientos.length, (index) => false);
 
     return SingleChildScrollView(
       child: Column(
@@ -165,51 +171,67 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
           Text(errorTexto),
     
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Wrap(
-              children: List.generate(asientos.length, (index) {
-                for (var j = 0; j < asientosResevas.length; j++) {
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            child: SizedBox(
+              height: 300,
+              width: double.infinity,
+              child: MasonryGridView.count(
+                itemCount: asientos.length,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 4, 
+                itemBuilder: (context, index) {
                   
-                  if(
-                    asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento 
-                    && (horaEntrada == asientosResevas[j].horaEntrada && horaSalida == asientosResevas[j].horaSalida)) {
-                    return const _ButtonAsiento(
-                      colorButton: Colors.red, 
-                      onPressed: null,
-                      isSelected: false,
-                    );
-                  }
+                  for (var j = 0; j < asientosResevas.length; j++) {
 
-                  if ((asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                      stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada ?? '') && horaSalida == asientosResevas[j].horaSalida
-                      )
-                    || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                      horaEntrada == asientosResevas[j].horaEntrada && stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida ?? '')
-                      )) {
-                    return _ButtonAsiento(
-                      colorButton: Colors.deepPurple,
-                      isSelected: false, 
-                      onPressed: () {
-                        showDialog(
-                          context: context, 
-                          builder: (context) {
-                            return Dialog();
-                          },
-                        );
-                      }
-                    );
-                  }
-                }
+                    if(
+                      asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento 
+                      && (horaEntrada == asientosResevas[j].horaEntrada && horaSalida == asientosResevas[j].horaSalida)) {
+                      return const _ButtonAsiento(
+                        colorButton: Colors.red, 
+                        onPressed: null,
+                        isSelected: false,
+                      );
+                    }
 
-                return _ButtonAsiento(
-                  colorButton: Colors.green,
-                  isSelected: false,
-                  onPressed: (){
-                    print(asientos[index].numeroAsiento);
-                  },
-                ); 
-              }),
-            ),
+                    if ((asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada ?? '') && horaSalida == asientosResevas[j].horaSalida
+                        )
+                      || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                        horaEntrada == asientosResevas[j].horaEntrada && stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida ?? '')
+                        )) {
+                      return _ButtonAsiento(
+                        colorButton: Colors.deepPurple,
+                        isSelected: false, 
+                        onPressed: () {
+                          showDialog(
+                            context: context, 
+                            builder: (context) {
+                              return Dialog();
+                            },
+                          );
+                        }
+                      );
+                    }
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: IconButton.filledTonal(
+                      onPressed: (){
+                        setState(() {
+                          isSelected[index] = !isSelected[index];
+                        });
+                        print(asientos[index].toString());
+                      }, 
+                      icon: const Icon(Icons.chair_outlined), 
+                      selectedIcon: const Icon(Icons.chair),
+                      isSelected: isSelected[index],
+                      color: Colors.green,
+                      disabledColor: Colors.red,
+                    ),
+                  );
+                },
+              ),
+            )
           ),
     
           Container(
@@ -285,53 +307,14 @@ class _ButtonAsiento extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(4.0),
       child: IconButton.filledTonal(
         onPressed: onPressed, 
         icon: const Icon(Icons.chair_outlined), 
-        selectedIcon: Icon(Icons.chair),
+        selectedIcon: const Icon(Icons.chair),
         isSelected: isSelected,
         color: colorButton,
         disabledColor: colorButton,
-      )
-    );
-  }
-}
-
-class MyToggleButtons extends StatefulWidget {
-
-  
-  final List<bool> isSelected;
-  final List<Asiento> asientos;
-
-  const MyToggleButtons({super.key, required this.isSelected, required this.asientos});
-
-  @override
-  _MyToggleButtonsState createState() => _MyToggleButtonsState();
-}
-
-class _MyToggleButtonsState extends State<MyToggleButtons> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ToggleButtons(
-        isSelected: widget.isSelected,
-        onPressed: (int index) {
-          setState(() {
-            // Cambia el estado del índice seleccionado
-            widget.isSelected[index] = !widget.isSelected[index];
-          });
-        },
-        color: Colors.grey,
-        selectedColor: Colors.blue,
-        fillColor: Colors.blue.withOpacity(0.2),
-        borderColor: Colors.blue,
-        selectedBorderColor: Colors.blue,
-        borderRadius: BorderRadius.circular(10),
-        children: widget.asientos.map((e) {
-          return Icon(Icons.chair_outlined);
-        }).toList(),
       ),
     );
   }

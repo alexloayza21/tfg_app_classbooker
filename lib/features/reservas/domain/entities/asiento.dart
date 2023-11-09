@@ -1,7 +1,7 @@
 class Asiento {
     final int numeroAsiento;
-    final String? horaEntrada;
-    final String? horaSalida;
+    String? horaEntrada;
+    String? horaSalida;
     final String idAula;
 
     Asiento({
@@ -10,6 +10,18 @@ class Asiento {
         this.horaEntrada, 
         this.horaSalida
     });
+
+    String? get getHoraEntrada => horaEntrada;
+  
+    set setHoraEntrada(String? horaEntrada) {
+      this.horaEntrada = horaEntrada;
+    }
+  
+    String? get getHoraSalida => horaSalida;
+  
+    set setHoraSalida(String? horaSalida) {
+      this.horaSalida = horaSalida;
+    }
 
     factory Asiento.fromJson(Map<String, dynamic> json) => Asiento(
         numeroAsiento: json["numeroAsiento"],
@@ -24,4 +36,9 @@ class Asiento {
         "hora_entrada": horaEntrada,
         "hora_salida": horaSalida
     };
+
+    @override
+  String toString() {
+    return '\nnumeroAsiento: $numeroAsiento, \nhoraEntrada: $horaEntrada, \nhoraSalida: $horaSalida, \nidAula: $idAula';
+  }
 }
