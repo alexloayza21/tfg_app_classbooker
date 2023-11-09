@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/reservas_form_provider.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/reservas_provider.dart';
+import 'package:tfg_app/features/reservas/presentation/widgets/widgets.dart';
 
 class ReservasScreen extends ConsumerWidget {
   const ReservasScreen({super.key, required this.idAula});
@@ -49,6 +50,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
   String? horaSalida = '';
 
   String errorTexto = '';
+  bool isSelected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
         }
       }
     }
+
 
     return SingleChildScrollView(
       child: Column(
@@ -170,33 +173,47 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: 4, 
                 itemBuilder: (context, index) {
-
                   for (var j = 0; j < asientosResevas.length; j++) {
                     
                     if(
                       asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento 
-                      && (horaEntrada == asientosResevas[j].horaEntrada && horaSalida == asientosResevas[j].horaSalida)
-                      || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada!) && horaSalida == asientosResevas[j].horaSalida
+                      && (horaEntrada == asientosResevas[j].horaEntrada && horaSalida == asientosResevas[j].horaSalida)) {
+                      return const _ButtonAsiento(
+                        colorButton: Colors.red, 
+                        onPressed: null,
+                        isSelected: false,
+                      );
+                    }
+
+                    if ((asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada ?? '') && horaSalida == asientosResevas[j].horaSalida
                         )
                       || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                        horaEntrada == asientosResevas[j].horaEntrada && stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida!)
+                        horaEntrada == asientosResevas[j].horaEntrada && stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida ?? '')
                         )) {
                       return _ButtonAsiento(
-                        colorButton: Colors.red, 
+                        colorButton: Colors.deepPurple,
+                        isSelected: false, 
                         onPressed: () {
-                         print('${asientos[index].numeroAsiento} -- ${asientosResevas[j].numeroAsiento}');
-                        },
+
+                        }
                       );
+                    }
+
+                    if (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento) {
+                      isSelected;
                     }
 
                   }
 
+                   
                   return _ButtonAsiento(
-                    colorButton: Colors.green, 
-                    onPressed: () {
+                    colorButton: Colors.green,
+                    isSelected: isSelected,
+                    onPressed: (){
                       
-                    },);
+                    },
+                  );
                 },
               ),
             ),
@@ -221,7 +238,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
         ],
       ),
     );
-  }
+  } 
 
   Future<void> _selectDate() async{
     DateTime? fecha = await showDatePicker(
@@ -257,8 +274,8 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
   }
 
   int stringNum(String hora){
+    if (hora.isEmpty) hora = '17:00';
     List<String> horaFinal = hora.split(':');
-    if (horaFinal[0].isEmpty) horaFinal[0] = '0';
     int numFinal = int.parse(horaFinal[0]);
     return numFinal;
   }
@@ -266,18 +283,21 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
 }
 
 class _ButtonAsiento extends StatelessWidget {
-  const _ButtonAsiento({this.colorButton, this.onPressed});
+  const _ButtonAsiento({this.colorButton, this.onPressed, required this.isSelected});
 
   final Color? colorButton;
-  final void Function()? onPressed;
+  final VoidCallback? onPressed;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(4),
-      child: IconButton.outlined(
+      child: IconButton.filledTonal(
         onPressed: onPressed, 
         icon: const Icon(Icons.chair_outlined), 
+        selectedIcon: Icon(Icons.chair),
+        isSelected: isSelected,
         color: colorButton,
         disabledColor: colorButton,
       )
