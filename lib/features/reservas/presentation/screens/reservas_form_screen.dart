@@ -44,6 +44,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
 
   final TextEditingController _dateController = TextEditingController();
 
+
   final horasEntrada = ['16:00','17:00', '18:00', '19:00', '20:00'];
   final horasSalida = ['17:00','18:00', '19:00', '20:00','21:00'];
 
@@ -57,6 +58,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
   void initState() {
     super.initState();
     isSelected = List.generate(widget.aula.asientos!.length, (index) => false); //TODO: CAMBIAR EL !
+    _dateController.text = DateTime.now().toString().split(' ')[0];
   }
 
 
@@ -77,7 +79,6 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
         }
       }
     }
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -90,7 +91,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                 TextField(
                   controller: _dateController,
                   decoration: InputDecoration(
-                    hintText: DateTime.now().toString().split(' ')[0],
+                    hintText: _dateController.text,
                     filled: true,
                     prefixIcon: const Icon(Icons.calendar_today),
                   ),
@@ -359,7 +360,12 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                                     asiento.setHoraSalida = horaSalida;
                                   }
 
-                                  final newReserva = Reserva(fecha: _dateController.text, horaEntrada: horaEntrada!, horaSalida: horaSalida!, asientos: listaAsientoToReserva);
+                                  final newReserva = Reserva(
+                                    fecha: _dateController.text,
+                                    horaEntrada: horaEntrada!, 
+                                    horaSalida: horaSalida!, 
+                                    asientos: listaAsientoToReserva
+                                  );
                                   reservaFormState.postReserva(newReserva);
                                   Navigator.of(context).pop();
 
