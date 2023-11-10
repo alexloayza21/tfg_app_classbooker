@@ -44,7 +44,7 @@ class Asiento {
   
     @override
   String toString() {
-    return '$numeroAsiento';
+    return ' $numeroAsiento ';
   }
 
 }
