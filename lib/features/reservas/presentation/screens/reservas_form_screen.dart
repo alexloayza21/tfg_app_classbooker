@@ -230,7 +230,6 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                         colorButton: Colors.deepPurple,
                         isSelected: false, 
                         onPressed: () {
-                          print(stringNum(horaEntrada!));
                           showDialog(
                             context: context, 
                             builder: (context) {

@@ -14,7 +14,7 @@ class Aula {
     });
 
     factory Aula.fromJson(Map<String, dynamic> json) => Aula(
-        idAula: json["idAula"],
+        idAula: json["_id"],
         nombreAula: json["nombreAula"],
         idEscuela: json["idEscuela"],
         asientos: List<Asiento>.from(json["asientos"].map((x) => Asiento.fromJson(x))),

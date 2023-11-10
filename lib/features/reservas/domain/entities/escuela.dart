@@ -22,7 +22,7 @@ class Escuela {
     });
 
     factory Escuela.fromJson(Map<String, dynamic> json) => Escuela(
-        idEscuela: json["idEscuela"],
+        idEscuela: json["_id"],
         nombreEscuela: json["nombreEscuela"],
         direccion: json["direccion"],
         ciudad: json["ciudad"],
@@ -33,7 +33,6 @@ class Escuela {
     );
 
     Map<String, dynamic> toJson() => {
-        "idEscuela": idEscuela,
         "nombreEscuela": nombreEscuela,
         "direccion": direccion,
         "ciudad": ciudad,
