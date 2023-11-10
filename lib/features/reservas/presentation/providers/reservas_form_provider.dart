@@ -37,6 +37,24 @@ class ReservaFormNotifier extends StateNotifier<ReservaFormState> {
     
   }
 
+  Future<void> postReserva(Reserva newReserva) async{
+
+    if (state.isLoading) return;
+    state = state.copyWith(isLoading: true);
+
+    await escuelasRepository.postReserva(newReserva);
+    
+    state = state.copyWith(
+      isLoading: false,
+    );
+
+  }
+
+  bool checkHoras(String? horaEntrada, String? horaSalida){
+    if (horaEntrada == horaSalida) return true;
+    return false;
+  }
+
 }
 
 //* state

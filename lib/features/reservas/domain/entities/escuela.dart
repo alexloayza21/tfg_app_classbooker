@@ -7,7 +7,7 @@ class Escuela {
     final String ciudad;
     final String codigoPostal;
     final String provincia;
-    final List<Aula> aulas;
+    final List<Aula>? aulas;
     final String imagen;
 
     Escuela({
@@ -17,7 +17,7 @@ class Escuela {
         required this.ciudad,
         required this.codigoPostal,
         required this.provincia,
-        required this.aulas,
+        this.aulas = const [],
         required this.imagen,
     });
 
@@ -40,6 +40,6 @@ class Escuela {
         "codigo_postal": codigoPostal,
         "provincia": provincia,
         "imagen": imagen,
-        "aulas": List<dynamic>.from(aulas.map((x) => x.toJson())),
+        "aulas": List<dynamic>.from(aulas!.map((x) => x.toJson())),
     };
 }

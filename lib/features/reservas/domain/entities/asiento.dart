@@ -37,8 +37,14 @@ class Asiento {
         "hora_salida": horaSalida
     };
 
+  //   @override
+  // String toString() {
+  //   return '\nnumeroAsiento: $numeroAsiento, \nhoraEntrada: $horaEntrada, \nhoraSalida: $horaSalida, \nidAula: $idAula';
+  // }
+  
     @override
   String toString() {
-    return '\nnumeroAsiento: $numeroAsiento, \nhoraEntrada: $horaEntrada, \nhoraSalida: $horaSalida, \nidAula: $idAula';
+    return '$numeroAsiento';
   }
+
 }

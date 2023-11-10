@@ -5,4 +5,5 @@ abstract class EscuelasDatasource {
   Future<List<Aula>> getAulasByIdEscuela(String idEscuela);
   Future<Aula> getAulaById(String idAula);
   Future<List<Reserva>> getReservasByDate(String date);
+  Future<void> postReserva(Reserva newReserva);
 }

@@ -22,6 +22,8 @@ class AppTheme {
           .copyWith( color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold ),
       titleSmall: GoogleFonts.montserratAlternates()
           .copyWith( color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold ),
+      bodyLarge: GoogleFonts.montserratAlternates()
+          .copyWith( color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold ),
       bodyMedium: GoogleFonts.montserratAlternates()
           .copyWith( color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold ),
     ),
@@ -35,13 +37,6 @@ class AppTheme {
         borderRadius: BorderRadius.circular(30)
       ),
     ),
-
-    filledButtonTheme: FilledButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(colorSeed.withAlpha(155)),
-      )
-    )
-
   );
 
 }

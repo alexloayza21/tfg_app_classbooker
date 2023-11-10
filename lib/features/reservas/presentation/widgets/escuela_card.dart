@@ -60,7 +60,7 @@ class _EscuelaCardView extends StatelessWidget {
             const Spacer(flex: 6,),
 
             Text(
-              '${escuela.aulas.length} Aulas',
+              '${escuela.aulas!.length} Aulas',
               style: textStyle.titleMedium,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,

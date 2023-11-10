@@ -4,13 +4,13 @@ class Aula {
     final String idAula;
     final String nombreAula;
     final String idEscuela;
-    final List<Asiento> asientos;
+    final List<Asiento>? asientos;
 
     Aula({
         required this.idAula,
         required this.nombreAula,
         required this.idEscuela,
-        required this.asientos,
+        this.asientos = const[],
     });
 
     factory Aula.fromJson(Map<String, dynamic> json) => Aula(
@@ -24,6 +24,6 @@ class Aula {
         "idAula": idAula,
         "nombreAula": nombreAula,
         "idEscuela": idEscuela,
-        "asientos": List<dynamic>.from(asientos.map((x) => x.toJson())),
+        "asientos": List<dynamic>.from(asientos!.map((x) => x.toJson())),
     };
 }

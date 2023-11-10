@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/reservas_form_provider.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/reservas_provider.dart';
@@ -23,7 +24,7 @@ class ReservasScreen extends ConsumerWidget {
           title: Text('Reservas: Aula ${reservaFormState.aula!.nombreAula}'),
           centerTitle: true,
         ),
-        body:  _ReservasView(aula: reservaFormState.aula!,),
+        body:  _ReservasView(aula: reservaFormState.aula!),
       );
   }
 }
@@ -43,29 +44,29 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
 
   final TextEditingController _dateController = TextEditingController();
 
-  final horasEntrada = ['17:00', '18:00', '19:00', '20:00'];
-  final horasSalida = ['18:00', '19:00', '20:00','21:00'];
+  final horasEntrada = ['16:00','17:00', '18:00', '19:00', '20:00'];
+  final horasSalida = ['17:00','18:00', '19:00', '20:00','21:00'];
 
   String? horaEntrada = '';
   String? horaSalida = '';
 
-  String errorTexto = '';
   late List<bool> isSelected;
+  late List<Asiento> listaAsientoToReserva = [];
 
   @override
   void initState() {
-    // TODO: implement initState
-    isSelected= List.generate(widget.aula.asientos.length, (index) => false);
+    super.initState();
+    isSelected = List.generate(widget.aula.asientos!.length, (index) => false); //TODO: CAMBIAR EL !
   }
 
 
   @override
   Widget build(BuildContext context) {
+    final reservaFormState = ref.watch(reservaFormProvider(widget.aula.idAula).notifier);
+    final reservasState = ref.watch(reservaProvider(_dateController.text));
     
     final textStyle = Theme.of(context).textTheme;
-    final List<Asiento> asientos = widget.aula.asientos;
-
-    final reservasState = ref.watch(reservaProvider(_dateController.text));
+    final List<Asiento> asientos = widget.aula.asientos!; //TODO: CAMBIAR EL !
 
     late List<Asiento> asientosResevas = [];
 
@@ -76,7 +77,6 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
         }
       }
     }
-
 
     return SingleChildScrollView(
       child: Column(
@@ -123,9 +123,9 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                     onChanged: (value) {
                       setState(() {
                         horaEntrada = value;
+                        listaAsientoToReserva = [];
+                        isSelected = List.generate(asientos.length, (index) => false);
                       });
-                      //TODO: CAMBIAR
-                      errorTexto = entradas(horaEntrada!, horaSalida!);
                     },
                     icon: const Icon(Icons.access_time_outlined),
     
@@ -156,9 +156,9 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                     onChanged: (value) {
                       setState(() {
                         horaSalida = value;
+                        listaAsientoToReserva = [];
+                        isSelected = List.generate(asientos.length, (index) => false);
                       });
-                      //TODO: CAMBIAR
-                      errorTexto = entradas(horaEntrada!, horaSalida!);
                     },
                     icon: const Icon(Icons.access_time_outlined),
                     
@@ -167,8 +167,6 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
               ],
             ),
           ),
-    
-          Text(errorTexto),
     
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
@@ -194,33 +192,109 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                     }
 
                     if ((asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada ?? '') && horaSalida == asientosResevas[j].horaSalida
+                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada ?? '') && 
+                        horaSalida == asientosResevas[j].horaSalida
                         )
                       || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                        horaEntrada == asientosResevas[j].horaEntrada && stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida ?? '')
-                        )) {
+                        horaEntrada == asientosResevas[j].horaEntrada && 
+                        stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida ?? '')
+                        )
+                      || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                        stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada ?? '') && 
+                        horaSalida == asientosResevas[j].horaSalida
+                        )
+                      || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                        horaEntrada == asientosResevas[j].horaEntrada && 
+                        stringNum(horaSalida!) <  stringNum(asientosResevas[j].horaSalida ?? '')
+                        )
+                      || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada ?? '') && 
+                        stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida ?? '')
+                        )
+                      || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                        stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada ?? '') && 
+                        stringNum(horaSalida!) <  stringNum(asientosResevas[j].horaSalida ?? '')
+                        )
+                      || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                        stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida ?? '') &&
+                        stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada ?? '') && 
+                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaSalida ?? '')
+                        )
+                      || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada ?? '') && 
+                        stringNum(horaSalida!) <  stringNum(asientosResevas[j].horaSalida ?? '') &&
+                        stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaEntrada ?? '')
+                        )
+                      ) {
                       return _ButtonAsiento(
                         colorButton: Colors.deepPurple,
                         isSelected: false, 
                         onPressed: () {
+                          print(stringNum(horaEntrada!));
                           showDialog(
                             context: context, 
                             builder: (context) {
-                              return Dialog();
+                              return AlertDialog.adaptive(
+                                title: Center(child: Text('Asiento Dudoso', style: textStyle.bodyLarge,)),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'El asiento ${asientos[index].numeroAsiento} '
+                                      'está reservado de ${asientosResevas[j].horaEntrada} ' 
+                                      'a ${asientosResevas[j].horaSalida} '
+                                      'por lo que no puedes reservar este asiento a la hora selecionada, '
+                                      'por favor cambie la hora de entrada o la hora de salida.'
+                                    ),
+                                  ],
+                                ),
+                              );
                             },
                           );
                         }
                       );
                     }
+
+                    // if ((asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                    //     horaEntrada == asientosResevas[j].horaSalida && stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada ?? '') && 
+                    //     stringNum(horaSalida!) > stringNum(asientosResevas[j].horaSalida ?? '')
+                    //     )                      
+                    // ) {
+                    //   return Padding(
+                    //     padding: const EdgeInsets.all(4.0),
+                    //     child: IconButton.filledTonal(
+                    //       onPressed: (){
+                    //         setState(() { isSelected[index] = !isSelected[index]; });
+                    //         // print(asientos[index].toString());
+                    //         if (isSelected[index]) {
+                    //           listaAsientoToReserva.add(asientos[index]);
+                    //         }else{
+                    //           listaAsientoToReserva.removeWhere((element) => element.numeroAsiento == asientos[index].numeroAsiento);
+                    //         }
+                    //         // print(listaAsientoToReserva.length); 
+                    //       }, 
+                    //       icon: const Icon(Icons.chair_outlined), 
+                    //       selectedIcon: const Icon(Icons.chair),
+                    //       isSelected: isSelected[index],
+                    //       color: Colors.green,
+                    //       disabledColor: Colors.red,
+                    //     ),
+                    //   );
+                      
+                    // }
                   }
                   return Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: IconButton.filledTonal(
                       onPressed: (){
-                        setState(() {
-                          isSelected[index] = !isSelected[index];
-                        });
-                        print(asientos[index].toString());
+                        setState(() { isSelected[index] = !isSelected[index]; });
+                        // print(asientos[index].toString());
+                        if (isSelected[index]) {
+                          listaAsientoToReserva.add(asientos[index]);
+                        }else{
+                          listaAsientoToReserva.removeWhere((element) => element.numeroAsiento == asientos[index].numeroAsiento);
+                        }
+                        // print(listaAsientoToReserva.length); 
                       }, 
                       icon: const Icon(Icons.chair_outlined), 
                       selectedIcon: const Icon(Icons.chair),
@@ -237,14 +311,71 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
           Container(
             width: double.infinity,
             height: 70,
-            margin: EdgeInsets.only(right: 20, left: 20, bottom: 30),
+            margin: const EdgeInsets.only(right: 20, left: 20, bottom: 30),
             child: FilledButton(
-              onPressed: () {
-                print('');
-                print('${_dateController.text}, $horaEntrada, $horaSalida');
-                print('asientosReservas: ${asientosResevas.length}');
-                print('reservasState.length ${reservasState.reservas.length}');
-                print('');
+              style: FilledButton.styleFrom(
+                backgroundColor: const Color(0xff0017FF).withAlpha(135),
+                shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30)
+                )
+              )),
+              onPressed: (reservaFormState.checkHoras(horaEntrada, horaSalida) || listaAsientoToReserva.isEmpty) ? null : () {
+                showDialog(
+                  context: context, 
+                  builder: (context) {
+                    return AlertDialog.adaptive(
+                      title: Center(child: Text('Reserva', style: textStyle.bodyLarge,),),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Center(child: Text('Lista de asientos a reservar:\n')),
+                          Center(child: Text(listaAsientoToReserva.toString())),
+                          Center(child: Text('\nhora de entrada: $horaEntrada')),
+                          Center(child: Text('hora de salida: $horaSalida')),
+                        ],
+                      ),
+                      actions: [
+                        
+                        SizedBox(
+                          width: double.infinity,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(), 
+                                child: Text('Cancelar', style: GoogleFonts.montserratAlternates().copyWith(
+                                  color: Colors.red, fontSize: 15, fontWeight: FontWeight.bold
+                                ))
+                              ),
+                              TextButton(
+                                onPressed: () {
+
+                                  for (var asiento in listaAsientoToReserva) {
+                                    asiento.setHoraEntrada = horaEntrada;
+                                    asiento.setHoraSalida = horaSalida;
+                                  }
+
+                                  final newReserva = Reserva(fecha: _dateController.text, horaEntrada: horaEntrada!, horaSalida: horaSalida!, asientos: listaAsientoToReserva);
+                                  reservaFormState.postReserva(newReserva);
+                                  Navigator.of(context).pop();
+
+                                }, 
+                                child: Text('Aceptar', style: GoogleFonts.montserratAlternates().copyWith(
+                                  color: Colors.green.shade700, fontSize: 15, fontWeight: FontWeight.bold
+                                ))
+                              )
+                            ],
+                          ),
+                        )
+
+                      ],
+                    );
+                  },
+                );
               }, 
               child: Text('Reservar', style: textStyle.titleMedium,)
             ),
@@ -270,28 +401,11 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
     }
   }
 
-  String entradas (String horaEntrada, String horaSalida) {
-    List<String> entrada = horaEntrada.split(':');
-    List<String> salida = horaSalida.split(':');
-
-    if (entrada[0].isEmpty) entrada[0] = '0';
-    if (salida[0].isEmpty) salida[0] = '0';
-
-    int numEntrada = int.parse(entrada[0]);
-    int numSalida = int.parse(salida[0]);
-
-    if (numSalida <= numEntrada) {
-      return 'Error';
-    }else{
-      return 'noError';
-    }
-
-  }
 
   int stringNum(String hora){
     if (hora.isEmpty) hora = '17:00';
-    List<String> horaFinal = hora.split(':');
-    int numFinal = int.parse(horaFinal[0]);
+    String horaFinal = hora.replaceAll(':', '');
+    int numFinal = int.parse(horaFinal);
     return numFinal;
   }
 

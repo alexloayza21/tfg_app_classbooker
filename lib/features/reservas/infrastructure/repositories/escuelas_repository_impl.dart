@@ -30,4 +30,9 @@ class EscuelasRepositoryImpl extends EscuelasRepository {
     return datasource.getReservasByDate(date);
   }
   
+  @override
+  Future<void> postReserva(Reserva newReserva) {
+    return datasource.postReserva(newReserva);
+  }
+  
 }
