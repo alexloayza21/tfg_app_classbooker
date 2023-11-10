@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/reservas_form_provider.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/reservas_provider.dart';
-import 'package:tfg_app/features/reservas/presentation/widgets/widgets.dart';
 
 class ReservasScreen extends ConsumerWidget {
   const ReservasScreen({super.key, required this.idAula});
@@ -193,38 +192,38 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                     }
 
                     if ((asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada ?? '') && 
+                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada!) && 
                         horaSalida == asientosResevas[j].horaSalida
                         )
                       || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
                         horaEntrada == asientosResevas[j].horaEntrada && 
-                        stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida ?? '')
+                        stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida!)
                         )
                       || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                        stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada ?? '') && 
+                        stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada!) && 
                         horaSalida == asientosResevas[j].horaSalida
                         )
                       || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
                         horaEntrada == asientosResevas[j].horaEntrada && 
-                        stringNum(horaSalida!) <  stringNum(asientosResevas[j].horaSalida ?? '')
+                        stringNum(horaSalida!) <  stringNum(asientosResevas[j].horaSalida!)
                         )
                       || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada ?? '') && 
-                        stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida ?? '')
+                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada!) && 
+                        stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida!)
                         )
                       || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                        stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada ?? '') && 
-                        stringNum(horaSalida!) <  stringNum(asientosResevas[j].horaSalida ?? '')
+                        stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada!) && 
+                        stringNum(horaSalida!) <  stringNum(asientosResevas[j].horaSalida!)
                         )
                       || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                        stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida ?? '') &&
-                        stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada ?? '') && 
-                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaSalida ?? '')
+                        stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida!) &&
+                        stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada!) && 
+                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaSalida!)
                         )
                       || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada ?? '') && 
-                        stringNum(horaSalida!) <  stringNum(asientosResevas[j].horaSalida ?? '') &&
-                        stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaEntrada ?? '')
+                        stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada!) && 
+                        stringNum(horaSalida!) <  stringNum(asientosResevas[j].horaSalida!) &&
+                        stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaEntrada!)
                         )
                       ) {
                       return _ButtonAsiento(
@@ -255,34 +254,6 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                         }
                       );
                     }
-
-                    // if ((asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
-                    //     horaEntrada == asientosResevas[j].horaSalida && stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada ?? '') && 
-                    //     stringNum(horaSalida!) > stringNum(asientosResevas[j].horaSalida ?? '')
-                    //     )                      
-                    // ) {
-                    //   return Padding(
-                    //     padding: const EdgeInsets.all(4.0),
-                    //     child: IconButton.filledTonal(
-                    //       onPressed: (){
-                    //         setState(() { isSelected[index] = !isSelected[index]; });
-                    //         // print(asientos[index].toString());
-                    //         if (isSelected[index]) {
-                    //           listaAsientoToReserva.add(asientos[index]);
-                    //         }else{
-                    //           listaAsientoToReserva.removeWhere((element) => element.numeroAsiento == asientos[index].numeroAsiento);
-                    //         }
-                    //         // print(listaAsientoToReserva.length); 
-                    //       }, 
-                    //       icon: const Icon(Icons.chair_outlined), 
-                    //       selectedIcon: const Icon(Icons.chair),
-                    //       isSelected: isSelected[index],
-                    //       color: Colors.green,
-                    //       disabledColor: Colors.red,
-                    //     ),
-                    //   );
-                      
-                    // }
                   }
                   return Padding(
                     padding: const EdgeInsets.all(4.0),
