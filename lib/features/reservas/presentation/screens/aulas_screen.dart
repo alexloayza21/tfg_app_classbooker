@@ -37,11 +37,16 @@ class _AulasView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return aulas.isEmpty 
+    ? const Center(
+      child: Text('No hay aulas'),
+    )  
+    : Padding(
       padding: const EdgeInsets.all(8.0),
       child: MasonryGridView.count(
-        itemCount: aulas.length,
+        physics: const BouncingScrollPhysics(),
         crossAxisCount: 2,
+        itemCount: aulas.length,
         itemBuilder: (context, index) {
           final aula = aulas[index];
           return GestureDetector(

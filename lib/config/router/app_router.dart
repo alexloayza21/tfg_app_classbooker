@@ -1,12 +1,9 @@
 import 'package:go_router/go_router.dart';
+import 'package:tfg_app/features/auth/presentation/admin/screens/screens.dart';
 import 'package:tfg_app/features/reservas/presentation/screens/screens.dart';
 final appRouter = GoRouter(
-  initialLocation: '/', 
+  initialLocation: '/reservasAdmin', 
   routes: [
-
-    // GoRoute(
-    //   path: '/checkStatus'
-    // ),
 
     GoRoute(
       path: '/',
@@ -22,6 +19,11 @@ final appRouter = GoRouter(
       path: '/reservasForm/:idAula',
       builder: (context, state) => ReservasScreen(idAula: state.pathParameters['idAula'] ?? '',),
     ),
+
+    GoRoute(
+      path: '/reservasAdmin',
+      builder: (context, state) => ReservasAdminScreen(),
+    )
 
   ]
 );
