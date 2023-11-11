@@ -73,11 +73,11 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
   }
   
   @override
-  Future<void> postReserva(Reserva newReserva) async{
+  Future<Reserva> postReserva(Reserva newReserva) async{
     try {
       final response = await dio.post('/reservas/newReserva', data: newReserva.toJson());
-      // ignore: avoid_print
-      print(response.data);
+      final reserva = Reserva.fromJson(response.data);
+      return reserva;
     } catch (e) {
       throw Exception();
     }

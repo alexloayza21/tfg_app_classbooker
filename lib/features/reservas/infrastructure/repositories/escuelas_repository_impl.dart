@@ -31,7 +31,7 @@ class EscuelasRepositoryImpl extends EscuelasRepository {
   }
   
   @override
-  Future<void> postReserva(Reserva newReserva) {
+  Future<Reserva> postReserva(Reserva newReserva) {
     return datasource.postReserva(newReserva);
   }
   
