@@ -6,6 +6,7 @@ class Reserva {
     final String fecha;
     final String horaEntrada;
     final String horaSalida;
+    final String nombreAula;
     final List<Asiento> asientos;
     final User? user;
 
@@ -14,6 +15,7 @@ class Reserva {
       required this.fecha,
       required this.horaEntrada,
       required this.horaSalida,
+      required this.nombreAula, 
       required this.asientos,
       this.user
     });
@@ -23,6 +25,7 @@ class Reserva {
         fecha: json["fecha"],
         horaEntrada: json["hora_entrada"],
         horaSalida: json["hora_salida"],
+        nombreAula: json["nombreAula"] ?? '',
         asientos: List<Asiento>.from(json["asientos"].map((x) => Asiento.fromJson(x))),
         user: json["user"] == null ? null : User.fromJson(json["user"]),
     );
@@ -31,6 +34,7 @@ class Reserva {
         "fecha": fecha,
         "hora_entrada": horaEntrada,
         "hora_salida": horaSalida,
+        "nombreAula": nombreAula,
         "asientos": List<dynamic>.from(asientos.map((x) => x.toJson())),
         "user": user?.toJson(),
     };

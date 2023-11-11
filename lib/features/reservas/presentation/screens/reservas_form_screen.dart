@@ -333,7 +333,8 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                                 final newReserva = Reserva(
                                   fecha: _dateController.text,
                                   horaEntrada: horaEntrada!, 
-                                  horaSalida: horaSalida!, 
+                                  horaSalida: horaSalida!,
+                                  nombreAula: widget.aula.nombreAula,
                                   asientos: listaAsientoToReserva
                                 );
                                 reservaFormState.postReserva(newReserva);
