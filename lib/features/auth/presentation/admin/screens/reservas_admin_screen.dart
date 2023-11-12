@@ -10,7 +10,9 @@ class ReservasAdminScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final reservaState = ref.watch(reservaProvider(DateTime.now().toString().split(' ')[0]));
+    final date = DateTime.now().toString().split(' ')[0];
+
+    final reservaState = ref.watch(reservaProvider('2023-11-11')); //TODO: cambiar por date
 
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +33,17 @@ class _ReservasAdminView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return (reservas.isEmpty)
+    ? Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/lottieFiles/emptyGif.gif'),
+          const Text('Hoy no hay reservas'),
+        ],
+      ),
+    )
+    : ListView.builder(
       itemCount: reservas.length,
       itemBuilder: (context, index) {
         return ReservasCard(reserva: reservas[index]);
