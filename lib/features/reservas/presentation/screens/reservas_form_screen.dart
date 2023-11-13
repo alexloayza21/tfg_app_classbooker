@@ -335,7 +335,8 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                                   horaEntrada: horaEntrada!, 
                                   horaSalida: horaSalida!,
                                   nombreAula: widget.aula.nombreAula,
-                                  asientos: listaAsientoToReserva
+                                  // idEscuela: widget.aula.idEscuela,
+                                  asientos: listaAsientoToReserva, 
                                 );
                                 reservaFormState.postReserva(newReserva);
                                 Navigator.of(context).pop();

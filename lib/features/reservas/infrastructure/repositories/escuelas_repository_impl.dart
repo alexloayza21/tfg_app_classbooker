@@ -35,4 +35,9 @@ class EscuelasRepositoryImpl extends EscuelasRepository {
     return datasource.postReserva(newReserva);
   }
   
+  @override
+  Future<Escuela> getEscuelaById(String id) {
+    return datasource.getEscuelaById(id);
+  }
+  
 }

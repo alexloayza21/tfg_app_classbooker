@@ -48,9 +48,11 @@ class EscuelasState {
   final bool isLoading;
   final String errorEscuelas;
   final List<Escuela> escuelas;
+  final Escuela? escuela;
 
   EscuelasState({
     this.isLoading = false, 
+    this.escuela,
     this.errorEscuelas = '',
     this.escuelas = const []
   });
@@ -58,10 +60,12 @@ class EscuelasState {
   EscuelasState copyWith({
     bool? isLoading,
     String? errorEscuelas,
+    Escuela? escuela,
     List<Escuela>? escuelas
   }) => EscuelasState(
     isLoading: isLoading ?? this.isLoading,
     errorEscuelas: errorEscuelas ?? this.errorEscuelas,
+    escuela: escuela ?? this.escuela,
     escuelas: escuelas ?? this.escuelas
   );
 }

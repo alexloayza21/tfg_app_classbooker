@@ -83,4 +83,15 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
     }
   }
   
+  @override
+  Future<Escuela> getEscuelaById(String id) async{
+    try {
+      final response = await dio.get('/escuelas/getEscuelaById/$id');
+      final escuela = Escuela.fromJson(response.data);
+      return escuela;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+  
 }

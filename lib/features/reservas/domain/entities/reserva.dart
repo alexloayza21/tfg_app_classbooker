@@ -25,7 +25,7 @@ class Reserva {
         fecha: json["fecha"],
         horaEntrada: json["hora_entrada"],
         horaSalida: json["hora_salida"],
-        nombreAula: json["nombreAula"] ?? '',
+        nombreAula: json["nombreAula"],
         asientos: List<Asiento>.from(json["asientos"].map((x) => Asiento.fromJson(x))),
         user: json["user"] == null ? null : User.fromJson(json["user"]),
     );

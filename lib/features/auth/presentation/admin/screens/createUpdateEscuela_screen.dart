@@ -5,20 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:tfg_app/features/auth/presentation/providers/escuelaProvider.dart';
 import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
+import 'package:tfg_app/features/reservas/domain/domain.dart';
 
-class NewEscuelaScreen extends ConsumerWidget {
-  const NewEscuelaScreen({super.key});
+class CreateUpdateEscuelaScreen extends ConsumerWidget {
+  const CreateUpdateEscuelaScreen({super.key, required this.escuelaId});
+
+  final String escuelaId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    final escuelaState = ref.watch(escuelaProvider(escuelaId));
+    final escuela = escuelaState.escuela;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nueva Escuela'),
         centerTitle: true,
       ),
-      body: const _NewEscuelaView(),
+      body: _NewEscuelaView(escuela: escuela!,),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           
@@ -31,8 +38,10 @@ class NewEscuelaScreen extends ConsumerWidget {
 
 class _NewEscuelaView extends StatefulWidget {
   const _NewEscuelaView({
-    super.key,
+    required this.escuela,
   });
+
+  final Escuela escuela;
 
   @override
   State<_NewEscuelaView> createState() => _NewEscuelaViewState();
@@ -93,11 +102,24 @@ class _NewEscuelaViewState extends State<_NewEscuelaView> with TickerProviderSta
             height: (_image == null) ? 250 : 100, 
             width: double.infinity,
             margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-            decoration: BoxDecoration(
+            decoration: widget.escuela.imagen.isEmpty ? BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               image: (_image != null) ? null : const DecorationImage(
                 fit: BoxFit.cover,
                 image: AssetImage('assets/images/no-image.jpg')
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: (_image == null) ? Colors.grey.withOpacity(1) : Colors.white,
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: const Offset(0,5)
+                )
+              ]): BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              image: (_image != null) ? null : DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(widget.escuela.imagen)
               ),
               boxShadow: [
                 BoxShadow(
@@ -111,38 +133,57 @@ class _NewEscuelaViewState extends State<_NewEscuelaView> with TickerProviderSta
                 'assets/lottieFiles/checkJson.json',
                 controller: _controller,
                 onLoaded: (_) {
-                  _controller.animateTo(4, duration: Duration(seconds: 6));
+                  _controller.animateTo(4, duration: const Duration(seconds: 6));
                 },
               ),
             ),
           ),
       
-          const CustomFormField(
+          CustomFormField(
             isTopField: true,
-            label: 'Nombre',
-            initialValue: 'Nombre escuela',
+            label: 'Nombre Escuela',
+            initialValue: widget.escuela.nombreEscuela,
           ),
     
-          const CustomFormField(
+          CustomFormField(
             label: 'Dirección',
-            initialValue: 'Dirección escuela',
+            initialValue: widget.escuela.direccion,
           ),
     
-          const CustomFormField(
+          CustomFormField(
             label: 'Ciudad',
-            initialValue: 'Ciudad escuela',
+            initialValue: widget.escuela.ciudad,
           ),
     
-          const CustomFormField(
+          CustomFormField(
             label: 'Provincia',
-            initialValue: 'Provincia escuela',
+            initialValue: widget.escuela.provincia,
           ),
       
-          const CustomFormField(
+          CustomFormField(
             isBottomField: true,
             label: 'Código Postal',
-            initialValue: 'Código Postal escuela',
+            initialValue: widget.escuela.codigoPostal,
             keyboardType: TextInputType.number,
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 20, bottom: 10, left: 5),
+                      child: Text('Aulas'),
+                    ),
+          
+                    AulasListView(aulas: widget.escuela.aulas!,)
+                  ],
+                ),
+              ],
+            ),
           ),
       
         ],
