@@ -16,7 +16,7 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
     required this.escuelasRepository,
     required String escuelaId
   }) : super(EscuelaState(id: escuelaId)){
-    loadEscuelas();
+    loadEscuela();
   }
   
 
@@ -33,7 +33,7 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
     );
   }
 
-  Future<void> loadEscuelas() async{
+  Future<void> loadEscuela() async{
 
     if (state.id == 'new') {
       state = state.copyWith(

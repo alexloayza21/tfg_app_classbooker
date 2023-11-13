@@ -40,4 +40,9 @@ class EscuelasRepositoryImpl extends EscuelasRepository {
     return datasource.getEscuelaById(id);
   }
   
+  @override
+  Future<Escuela> postEscuela(Escuela newEscuela) {
+    return datasource.postEscuela(newEscuela);
+  }
+  
 }

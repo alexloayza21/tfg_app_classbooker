@@ -31,9 +31,11 @@ class AulasListView extends StatelessWidget {
         ),
         onTap: () {
           if (aulas.isEmpty) {
-            context.push('/newAula/new');
+            context.push('/aula/new');
           }else{
-            context.push('/');
+            for (var i = 0; i < aulas.length; i++) {
+              context.push('/aula/${aulas[i].idAula}');
+            }
           }
         }
       )

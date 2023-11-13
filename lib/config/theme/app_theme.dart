@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const colorSeed = Color(0xff0017FF); //*0xff es el # de rgb
-
 class AppTheme {
+
+  final colorSeed = const Color.fromARGB(255, 138, 99, 221); //*0xff es el # de rgb
   
   ThemeData getTheme() => ThemeData(
     //* general
@@ -11,7 +11,7 @@ class AppTheme {
     colorSchemeSeed: colorSeed,
 
     appBarTheme: AppBarTheme(
-      backgroundColor: colorSeed.withAlpha(135)
+      backgroundColor: colorSeed.withAlpha(120)
     ),
 
     //* texts

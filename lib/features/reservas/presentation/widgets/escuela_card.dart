@@ -35,7 +35,7 @@ class _EscuelaCardView extends StatelessWidget {
         image: DecorationImage(
           colorFilter: const ColorFilter.mode(Colors.black45, BlendMode.hardLight),
           fit: BoxFit.cover,
-          image: NetworkImage(escuela.imagen)),
+          image: NetworkImage(escuela.imagen!)),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(1),

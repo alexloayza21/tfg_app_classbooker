@@ -94,4 +94,15 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
     }
   }
   
+  @override
+  Future<Escuela> postEscuela(Escuela newEscuela) async{
+    try {
+      final response = await dio.post('/escuelas/newEscuela', data: newEscuela.toJson());
+      final escuela = Escuela.fromJson(response.data);
+      return escuela;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+  
 }

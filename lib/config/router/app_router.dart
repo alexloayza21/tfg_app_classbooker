@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tfg_app/features/auth/presentation/admin/screens/screens.dart';
 import 'package:tfg_app/features/reservas/presentation/screens/screens.dart';
 final appRouter = GoRouter(
-  initialLocation: '/CreateUpadteEscuela/new', 
+  initialLocation: '/escuela/new', 
   routes: [
 
     GoRoute(
@@ -26,13 +26,13 @@ final appRouter = GoRouter(
     ),
 
     GoRoute(
-      path: '/CreateUpadteEscuela/:idEscuela',
-      builder: (context, state) => CreateUpdateEscuelaScreen(escuelaId: state.pathParameters['idEscuela'] ?? ''),
+      path: '/escuela/:idEscuela',
+      builder: (context, state) => EscuelaScreen(escuelaId: state.pathParameters['idEscuela'] ?? ''),
     ),
 
     GoRoute(
-      path: '/newAula/:idAula',
-      builder: (context, state) => NewAulaScreen(idAula: state.pathParameters['idAula'] ?? ''),
+      path: '/aula/:idAula',
+      builder: (context, state) => AulaScreen(idAula: state.pathParameters['idAula'] ?? ''),
     )
 
   ]

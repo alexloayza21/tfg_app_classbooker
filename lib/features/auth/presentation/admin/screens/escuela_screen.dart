@@ -3,14 +3,15 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
-import 'package:tfg_app/features/auth/presentation/providers/escuelaProvider.dart';
+import 'package:tfg_app/features/auth/presentation/providers/escuela_provider.dart';
 import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 
-class CreateUpdateEscuelaScreen extends ConsumerWidget {
-  const CreateUpdateEscuelaScreen({super.key, required this.escuelaId});
+class EscuelaScreen extends ConsumerWidget {
+  const EscuelaScreen({super.key, required this.escuelaId});
 
   final String escuelaId;
 
@@ -25,18 +26,12 @@ class CreateUpdateEscuelaScreen extends ConsumerWidget {
         title: const Text('Nueva Escuela'),
         centerTitle: true,
       ),
-      body: _NewEscuelaView(escuela: escuela!,),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          
-        }, 
-        child: const Icon(Icons.save),
-      ),
+      body: _NewEscuelaView(escuela: escuela!)
     );
   }
 }
 
-class _NewEscuelaView extends StatefulWidget {
+class _NewEscuelaView extends ConsumerStatefulWidget {
   const _NewEscuelaView({
     required this.escuela,
   });
@@ -44,10 +39,10 @@ class _NewEscuelaView extends StatefulWidget {
   final Escuela escuela;
 
   @override
-  State<_NewEscuelaView> createState() => _NewEscuelaViewState();
+  _NewEscuelaViewState createState() => _NewEscuelaViewState();
 }
 
-class _NewEscuelaViewState extends State<_NewEscuelaView> with TickerProviderStateMixin{
+class _NewEscuelaViewState extends ConsumerState<_NewEscuelaView> with TickerProviderStateMixin{
   late AnimationController _controller;
 
   @override
@@ -90,6 +85,7 @@ class _NewEscuelaViewState extends State<_NewEscuelaView> with TickerProviderSta
 
   @override
   Widget build(BuildContext context) {
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -102,7 +98,7 @@ class _NewEscuelaViewState extends State<_NewEscuelaView> with TickerProviderSta
             height: (_image == null) ? 250 : 100, 
             width: double.infinity,
             margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-            decoration: widget.escuela.imagen.isEmpty ? BoxDecoration(
+            decoration: widget.escuela.imagen!.isEmpty ? BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               image: (_image != null) ? null : const DecorationImage(
                 fit: BoxFit.cover,
@@ -119,7 +115,7 @@ class _NewEscuelaViewState extends State<_NewEscuelaView> with TickerProviderSta
               borderRadius: BorderRadius.circular(30),
               image: (_image != null) ? null : DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(widget.escuela.imagen)
+                image: NetworkImage(widget.escuela.imagen!)
               ),
               boxShadow: [
                 BoxShadow(
@@ -176,15 +172,40 @@ class _NewEscuelaViewState extends State<_NewEscuelaView> with TickerProviderSta
                   children: [
                     const Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 10, left: 5),
-                      child: Text('Aulas'),
+                      child: Text('Aulas', style: TextStyle(fontSize: 20),),
                     ),
-          
                     AulasListView(aulas: widget.escuela.aulas!,)
                   ],
                 ),
               ],
             ),
           ),
+
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+          
+                TextButton(
+                  onPressed: () {
+                  
+                  }, 
+                  child: Text('Cancelar', style: GoogleFonts.montserratAlternates()
+                  .copyWith( color: Colors.red, fontSize: 20, fontWeight: FontWeight.bold ),)
+                  ),
+          
+                TextButton(
+                  onPressed: () {
+                    
+                  }, 
+                  child: Text('Guardar', style: GoogleFonts.montserratAlternates()
+                  .copyWith( color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold ),)
+                )
+          
+              ],
+            ),
+          )
       
         ],
       ),
