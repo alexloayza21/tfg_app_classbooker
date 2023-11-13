@@ -52,7 +52,7 @@ class AulasListView extends StatelessWidget {
 
 class _Slider extends StatelessWidget {
   const _Slider({
-    super.key, required this.aula,
+    required this.aula,
   });
 
   final Aula aula;

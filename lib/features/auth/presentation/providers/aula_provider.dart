@@ -36,6 +36,7 @@ class AulaNotifier extends StateNotifier<AulaState> {
         isLoading: false,
         aula: newAula()
       );
+      return; //* sin el return seguirá al getAulById y mandará new como id
     }
 
     final aula = await escuelasRepository.getAulaById(state.id);

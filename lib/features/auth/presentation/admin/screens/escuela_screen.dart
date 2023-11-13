@@ -75,8 +75,7 @@ class _NewEscuelaViewState extends ConsumerState<_NewEscuelaView> with TickerPro
       setState(() {
         _image = File(pickedFile.path);
       });
-
-    }
+    }else{return;}
 
     formData = FormData.fromMap({
       'file': await MultipartFile.fromFile(_image!.path),
