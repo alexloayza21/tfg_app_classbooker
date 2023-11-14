@@ -3,7 +3,7 @@ import 'package:tfg_app/features/auth/presentation/admin/screens/screens.dart';
 import 'package:tfg_app/features/auth/presentation/user/screens/screens.dart';
 import 'package:tfg_app/features/reservas/presentation/screens/screens.dart';
 final appRouter = GoRouter(
-  initialLocation: '/register', 
+  initialLocation: '/login', 
   routes: [
 
     GoRoute(

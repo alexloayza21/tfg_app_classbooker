@@ -71,6 +71,7 @@ class _LoginView extends StatelessWidget {
                         isBottomField: true,
                         label: 'Correo electrónico',
                         hint: 'example@gmail.com',
+                        keyboardType: TextInputType.emailAddress,
                       ),
         
                       CustomFormField(
