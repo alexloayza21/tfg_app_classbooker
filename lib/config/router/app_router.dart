@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tfg_app/features/auth/presentation/admin/screens/screens.dart';
 import 'package:tfg_app/features/reservas/presentation/screens/screens.dart';
 final appRouter = GoRouter(
-  initialLocation: '/escuela/new', 
+  initialLocation: '/reservasAdmin', 
   routes: [
 
     GoRoute(

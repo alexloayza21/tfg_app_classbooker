@@ -46,7 +46,6 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
     final escuela = await escuelasRepository.getEscuelaById(state.id);
 
     state = state.copyWith(
-      isLoading: false,
       escuela: escuela
     );
     

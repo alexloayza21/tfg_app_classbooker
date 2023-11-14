@@ -25,9 +25,9 @@ class Asiento {
 
     factory Asiento.fromJson(Map<String, dynamic> json) => Asiento(
         numeroAsiento: json["numeroAsiento"],
-        idAula: json["idAula"],
         horaEntrada: json["hora_entrada"],
-        horaSalida: json["hora_salida"]
+        horaSalida: json["hora_salida"],
+        idAula: json["idAula"] ?? '',
     );
 
     Map<String, dynamic> toJson() => {

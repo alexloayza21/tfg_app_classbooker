@@ -4,16 +4,16 @@ class Aula {
     final String idAula;
     final String nombreAula;
     final String idEscuela;
-    final String horaEntrada;
-    final String horaSalida;
+    final String? horaEntrada;
+    final String? horaSalida;
     final List<Asiento>? asientos;
 
     Aula({
         required this.idAula,
         required this.nombreAula,
         required this.idEscuela,
-        required this.horaEntrada,
-        required this.horaSalida,
+        this.horaEntrada = '',
+        this.horaSalida = '',
         this.asientos = const[],
     });
 

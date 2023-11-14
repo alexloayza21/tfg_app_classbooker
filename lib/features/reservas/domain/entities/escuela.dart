@@ -9,6 +9,7 @@ class Escuela {
     final String provincia;
     final String? imagen;
     final List<Aula>? aulas;
+    final String? user;
 
     Escuela({
         this.idEscuela,
@@ -19,6 +20,7 @@ class Escuela {
         required this.provincia,
         this.imagen,
         this.aulas = const [],
+        this.user
     });
 
     factory Escuela.fromJson(Map<String, dynamic> json) => Escuela(
@@ -30,6 +32,7 @@ class Escuela {
         provincia: json["provincia"],
         imagen: json["imagen"],
         aulas: List<Aula>.from(json["aulas"].map((x) => Aula.fromJson(x))),
+        user: json["user"] ?? '',
     );
 
     Map<String, dynamic> toJson() => {
@@ -39,6 +42,7 @@ class Escuela {
         "codigo_postal": codigoPostal,
         "provincia": provincia,
         "imagen": imagen ?? '',
-        "aulas": List<dynamic>.from(aulas!.map((x) => x.toJson())),
+        "aulas": List<dynamic>.from(aulas?.map((x) => x.toJson()) ?? []),
+        "user": user,
     };
 }

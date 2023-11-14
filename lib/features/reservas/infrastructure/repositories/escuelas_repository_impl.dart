@@ -41,8 +41,8 @@ class EscuelasRepositoryImpl extends EscuelasRepository {
   }
   
   @override
-  Future<Escuela> postEscuela(Escuela newEscuela) {
-    return datasource.postEscuela(newEscuela);
+  Future<Escuela> createUpdateEscuela(Map<String, dynamic> escuelaLike) {
+    return datasource.createUpdateEscuela(escuelaLike);
   }
   
 }

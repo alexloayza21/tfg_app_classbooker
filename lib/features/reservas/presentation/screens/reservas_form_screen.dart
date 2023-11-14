@@ -55,7 +55,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
   @override
   void initState() {
     super.initState();
-    isSelected = List.generate(widget.aula.asientos!.length, (index) => false); //TODO: CAMBIAR EL !
+    isSelected = List.generate(widget.aula.asientos!.length, (index) => false);
     _dateController.text = DateTime.now().toString().split(' ')[0];
   }
 
@@ -66,17 +66,20 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
     final reservasState = ref.watch(reservaProvider(_dateController.text));
     
     final textStyle = Theme.of(context).textTheme;
-    final List<Asiento> asientos = widget.aula.asientos!; //TODO: CAMBIAR EL !
+    final List<Asiento> asientosDeAula = widget.aula.asientos!;
 
     late List<Asiento> asientosResevas = [];
 
-    for (var reserva in reservasState.reservas) {
-      for (var asiento in reserva.asientos) {
+    for (final reserva in reservasState.reservas) {
+      for (final asiento in reserva.asientos) {
         if (asiento.idAula == widget.aula.idAula) {
           asientosResevas.add(asiento);
         }
       }
     }
+
+    print(asientosResevas.length);
+    
     return Column(
       children: [
     
@@ -122,7 +125,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                     setState(() {
                       horaEntrada = value;
                       listaAsientoToReserva = [];
-                      isSelected = List.generate(asientos.length, (index) => false);
+                      // isSelected = List.generate(asientosDeAula.length, (index) => false); //TODO:
                     });
                   },
                   icon: const Icon(Icons.access_time_outlined),
@@ -155,7 +158,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                     setState(() {
                       horaSalida = value;
                       listaAsientoToReserva = [];
-                      isSelected = List.generate(asientos.length, (index) => false);
+                      // isSelected = List.generate(asientosDeAula.length, (index) => false);//TODO:
                     });
                   },
                   icon: const Icon(Icons.access_time_outlined),
@@ -176,13 +179,13 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                 mainAxisSpacing: 2,
               ),
               shrinkWrap: true,
-              itemCount: asientos.length, 
+              itemCount: asientosDeAula.length, 
               itemBuilder: (context, index) {
                   
                 for (var j = 0; j < asientosResevas.length; j++) {
             
                   if(
-                    asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento 
+                    asientosDeAula[index].numeroAsiento == asientosResevas[j].numeroAsiento 
                     && (horaEntrada == asientosResevas[j].horaEntrada && horaSalida == asientosResevas[j].horaSalida)) {
                     return const _ButtonAsiento(
                       colorButton: Colors.red, 
@@ -191,36 +194,36 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                     );
                   }
             
-                  if ((asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                  if ((asientosDeAula[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
                       stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada!) && 
                       horaSalida == asientosResevas[j].horaSalida
                       )
-                    || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                    || (asientosDeAula[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
                       horaEntrada == asientosResevas[j].horaEntrada && 
                       stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida!)
                       )
-                    || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                    || (asientosDeAula[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
                       stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada!) && 
                       horaSalida == asientosResevas[j].horaSalida
                       )
-                    || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                    || (asientosDeAula[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
                       horaEntrada == asientosResevas[j].horaEntrada && 
                       stringNum(horaSalida!) <  stringNum(asientosResevas[j].horaSalida!)
                       )
-                    || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                    || (asientosDeAula[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
                       stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada!) && 
                       stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida!)
                       )
-                    || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                    || (asientosDeAula[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
                       stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada!) && 
                       stringNum(horaSalida!) <  stringNum(asientosResevas[j].horaSalida!)
                       )
-                    || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                    || (asientosDeAula[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
                       stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaSalida!) &&
                       stringNum(horaEntrada!) > stringNum(asientosResevas[j].horaEntrada!) && 
                       stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaSalida!)
                       )
-                    || (asientos[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
+                    || (asientosDeAula[index].numeroAsiento == asientosResevas[j].numeroAsiento &&
                       stringNum(horaEntrada!) < stringNum(asientosResevas[j].horaEntrada!) && 
                       stringNum(horaSalida!) <  stringNum(asientosResevas[j].horaSalida!) &&
                       stringNum(horaSalida!) >  stringNum(asientosResevas[j].horaEntrada!)
@@ -239,7 +242,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    'El asiento ${asientos[index].numeroAsiento} '
+                                    'El asiento ${asientosDeAula[index].numeroAsiento} '
                                     'está reservado de ${asientosResevas[j].horaEntrada} ' 
                                     'a ${asientosResevas[j].horaSalida} '
                                     'por lo que no puedes reservar este asiento a la hora selecionada, '
@@ -261,9 +264,9 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                       setState(() { isSelected[index] = !isSelected[index]; });
                       // print(asientos[index].toString());
                       if (isSelected[index]) {
-                        listaAsientoToReserva.add(asientos[index]);
+                        listaAsientoToReserva.add(asientosDeAula[index]);
                       }else{
-                        listaAsientoToReserva.removeWhere((element) => element.numeroAsiento == asientos[index].numeroAsiento);
+                        listaAsientoToReserva.removeWhere((element) => element.numeroAsiento == asientosDeAula[index].numeroAsiento);
                       }
                       // print(listaAsientoToReserva.length); 
                     }, 
@@ -335,7 +338,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                                   horaEntrada: horaEntrada!, 
                                   horaSalida: horaSalida!,
                                   nombreAula: widget.aula.nombreAula,
-                                  // idEscuela: widget.aula.idEscuela,
+                                  idEscuela: widget.aula.idEscuela,
                                   asientos: listaAsientoToReserva, 
                                 );
                                 reservaFormState.postReserva(newReserva);

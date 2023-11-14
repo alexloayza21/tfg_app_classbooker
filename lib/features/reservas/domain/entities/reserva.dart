@@ -7,6 +7,7 @@ class Reserva {
     final String horaEntrada;
     final String horaSalida;
     final String nombreAula;
+    final String idEscuela;
     final List<Asiento> asientos;
     final User? user;
 
@@ -16,17 +17,19 @@ class Reserva {
       required this.horaEntrada,
       required this.horaSalida,
       required this.nombreAula, 
+      required this.idEscuela,
       required this.asientos,
       this.user
     });
 
     factory Reserva.fromJson(Map<String, dynamic> json) => Reserva(
-        id: json['_id'],
-        fecha: json["fecha"],
-        horaEntrada: json["hora_entrada"],
-        horaSalida: json["hora_salida"],
-        nombreAula: json["nombreAula"],
-        asientos: List<Asiento>.from(json["asientos"].map((x) => Asiento.fromJson(x))),
+        id: json['_id'] ?? '',
+        fecha: json["fecha"] ?? '',
+        horaEntrada: json["hora_entrada"] ?? '',
+        horaSalida: json["hora_salida"] ?? '',
+        nombreAula: json["nombreAula"] ?? '',
+        idEscuela: json["idEscuela"] ?? '',
+        asientos: List<Asiento>.from((json["asientos"] as List<dynamic>?)?.map((x) => Asiento.fromJson(x)) ?? []),
         user: json["user"] == null ? null : User.fromJson(json["user"]),
     );
 
@@ -35,6 +38,7 @@ class Reserva {
         "hora_entrada": horaEntrada,
         "hora_salida": horaSalida,
         "nombreAula": nombreAula,
+        "idEscuela": idEscuela,
         "asientos": List<dynamic>.from(asientos.map((x) => x.toJson())),
         "user": user?.toJson(),
     };

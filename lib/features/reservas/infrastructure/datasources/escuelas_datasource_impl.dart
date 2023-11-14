@@ -95,11 +95,26 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
   }
   
   @override
-  Future<Escuela> postEscuela(Escuela newEscuela) async{
+  Future<Escuela> createUpdateEscuela(Map<String, dynamic> escuelaLike) async {
     try {
-      final response = await dio.post('/escuelas/newEscuela', data: newEscuela.toJson());
+
+      final String? escuelaId = escuelaLike['id'];
+      final String method = escuelaId == null ? 'POST' : 'PATCH';
+      final String url = escuelaId == null ? '/escuelas/newEscuela' : '/escuelas/updateEscuelas/$escuelaId';
+
+      escuelaLike.remove('id');
+
+      final response = await dio.request(
+        url,
+        data: escuelaLike,
+        options: Options(
+          method: method
+        )
+      );
+
       final escuela = Escuela.fromJson(response.data);
       return escuela;
+      
     } catch (e) {
       throw Exception();
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tfg_app/config/config.dart';
 
 class CustomFormField extends StatelessWidget {
   const CustomFormField({
@@ -35,6 +36,7 @@ class CustomFormField extends StatelessWidget {
   final border = OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Colors.transparent));
   final errorBorder = OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Colors.red));
   const borderRadius = Radius.circular(15);
+  final color = AppTheme().colorSeed;
 
     return Padding(
       padding: EdgeInsets.only(left: 8, right: 8, bottom: (errorMessage != null) ? 10 : 0),
@@ -69,7 +71,7 @@ class CustomFormField extends StatelessWidget {
             errorBorder: errorBorder,
             focusedErrorBorder: errorBorder,
             hintText: hint,
-            label: (label != null) ? Text(label!, style: const TextStyle(color: Colors.black),) : null,
+            label: (label != null) ? Text(label!, style: TextStyle(color: color),) : null,
             errorText: errorMessage,
             focusColor: Colors.red
           ),
