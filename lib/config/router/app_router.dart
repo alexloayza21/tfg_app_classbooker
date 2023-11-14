@@ -1,12 +1,23 @@
 import 'package:go_router/go_router.dart';
 import 'package:tfg_app/features/auth/presentation/admin/screens/screens.dart';
+import 'package:tfg_app/features/auth/presentation/user/screens/screens.dart';
 import 'package:tfg_app/features/reservas/presentation/screens/screens.dart';
 final appRouter = GoRouter(
-  initialLocation: '/reservasAdmin', 
+  initialLocation: '/register', 
   routes: [
 
     GoRoute(
-      path: '/',
+      path: '/login',
+      builder: (context, state) => LoginScreen(),
+    ),
+
+    GoRoute(
+      path: '/register',
+      builder: (context, state) => RegisterScreen(),
+    ),
+
+    GoRoute(
+      path: '/escuelas',
       builder: (context, state) => const EscuelasScreen(),
     ),
 
@@ -18,6 +29,13 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/reservasForm/:idAula',
       builder: (context, state) => ReservasScreen(idAula: state.pathParameters['idAula'] ?? '',),
+    ),
+
+
+
+    GoRoute(
+      path: '/adminHome',
+      builder: (context, state) => AdminHomeScreen()
     ),
 
     GoRoute(
@@ -33,6 +51,11 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/aula/:idAula',
       builder: (context, state) => AulaScreen(idAula: state.pathParameters['idAula'] ?? ''),
+    ),
+
+    GoRoute(
+      path: '/adminProfile',
+      builder: (context, state) => AdminProfileScreen(),
     )
 
   ]

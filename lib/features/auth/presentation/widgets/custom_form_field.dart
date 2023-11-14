@@ -65,6 +65,7 @@ class CustomFormField extends StatelessWidget {
           keyboardType: keyboardType,
           initialValue: initialValue,
           style: const TextStyle(fontSize: 15, color: Colors.black),
+          onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
           decoration: InputDecoration(
             enabledBorder: border,
             focusedBorder: border,

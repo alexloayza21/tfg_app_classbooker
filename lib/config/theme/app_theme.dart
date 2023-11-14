@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
 
-  final colorSeed = const Color.fromARGB(255, 138, 99, 221); //*0xff es el # de rgb
+  final colorSeed = Colors.deepPurple; //*0xff es el # de rgb
   
   ThemeData getTheme() => ThemeData(
     //* general
@@ -26,6 +26,8 @@ class AppTheme {
           .copyWith( color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold ),
       bodyMedium: GoogleFonts.montserratAlternates()
           .copyWith( color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold ),
+      bodySmall: GoogleFonts.montserratAlternates()
+          .copyWith( color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold ),
     ),
 
     inputDecorationTheme: InputDecorationTheme(
