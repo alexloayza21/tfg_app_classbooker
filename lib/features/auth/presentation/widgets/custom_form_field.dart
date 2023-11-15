@@ -34,7 +34,7 @@ class CustomFormField extends StatelessWidget {
   Widget build(BuildContext context) {
 
   final border = OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Colors.transparent));
-  final errorBorder = OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Colors.red));
+  final errorBorder = OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: const BorderSide(color: Colors.transparent));
   const borderRadius = Radius.circular(15);
   final color = AppTheme().colorSeed;
 
@@ -74,7 +74,6 @@ class CustomFormField extends StatelessWidget {
             hintText: hint,
             label: (label != null) ? Text(label!, style: TextStyle(color: color),) : null,
             errorText: errorMessage,
-            focusColor: Colors.red
           ),
         )
       ),

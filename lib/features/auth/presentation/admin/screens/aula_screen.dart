@@ -43,6 +43,7 @@ class _NewEscuelaViewState extends ConsumerState<_AulaScreenView> {
   late String horaEntrada = '';
   late String horaSalida = '';
   late String? valor = '';
+  
   late bool cadaHora = false;
   late bool cadaMediaHora = false;
 

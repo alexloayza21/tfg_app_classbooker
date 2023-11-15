@@ -6,7 +6,7 @@ class User {
     final bool admin;
     final String token;
     final List<Reserva>? reservas;
-    final List<Escuela>? escuelas;
+    final Escuela? escuela;
 
     User({
         required this.username,
@@ -14,7 +14,7 @@ class User {
         required this.admin,
         required this.token,
         this.reservas = const [],
-        this.escuelas = const [],
+        this.escuela,
     });
 
     factory User.fromJson(Map<String, dynamic> json) => User(
@@ -23,7 +23,7 @@ class User {
         admin: json["admin"] ?? '',
         token: json["token"] ?? '',
         reservas: (json["reservas"] as List<dynamic>?)?.map((x) => Reserva.fromJson(x)).toList(),
-        escuelas: (json["escuelas"] as List<dynamic>?)?.map((x) => Escuela.fromJson(x)).toList(),
+        escuela: json['escuela'] != null ? Escuela.fromJson(json['escuela']) : null,
     );
 
     Map<String, dynamic> toJson() => {
@@ -32,6 +32,11 @@ class User {
         "admin": admin,
         "token": token,
         "reservas": reservas != null ? List<dynamic>.from(reservas!.map((x) => x.toJson())) : null,
-        "escuelas": reservas != null ? List<dynamic>.from(escuelas!.map((x) => x.toJson())) : null,
+        "escuela": escuela != null ? escuela!.toJson() : null
     };
+
+    @override
+  String toString() {
+    return 'User{username: $username, email: $email, admin: $admin, token: $token, reservas: $reservas, escuela: $escuela}';
+  }
 }
