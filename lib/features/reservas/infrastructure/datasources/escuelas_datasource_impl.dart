@@ -93,6 +93,31 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
       throw Exception();
     }
   }
+  
+  @override
+  Future<Escuela> getEscuelaByUserId(String id) async{
+    try {
+      final response = await dio.get('/escuelas/getEscuelaByUserId/$id');
+      final escuela = Escuela.fromJson(response.data);
+      return escuela;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+  
+  @override
+  Future<List<Reserva>> getReservasByUserId(String id) async{
+    try {
+      final response = await dio.get('/reservas/reservasByUserId/$id');
+      final List<Reserva> reservas = [];
+      for (final reserva in response.data ?? []) {
+        reservas.add(Reserva.fromJson(reserva));
+      }
+      return reservas;
+    } catch (e) {
+      throw Exception();
+    }
+  }
 
 
   Future<String> _uploadPhoto(String path) async{

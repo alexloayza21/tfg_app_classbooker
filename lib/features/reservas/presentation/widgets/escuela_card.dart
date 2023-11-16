@@ -39,7 +39,7 @@ class _EscuelaCardView extends StatelessWidget {
           image: AssetImage('assets/images/no-image.jpg')
           )
         : DecorationImage(
-          colorFilter: const ColorFilter.mode(Colors.black45, BlendMode.hardLight),
+          colorFilter: const ColorFilter.mode(Colors.black38, BlendMode.hardLight),
           fit: BoxFit.cover,
           image: NetworkImage(escuela.imagen)
           ),
@@ -53,9 +53,10 @@ class _EscuelaCardView extends StatelessWidget {
           ]
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
               escuela.nombreEscuela,
@@ -64,25 +65,17 @@ class _EscuelaCardView extends StatelessWidget {
               maxLines: 2,
             ),
 
-            const Spacer(flex: 6,),
-
-            Text(
-              '${escuela.aulas!.length} Aulas',
-              style: textStyle.titleMedium,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-            ),
-
-            const Spacer(),
-
             Row(
               children: [
                 const Icon(Icons.location_on_outlined, color: Colors.white, size: 15,),
-                Text(
-                  '${escuela.direccion}, ${escuela.ciudad}, ${escuela.provincia}, ${escuela.codigoPostal} ',
-                  style: textStyle.titleSmall,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
+                const SizedBox(width: 5,),
+                Expanded(
+                  child: Text(
+                    '${escuela.direccion}, ${escuela.ciudad}, ${escuela.provincia}, ${escuela.codigoPostal} ',
+                    style: textStyle.titleSmall,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
                 ),
               ],
             ),

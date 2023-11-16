@@ -25,7 +25,8 @@ class AulaNotifier extends StateNotifier<AulaState> {
       nombreAula: '', 
       horaEntrada: '', 
       horaSalida: '',
-      idEscuela: ''
+      idEscuela: '', 
+      mediaHora: false
     );
   }
 

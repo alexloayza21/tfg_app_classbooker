@@ -51,7 +51,7 @@ class ReservasCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Nombre del Usuario: ${reserva.user!.username}',
+                  'Nombre del Usuario: ${reserva.username}',
                   style: textStyle.titleLarge,
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
@@ -77,7 +77,7 @@ class ReservasCard extends StatelessWidget {
             context: context, 
             builder: (context) {
               return AlertDialog.adaptive(
-                title: Center(child: Text(reserva.user!.username, style: textStyle.bodyLarge,)),
+                title: Center(child: Text(reserva.username, style: textStyle.bodyLarge,)),
                 content: Text(
                   'Aula: ${reserva.nombreAula}\n'
                   'Asientos: ${reserva.asientos}\n'

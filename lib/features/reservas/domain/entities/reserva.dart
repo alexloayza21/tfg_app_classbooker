@@ -1,4 +1,3 @@
-import 'package:tfg_app/features/auth/domain/domain.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 
 class Reserva {
@@ -7,9 +6,10 @@ class Reserva {
     final String horaEntrada;
     final String horaSalida;
     final String nombreAula;
-    final String idEscuela;
     final List<Asiento> asientos;
-    final User? user;
+    final String idEscuela;
+    final String username;
+    final String userId;
 
     Reserva({
       this.id,
@@ -19,7 +19,8 @@ class Reserva {
       required this.nombreAula, 
       required this.idEscuela,
       required this.asientos,
-      this.user
+      required this.username,
+      this.userId = ''
     });
 
     factory Reserva.fromJson(Map<String, dynamic> json) => Reserva(
@@ -28,9 +29,10 @@ class Reserva {
         horaEntrada: json["hora_entrada"] ?? '',
         horaSalida: json["hora_salida"] ?? '',
         nombreAula: json["nombreAula"] ?? '',
-        idEscuela: json["idEscuela"] ?? '',
         asientos: List<Asiento>.from((json["asientos"] as List<dynamic>?)?.map((x) => Asiento.fromJson(x)) ?? []),
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
+        idEscuela: json["idEscuela"] ?? '',
+        username: json["username"] ?? '',
+        userId: json["userId"] ?? ''
     );
 
     Map<String, dynamic> toJson() => {
@@ -38,8 +40,9 @@ class Reserva {
         "hora_entrada": horaEntrada,
         "hora_salida": horaSalida,
         "nombreAula": nombreAula,
-        "idEscuela": idEscuela,
         "asientos": List<dynamic>.from(asientos.map((x) => x.toJson())),
-        "user": user?.toJson(),
+        "idEscuela": idEscuela,
+        "username": username,
+        "userId": userId
     };
 }

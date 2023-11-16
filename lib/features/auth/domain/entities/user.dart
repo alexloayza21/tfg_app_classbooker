@@ -1,29 +1,29 @@
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 
 class User {
+    final String userId;
     final String username;
     final String email;
     final bool admin;
     final String token;
-    final List<Reserva>? reservas;
-    final Escuela? escuela;
+    final String idEscuela;
 
     User({
-        required this.username,
-        required this.email,
-        required this.admin,
-        required this.token,
-        this.reservas = const [],
-        this.escuela,
+      this.userId = '',
+      required this.username,
+      required this.email,
+      required this.admin,
+      required this.token,
+      this.idEscuela = '',
     });
 
     factory User.fromJson(Map<String, dynamic> json) => User(
+        userId: json["_id"] ?? '',
         username: json["username"] ?? '',
         email: json["email"] ?? '',
         admin: json["admin"] ?? '',
         token: json["token"] ?? '',
-        reservas: (json["reservas"] as List<dynamic>?)?.map((x) => Reserva.fromJson(x)).toList(),
-        escuela: json['escuela'] != null ? Escuela.fromJson(json['escuela']) : null,
+        idEscuela: json['idEscuela'] ?? '',
     );
 
     Map<String, dynamic> toJson() => {
@@ -31,12 +31,11 @@ class User {
         "email": email,
         "admin": admin,
         "token": token,
-        "reservas": reservas != null ? List<dynamic>.from(reservas!.map((x) => x.toJson())) : null,
-        "escuela": escuela != null ? escuela!.toJson() : null
+        "idEscuela": idEscuela
     };
 
     @override
   String toString() {
-    return 'User{username: $username, email: $email, admin: $admin, token: $token, reservas: $reservas, escuela: $escuela}';
+    return 'User{username: $username, email: $email, admin: $admin, token: $token, idEscuela: $idEscuela}';
   }
 }

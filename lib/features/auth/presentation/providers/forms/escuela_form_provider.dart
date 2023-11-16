@@ -26,7 +26,6 @@ class EscuelaFormNotifier extends StateNotifier<EscuelaFormState> {
       codigoPostal: escuela.codigoPostal, 
       provincia: escuela.provincia, 
       imagen: escuela.imagen,
-      aulas: escuela.aulas
     )
   );
 

@@ -136,25 +136,7 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
           ),
 
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(top: 20, bottom: 10, left: 5),
-                      child: Text('Aulas', style: TextStyle(fontSize: 20),),
-                    ),
-                    AulasListView(aulas: widget.escuela.aulas!,)
-                  ],
-                ),
-              ],
-            ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

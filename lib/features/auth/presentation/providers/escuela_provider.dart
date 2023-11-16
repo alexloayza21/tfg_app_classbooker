@@ -29,7 +29,6 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
       codigoPostal: '', 
       provincia: '', 
       imagen: '',
-      aulas: []
     );
   }
 
@@ -44,6 +43,25 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
     }
 
     final escuela = await escuelasRepository.getEscuelaById(state.id);
+
+    state = state.copyWith(
+      escuela: escuela
+    );
+    
+
+  }
+
+  Future<void> escuelaByUserId() async{
+
+    if (state.id == 'new') {
+      state = state.copyWith(
+        isLoading: false,
+        escuela: newEscuela()
+      );
+      return;
+    }
+
+    final escuela = await escuelasRepository.getEscuelaByUserId(state.id);
 
     state = state.copyWith(
       escuela: escuela

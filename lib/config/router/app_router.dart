@@ -21,12 +21,12 @@ final goRouterProvider = Provider((ref) {
 
       GoRoute(
         path: '/login',
-        builder: (context, state) => LoginScreen(),
+        builder: (context, state) => const LoginScreen(),
       ),
 
       GoRoute(
         path: '/register',
-        builder: (context, state) => RegisterScreen(),
+        builder: (context, state) => const RegisterScreen(),
       ),
 
       GoRoute(
@@ -44,16 +44,21 @@ final goRouterProvider = Provider((ref) {
         builder: (context, state) => ReservasScreen(idAula: state.pathParameters['idAula'] ?? '',),
       ),
 
+      GoRoute(
+        path: '/userHome',
+        builder: (context, state) => const UserHomeScreen()
+      ),
+
 
 
       GoRoute(
         path: '/adminHome',
-        builder: (context, state) => AdminHomeScreen()
+        builder: (context, state) => const AdminHomeScreen()
       ),
 
       GoRoute(
         path: '/reservasAdmin',
-        builder: (context, state) => ReservasAdminScreen(),
+        builder: (context, state) => const ReservasAdminScreen(),
       ),
 
       GoRoute(
@@ -68,7 +73,7 @@ final goRouterProvider = Provider((ref) {
 
       GoRoute(
         path: '/adminProfile',
-        builder: (context, state) => AdminProfileScreen(),
+        builder: (context, state) => const AdminProfileScreen(),
       )
 
     ],
@@ -90,7 +95,7 @@ final goRouterProvider = Provider((ref) {
       }
 
       if ( authStatus == AuthStatus.authenticated && !isAdmin) {
-        if (isGoingTo == '/login' || isGoingTo == '/register' || isGoingTo == '/checkAuth') return '/escuelas';
+        if (isGoingTo == '/login' || isGoingTo == '/register' || isGoingTo == '/checkAuth') return '/userHome';
       }
 
       return null;

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/aulas_provider.dart';
 import 'package:tfg_app/features/reservas/presentation/widgets/widgets.dart';
 
 class EscuelaProfileCard extends ConsumerWidget {
@@ -11,6 +13,9 @@ class EscuelaProfileCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    final aulasState = ref.watch(aulasProvider(escuela.idEscuela!));
+
     final textStyle = Theme.of(context).textTheme;
     return Expanded(
       child: Column(
@@ -25,15 +30,15 @@ class EscuelaProfileCard extends ConsumerWidget {
               constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height,
               ),
-              child: (escuela.aulas!.isNotEmpty) ? MasonryGridView.count(
-                itemCount: escuela.aulas?.length,
+              child: (aulasState.aulas.isNotEmpty) ? MasonryGridView.count(
+                itemCount: aulasState.aulas.length,
                 crossAxisCount: 2, 
                 itemBuilder: (context, index) {
-                  return AulaGridCard(aula: escuela.aulas![index]);
+                  return AulaGridCard(aula: aulasState.aulas[index]);
                 },
               )
-              : Center(
-                child: Text('No tienes aulas'),
+              : const Center(
+                child: Text('No tienes aulas 🫠'),
               )
             ),
           ),
@@ -45,7 +50,6 @@ class EscuelaProfileCard extends ConsumerWidget {
 
 class _EscuelaInfo extends StatelessWidget {
   const _EscuelaInfo({
-    super.key,
     required this.escuela,
     required this.textStyle,
   });
@@ -57,9 +61,7 @@ class _EscuelaInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        
-        // print('object');
-        // return ref.refresh(authProvider); //* boton para refrescar el 
+        context.push('/escuela/${escuela.idEscuela}');
       },
       child: Padding(
         padding: const EdgeInsets.all(20.0),

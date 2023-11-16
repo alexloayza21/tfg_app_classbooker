@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
-import 'package:tfg_app/features/auth/presentation/providers/escuela_provider.dart';
-import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
+import 'package:tfg_app/features/auth/presentation/providers/reservas_user_provider.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 
-class AdminProfileScreen extends ConsumerWidget {
-  const AdminProfileScreen({super.key});
+class UserProfileScreen extends ConsumerWidget {
+  const UserProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
     final userState = ref.watch(authProvider);
-    final escuelaState = ref.watch(escuelaProvider(userState.user!.userId));
+    final reservasState = ref.watch(reservasUserProvider(userState.user!.userId));
     final textStyle = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('¡Bienvenido ${userState.user?.username}!'),
+        title: Text('Bienvenido ${userState.user!.username}'),
         centerTitle: true,
         actions: [
           IconButton(onPressed: () {
@@ -32,47 +30,24 @@ class AdminProfileScreen extends ConsumerWidget {
           }, icon: const Icon(Icons.exit_to_app, color: Colors.black,))
         ],
       ),
-      body: _ProfileView(escuela: escuelaState.escuela),
-      floatingActionButton: escuelaState.escuela == null 
-      ? FloatingActionButton.extended(
-        onPressed: () {
-          context.push('/escuela/new');
-        }, 
-        label: const Text('Nueva Escuela'),
-        icon: const Icon(Icons.add),
-      )
-      : FloatingActionButton.extended(
-          onPressed: () {
-            context.push('/aula/new');
-          }, 
-          label: const Text('Añadir Aula'),
-          icon: const Icon(Icons.add),
-        )
+      body: _UserProfileView(reservas: reservasState.reservas,),
     );
   }
 }
 
-class _ProfileView extends StatelessWidget {
-  const _ProfileView({
-    required this.escuela,
+class _UserProfileView extends StatelessWidget {
+  const _UserProfileView({
+    required this.reservas,
   });
 
-  final Escuela? escuela;
+  final List<Reserva> reservas;
 
   @override
   Widget build(BuildContext context) {
-    return (escuela == null ) 
-    ? const Padding(
-      padding: EdgeInsets.all(20.0),
-      child: Center(child: Text('Aun no has registrado una escuela 🫠', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),),
-    ) 
-    : Column(
-      children: [
-        EscuelaProfileCard(escuela: escuela!,)
-      ],
-    );
+    return Container();
   }
 }
+
 
 class _LogOutDialog extends ConsumerWidget {
   const _LogOutDialog({
