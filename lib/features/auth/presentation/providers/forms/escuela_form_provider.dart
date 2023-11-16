@@ -49,6 +49,12 @@ class EscuelaFormNotifier extends StateNotifier<EscuelaFormState> {
     }
   }
 
+  void updateEscuelaImage(String path){
+    state = state.copyWith(
+      imagen: path
+    );
+  }
+
   void onNombreEscuelaChanged(String value){
     state = state.copyWith(
       nombreEscuela: value
@@ -88,7 +94,7 @@ class EscuelaFormState {
   final String ciudad;
   final String codigoPostal;
   final String provincia;
-  final String? imagen;
+  final String imagen;
   final List<Aula>? aulas;
 
   EscuelaFormState({
@@ -98,7 +104,7 @@ class EscuelaFormState {
     required this.ciudad, 
     required this.codigoPostal, 
     required this.provincia, 
-    this.imagen, 
+    this.imagen = '', 
     this.aulas = const []
   });
 

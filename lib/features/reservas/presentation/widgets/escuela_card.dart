@@ -32,10 +32,17 @@ class _EscuelaCardView extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        image: DecorationImage(
+        image: escuela.imagen == '' 
+        ? const DecorationImage(
+          colorFilter: ColorFilter.mode(Colors.black45, BlendMode.hardLight),
+          fit: BoxFit.cover,
+          image: AssetImage('assets/images/no-image.jpg')
+          )
+        : DecorationImage(
           colorFilter: const ColorFilter.mode(Colors.black45, BlendMode.hardLight),
           fit: BoxFit.cover,
-          image: NetworkImage(escuela.imagen!)),
+          image: NetworkImage(escuela.imagen!)
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(1),

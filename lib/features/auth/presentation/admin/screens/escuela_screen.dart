@@ -1,15 +1,14 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:lottie/lottie.dart';
 import 'package:tfg_app/features/auth/presentation/providers/escuela_provider.dart';
 import 'package:tfg_app/features/auth/presentation/providers/forms/escuela_form_provider.dart';
 import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
+import 'package:tfg_app/features/shared/widgets/services/camera_gallery_service_impl.dart';
 
 class EscuelaScreen extends ConsumerWidget {
   const EscuelaScreen({super.key, required this.escuelaId});
@@ -58,38 +57,12 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
-//     _controller.addListener(() {
-//       print(_controller.value);
-//     //  if the full duration of the animation is 8 secs then 0.5 is 4 secs
-//       if (_controller.value > 0.5) {
-// // When it gets there hold it there.
-//         _controller.value = 0.5;
-//       }
-//     });
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-  File? _image;
-  late FormData formData = FormData();
-  Future _pickImage() async {
-    final imagePicker = ImagePicker();
-    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }else{return;}
-
-    formData = FormData.fromMap({
-      'file': await MultipartFile.fromFile(_image!.path),
-    });
-    
   }
 
   @override
@@ -102,47 +75,29 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
       child: Column(
         children: [
     
-          Text(formData.toString()),
-    
           GestureDetector(
-            onTap: _pickImage,
-            child: Container(
-            height: (_image == null) ? 250 : 100, 
-            width: double.infinity,
-            margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-            decoration: escuelaForm.imagen!.isEmpty ? BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              image: (_image != null) ? null : const DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('assets/images/no-image.jpg')
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: (_image == null) ? Colors.grey.withOpacity(1) : Colors.white,
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: const Offset(0,5)
-                )
-              ]): BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              image: (_image != null) ? null : DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(escuelaForm.imagen!)
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: (_image == null) ? Colors.grey.withOpacity(1) : Colors.white,
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: const Offset(0,5)
-                )
-              ]),
-              child: (_image == null) ? null : LottieBuilder.asset(
-                'assets/lottieFiles/checkJson.json',
-                controller: _controller,
-                onLoaded: (_) {
-                  _controller.animateTo(4, duration: const Duration(seconds: 6));
-                },
+            onTap: () async {
+              final photoPath = await CameraGalleryServiceImpl().selectPhoto();
+              if (photoPath == null) return;
+              ref.read(escuelaFormProvider(widget.escuela).notifier).updateEscuelaImage(photoPath);
+              photoPath;
+              print(photoPath);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal:8, vertical: 20),
+              child: Container(
+                height: 250,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black38,
+                      blurRadius: 20,
+                      offset: Offset(6, 6) 
+                    )
+                  ]
+                ),
+                child: _ImageSelector(image: escuelaForm.imagen,),
               ),
             ),
           ),
@@ -206,7 +161,7 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
           
                 TextButton(
                   onPressed: () {
-                  
+                    context.pop('/adminProfile');
                   }, 
                   child: Text('Cancelar', style: GoogleFonts.montserratAlternates()
                   .copyWith( color: Colors.red, fontSize: 20, fontWeight: FontWeight.bold ),)
@@ -215,6 +170,7 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
                 TextButton(
                   onPressed: () {
                     ref.read(escuelaFormProvider(widget.escuela).notifier).onFormSubmit();
+                    context.pop('/adminProfile');
                   }, 
                   child: Text('Guardar', style: GoogleFonts.montserratAlternates()
                   .copyWith( color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold ),)
@@ -225,6 +181,40 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
           )
       
         ],
+      ),
+    );
+  }
+}
+
+class _ImageSelector extends StatelessWidget {
+  const _ImageSelector({ 
+    required this.image,
+  });
+
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    if (image == '') {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(30),
+        child: Image.asset('assets/images/no-image.jpg', fit: BoxFit.cover,),
+      );
+    }
+
+    late ImageProvider imageProvider;
+    if (image.startsWith('http')) {
+      imageProvider = NetworkImage(image);
+    }else{
+      imageProvider = FileImage(File(image));
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(30),
+      child: FadeInImage(
+        placeholder: const AssetImage('assets/loaders/bottle-loader.gif'), 
+        image: imageProvider,
+        fit: BoxFit.cover,
       ),
     );
   }

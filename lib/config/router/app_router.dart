@@ -89,6 +89,10 @@ final goRouterProvider = Provider((ref) {
         if (isGoingTo == '/login' || isGoingTo == '/register' || isGoingTo == '/checkAuth') return '/adminHome';
       }
 
+      if ( authStatus == AuthStatus.authenticated && !isAdmin) {
+        if (isGoingTo == '/login' || isGoingTo == '/register' || isGoingTo == '/checkAuth') return '/escuelas';
+      }
+
       return null;
 
     },

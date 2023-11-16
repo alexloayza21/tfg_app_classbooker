@@ -23,7 +23,7 @@ class Aula {
         idEscuela: json["idEscuela"],
         horaEntrada: json["hora_entrada"],
         horaSalida: json["hora_salida"],
-        asientos: List<Asiento>.from(json["asientos"].map((x) => Asiento.fromJson(x))),
+        asientos: List<Asiento>.from((json["asientos"] as List<dynamic>?)?.map((x) => Asiento.fromJson(x)) ?? []),
     );
 
     Map<String, dynamic> toJson() => {

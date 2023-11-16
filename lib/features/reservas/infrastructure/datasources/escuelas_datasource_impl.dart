@@ -93,6 +93,24 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
       throw Exception();
     }
   }
+
+
+  Future<String> _uploadPhoto(String path) async{
+    try {
+      final fileName = path.split('/').last;
+      final FormData data = FormData.fromMap({
+        'file': MultipartFile.fromFileSync(path, filename: fileName)
+      });
+      final response = await dio.post('/escuelas/uploadImage', data: data);
+      if (response.statusCode == 200) {
+        return response.data['fileName'];
+      } else {
+        throw Exception('Error en la solicitud: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception();
+    }
+  }
   
   @override
   Future<Escuela> createUpdateEscuela(Map<String, dynamic> escuelaLike) async {
@@ -103,6 +121,8 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
       final String url = escuelaId == null ? '/escuelas/newEscuela' : '/escuelas/updateEscuelas/$escuelaId';
 
       escuelaLike.remove('id');
+      String fileImage = await _uploadPhoto(escuelaLike['imagen']);
+      escuelaLike['imagen'] = '${Environment.apiUrl}/escuelas/downloadImage/$fileImage';
 
       final response = await dio.request(
         url,
