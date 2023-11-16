@@ -1,4 +1,3 @@
-import 'package:tfg_app/features/reservas/domain/domain.dart';
 
 class User {
     final String userId;
