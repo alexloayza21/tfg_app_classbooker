@@ -19,13 +19,6 @@ class EscuelaScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final escuelaState = ref.watch(escuelaProvider(escuelaId));
-
-    // if (escuelaState.escuela == null) {
-    //   return const Scaffold(
-    //     body: Center(child: CircularProgressIndicator(),),
-    //   );
-    // }
-
     final escuela = escuelaState.escuela;
 
     return Scaffold(
@@ -81,7 +74,6 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
               if (photoPath == null) return;
               ref.read(escuelaFormProvider(widget.escuela).notifier).updateEscuelaImage(photoPath);
               photoPath;
-              print(photoPath);
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal:8, vertical: 20),

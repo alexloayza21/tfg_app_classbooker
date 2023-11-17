@@ -147,7 +147,7 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
 
       escuelaLike.remove('id');
       String fileImage = await _uploadPhoto(escuelaLike['imagen']);
-      escuelaLike['imagen'] = '${Environment.apiUrl}/escuelas/downloadImage/$fileImage';
+      escuelaLike['imagen'] = fileImage;
 
       final response = await dio.request(
         url,
@@ -159,6 +159,32 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
 
       final escuela = Escuela.fromJson(response.data);
       return escuela;
+      
+    } catch (e) {
+      throw Exception();
+    }
+  }
+  
+  @override
+  Future<Aula> createUpdateAula(Map<String, dynamic> aulaLike) async{
+    try {
+
+      final String? idAula = aulaLike['id'];
+      final String method = idAula == null ? 'POST' : 'PATCH';
+      final String url = idAula == null ? '/aulas/newAula' : '/aulas/updateAula/$idAula';
+
+      aulaLike.remove('id');
+
+      final response = await dio.request(
+        url,
+        data: aulaLike,
+        options: Options(
+          method: method
+        )
+      );
+
+      final aula = Aula.fromJson(response.data);
+      return aula;
       
     } catch (e) {
       throw Exception();

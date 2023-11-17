@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repository.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/escuelas_repository_provider.dart';
@@ -6,16 +7,19 @@ import 'package:tfg_app/features/reservas/presentation/providers/escuelas_reposi
 final aulaProvider = StateNotifierProvider.autoDispose.family<AulaNotifier, AulaState, String>(
   (ref, idAula) {
     final escuelasRepository = ref.watch(escuelasRepositoryProvider);
-    return AulaNotifier(escuelasRepository: escuelasRepository, idAula: idAula);
+    final userState = ref.watch(authProvider);
+    return AulaNotifier(escuelasRepository: escuelasRepository, idAula: idAula, idEscuela: userState.user!.idEscuela);
 });
 
 class AulaNotifier extends StateNotifier<AulaState> {
   final EscuelasRepository escuelasRepository;
 
+
   AulaNotifier({
     required this.escuelasRepository,
-    required String idAula
-  }) : super(AulaState(id: idAula)){
+    required String idAula,
+    required String idEscuela
+  }) : super(AulaState(id: idAula, idEscuela: idEscuela)){
     loadAula();
   }
 
@@ -25,7 +29,7 @@ class AulaNotifier extends StateNotifier<AulaState> {
       nombreAula: '', 
       horaEntrada: '', 
       horaSalida: '',
-      idEscuela: '', 
+      idEscuela: state.idEscuela, 
       mediaHora: false
     );
   }
@@ -39,6 +43,9 @@ class AulaNotifier extends StateNotifier<AulaState> {
       );
       return; //* sin el return seguirá al getAulById y mandará new como id
     }
+
+    if (state.isLoading == false) return;
+    state.copyWith(isLoading: true);
 
     final aula = await escuelasRepository.getAulaById(state.id);
 
@@ -55,11 +62,13 @@ class AulaNotifier extends StateNotifier<AulaState> {
 class AulaState {
   final String id;
   final Aula? aula;
+  final String idEscuela;
   final bool isLoading;
   final bool isSaving;
 
   AulaState({
     required this.id,
+    required this.idEscuela,
     this.aula,
     this.isLoading = false,
     this.isSaving = false
@@ -67,11 +76,13 @@ class AulaState {
 
   AulaState copyWith({
     String? id,
+    String? idEscuela,
     Aula? aula,
     bool? isLoading,
     bool? isSaving
   }) => AulaState(
     id: id ?? this.id,
+    idEscuela: idEscuela ?? this.idEscuela,
     aula: aula ?? this.aula,
     isLoading: isLoading ?? this.isLoading,
     isSaving: isSaving ?? this.isSaving

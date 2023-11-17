@@ -46,8 +46,17 @@ class _AulaGridCardView extends StatelessWidget {
           ]
       ),
       child: Center(
-        child: Text(
-          'Aula ${aula.nombreAula}', 
+        child: aula.nombreAula == ''
+        ? Text(
+          'Aula sin nombre', 
+          textAlign: TextAlign.center, 
+          style: textStyle.titleLarge,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        )
+        : Text(
+          aula.nombreAula,
+          textAlign: TextAlign.center, 
           style: textStyle.titleLarge,
           overflow: TextOverflow.ellipsis,
           maxLines: 2,

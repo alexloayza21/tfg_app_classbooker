@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tfg_app/config/config.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/escuelas_provider.dart';
 
@@ -38,8 +39,7 @@ class EscuelaFormNotifier extends StateNotifier<EscuelaFormState> {
       'ciudad': state.ciudad,
       'codigo_postal' : state.codigoPostal,
       'provincia': state.provincia,
-      'imagen': state.imagen,
-      'aulas': state.aulas
+      'imagen': state.imagen.replaceAll('${Environment.apiUrl}/escuelas/downloadImage/', ''),
     };
     try {
       return await onSubmitCallback!(escuelaLike);

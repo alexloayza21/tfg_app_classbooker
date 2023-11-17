@@ -42,28 +42,13 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
       return;
     }
 
+    if (state.isLoading == false) return;
+    state.copyWith(isLoading: true);
+
     final escuela = await escuelasRepository.getEscuelaById(state.id);
 
     state = state.copyWith(
-      escuela: escuela
-    );
-    
-
-  }
-
-  Future<void> escuelaByUserId() async{
-
-    if (state.id == 'new') {
-      state = state.copyWith(
-        isLoading: false,
-        escuela: newEscuela()
-      );
-      return;
-    }
-
-    final escuela = await escuelasRepository.getEscuelaByUserId(state.id);
-
-    state = state.copyWith(
+      isLoading: false,
       escuela: escuela
     );
     

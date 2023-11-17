@@ -7,7 +7,7 @@ class CameraGalleryServiceImpl extends CameraGalleryService {
 
   @override
   Future<String?> selectPhoto() async{
-    final XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? photo = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
 
     if ( photo == null) return null;
 

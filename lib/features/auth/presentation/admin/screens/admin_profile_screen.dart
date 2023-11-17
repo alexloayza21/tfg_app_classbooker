@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
-import 'package:tfg_app/features/auth/presentation/providers/escuela_provider.dart';
+import 'package:tfg_app/features/auth/presentation/providers/providers.dart';
 import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 
@@ -14,7 +13,7 @@ class AdminProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final userState = ref.watch(authProvider);
-    final escuelaState = ref.watch(escuelaProvider(userState.user!.userId));
+    final escuelaState = ref.watch(escuelaProvider(userState.user!.idEscuela));
     final textStyle = Theme.of(context).textTheme;
 
     return Scaffold(
@@ -32,7 +31,9 @@ class AdminProfileScreen extends ConsumerWidget {
           }, icon: const Icon(Icons.exit_to_app, color: Colors.black,))
         ],
       ),
-      body: _ProfileView(escuela: escuelaState.escuela),
+      body: escuelaState.isLoading 
+      ? const Center(child: CircularProgressIndicator()) 
+      : _ProfileView(escuela: escuelaState.escuela),
       floatingActionButton: escuelaState.escuela == null 
       ? FloatingActionButton.extended(
         onPressed: () {
@@ -68,7 +69,7 @@ class _ProfileView extends StatelessWidget {
     ) 
     : Column(
       children: [
-        EscuelaProfileCard(escuela: escuela!,)
+        EscuelaProfileInfo(escuela: escuela!,),
       ],
     );
   }
@@ -76,7 +77,6 @@ class _ProfileView extends StatelessWidget {
 
 class _LogOutDialog extends ConsumerWidget {
   const _LogOutDialog({
-    super.key,
     required this.textStyle,
   });
 

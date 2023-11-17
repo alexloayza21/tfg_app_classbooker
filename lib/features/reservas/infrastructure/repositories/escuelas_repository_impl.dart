@@ -55,4 +55,9 @@ class EscuelasRepositoryImpl extends EscuelasRepository {
     return datasource.getReservasByUserId(id);
   }
   
+  @override
+  Future<Aula> createUpdateAula(Map<String, dynamic> aulaLike) {
+    return datasource.createUpdateAula(aulaLike);
+  }
+  
 }

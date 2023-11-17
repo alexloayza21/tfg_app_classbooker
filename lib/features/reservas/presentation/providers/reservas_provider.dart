@@ -4,7 +4,7 @@ import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repositor
 import 'package:tfg_app/features/reservas/presentation/providers/escuelas_repository_provider.dart';
 
 //* provider
-final reservaProvider = StateNotifierProvider.autoDispose.family<ReservaNotifier, ReservaState, String>(
+final reservaProvider = StateNotifierProvider.family<ReservaNotifier, ReservaState, String>( //*qutar el autodispose, por ahora
   (ref, date) {
     final escuelasRepository = ref.watch(escuelasRepositoryProvider);
     return ReservaNotifier(

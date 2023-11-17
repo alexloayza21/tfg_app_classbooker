@@ -6,8 +6,8 @@ import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/aulas_provider.dart';
 import 'package:tfg_app/features/reservas/presentation/widgets/widgets.dart';
 
-class EscuelaProfileCard extends ConsumerWidget {
-  const EscuelaProfileCard({super.key, required this.escuela});
+class EscuelaProfileInfo extends ConsumerWidget {
+  const EscuelaProfileInfo({super.key, required this.escuela});
 
   final Escuela escuela;
 
@@ -21,25 +21,31 @@ class EscuelaProfileCard extends ConsumerWidget {
       child: Column(
         children: [
     
-          _EscuelaInfo(escuela: escuela, textStyle: textStyle),
+          _EscuelaProfileCard(escuela: escuela, textStyle: textStyle),
     
           Expanded(
-            child: Container(
-              color: Colors.red,
-              width: double.infinity,
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Container(
+                width: double.infinity,
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height,
+                ),
+                child: (aulasState.aulas.isNotEmpty) ? MasonryGridView.count(
+                  itemCount: aulasState.aulas.length,
+                  crossAxisCount: 2, 
+                  itemBuilder: (context, index) {
+                    final aula = aulasState.aulas[index];
+                    return GestureDetector(
+                      child: AulaGridCard(aula: aula),
+                      onTap: () => context.push('/aula/${aula.idAula}'),
+                    );
+                  },
+                )
+                : const Center(
+                  child: Text('No tienes aulas 🫠'),
+                )
               ),
-              child: (aulasState.aulas.isNotEmpty) ? MasonryGridView.count(
-                itemCount: aulasState.aulas.length,
-                crossAxisCount: 2, 
-                itemBuilder: (context, index) {
-                  return AulaGridCard(aula: aulasState.aulas[index]);
-                },
-              )
-              : const Center(
-                child: Text('No tienes aulas 🫠'),
-              )
             ),
           ),
         ],
@@ -48,8 +54,8 @@ class EscuelaProfileCard extends ConsumerWidget {
   }
 }
 
-class _EscuelaInfo extends StatelessWidget {
-  const _EscuelaInfo({
+class _EscuelaProfileCard extends StatelessWidget {
+  const _EscuelaProfileCard({
     required this.escuela,
     required this.textStyle,
   });

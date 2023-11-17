@@ -25,7 +25,7 @@ class Aula {
         horaEntrada: json["hora_entrada"] ?? '',
         horaSalida: json["hora_salida"] ?? '',
         idEscuela: json["idEscuela"] ?? '',
-        mediaHora: json['mediaHora'] ?? '',
+        mediaHora: json['mediaHora'] ?? false,
         asientos: List<Asiento>.from((json["asientos"] as List<dynamic>?)?.map((x) => Asiento.fromJson(x)) ?? []),
     );
 

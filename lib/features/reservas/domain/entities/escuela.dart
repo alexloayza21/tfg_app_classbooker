@@ -1,4 +1,6 @@
 
+import 'package:tfg_app/config/config.dart';
+
 class Escuela {
     final String? idEscuela;
     final String nombreEscuela;
@@ -27,7 +29,7 @@ class Escuela {
         ciudad: json["ciudad"] ?? '',
         codigoPostal: json["codigo_postal"] ?? '',
         provincia: json["provincia"] ?? '',
-        imagen: json["imagen"] ?? '',
+        imagen: json["imagen"].toString().startsWith('http') ? json["image"] : '${Environment.apiUrl}/escuelas/downloadImage/${json["imagen"]}',
         userId: json["userId"] ?? '',
     );
 
