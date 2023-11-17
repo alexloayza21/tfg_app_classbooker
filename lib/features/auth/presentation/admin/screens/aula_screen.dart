@@ -24,7 +24,7 @@ class AulaScreen extends ConsumerWidget {
         title: const Text('Nueva Aula'),
         centerTitle: true,
       ),
-      body: (aula == null) ? const Center(child: CircularProgressIndicator()) : SingleChildScrollView(child: _AulaScreenView(aula: aula)),
+      body: (aula == null) ? const Center(child: CircularProgressIndicator()) :SingleChildScrollView(child: _AulaScreenView(aula: aula)),
     );
   }
 }
@@ -42,7 +42,11 @@ class _AulaScreenView extends ConsumerStatefulWidget {
 
 class _NewEscuelaViewState extends ConsumerState<_AulaScreenView> {
 
+  final _textController = TextEditingController();
   int counter = 0;
+  
+  late bool cadaHora = false;
+  late bool cadaMediaHora = false;
 
   List<String> opciones = ['media hora', 'hora'];
 
@@ -114,6 +118,7 @@ class _NewEscuelaViewState extends ConsumerState<_AulaScreenView> {
                           SizedBox(
                             width: 200,
                             child: TextField(
+                              controller: _textController,
                               readOnly: true,
                               decoration: InputDecoration(
                                 hintText: aulaForm.horaEntrada,
@@ -204,11 +209,7 @@ class _NewEscuelaViewState extends ConsumerState<_AulaScreenView> {
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(50)
                           ),
-                          child: Center(
-                            child: (widget.aula.idAula == 'new')
-                            ? Text('$counter', style: const TextStyle(color: Colors.white),)
-                            : Text('${aulaForm.asientos.length}', style: const TextStyle(color: Colors.white),)
-                          )
+                          child: Center(child: Text('$counter', style: const TextStyle(color: Colors.white),))
                         ),
 
                         IconButton(

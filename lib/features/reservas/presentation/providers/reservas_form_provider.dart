@@ -20,26 +20,7 @@ class ReservaFormNotifier extends StateNotifier<ReservaFormState> {
     required this.reservasRepository,
     required String date
   }) : super(ReservaFormState(date: date)){
-    loadReservasByDate();
-  }
-
-  Future<void> loadReservasByDate() async{
-    if ( state.isLoading ) return;
-    state = state.copyWith(isLoading: true);
-
-    if ( state.date.isEmpty ){
-      state = state.copyWith(
-        date: DateTime.now().toString().split(' ')[0]
-      );
-      return;
-    }
-
-    final reservas = await reservasRepository.getReservasByDate(state.date);
-
-    state = state.copyWith(
-      isLoading: false,
-      reservas: reservas
-    );
+    
   }
 
   Future<void> postReserva(Reserva newReserva) async{

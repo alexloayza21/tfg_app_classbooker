@@ -19,7 +19,7 @@ class ReservasScreen extends ConsumerWidget {
       ? const Scaffold(body: Center(child: CircularProgressIndicator(),)) 
       : Scaffold(
         appBar: AppBar(
-          title: Text('Reservas: Aula ${aulaState.aula?.nombreAula}'),
+          title: Text('Reservas: ${aulaState.aula?.nombreAula}'),
           centerTitle: true,
         ),
         body: (aulaState.aula == null) ? const Center(child: CircularProgressIndicator()) : _ReservasView(aula: aulaState.aula!),
@@ -62,13 +62,11 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
 
   @override
   Widget build(BuildContext context) {
-    final reservaFormState = ref.watch(reservaFormProvider(_dateController.text).notifier);
     final reservasState = ref.watch(reservaFormProvider(_dateController.text));
     
     final textStyle = Theme.of(context).textTheme;
     final List<Asiento> asientosDeAula = widget.aula.asientos;
-
-    late List<Reserva> reservas = reservasState.reservas;
+    
     late List<Asiento> asientosResevas = [];
 
     for (final reserva in reservasState.reservas) {
@@ -80,6 +78,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
     }
 
     print(asientosResevas.length);
+    final reservaFormState = ref.watch(reservaFormProvider(_dateController.text).notifier);
     
     return Column(
       children: [
