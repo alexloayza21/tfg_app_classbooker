@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
+import 'package:tfg_app/features/auth/presentation/providers/providers.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/reservas_form_provider.dart';
-import 'package:tfg_app/features/reservas/presentation/providers/reservas_provider.dart';
 
 class ReservasScreen extends ConsumerWidget {
   const ReservasScreen({super.key, required this.idAula});
@@ -14,16 +13,16 @@ class ReservasScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final reservaFormState = ref.watch(reservaFormProvider(idAula));
+    final aulaState = ref.watch(aulaProvider(idAula));
 
-    return reservaFormState.isLoading 
+    return aulaState.isLoading 
       ? const Scaffold(body: Center(child: CircularProgressIndicator(),)) 
       : Scaffold(
         appBar: AppBar(
-          title: Text('Reservas: ${reservaFormState.aula!.nombreAula}'),
+          title: Text('Reservas: Aula ${aulaState.aula?.nombreAula}'),
           centerTitle: true,
         ),
-        body:  _ReservasView(aula: reservaFormState.aula!),
+        body: (aulaState.aula == null) ? const Center(child: CircularProgressIndicator()) : _ReservasView(aula: aulaState.aula!),
       );
   }
 }
@@ -43,9 +42,6 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
 
   final TextEditingController _dateController = TextEditingController();
 
-  late List<String> horas = [];
-  late List<String> horario = [];
-
 
   final horasEntrada = ['16:00','17:00', '18:00', '19:00', '20:00'];
   final horasSalida = ['17:00','18:00', '19:00', '20:00','21:00'];
@@ -61,18 +57,18 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
     super.initState();
     isSelected = List.generate(widget.aula.asientos.length, (index) => false);
     _dateController.text = DateTime.now().toString().split(' ')[0];
-    horas = [widget.aula.horaEntrada, widget.aula.horaSalida];
   }
 
 
   @override
   Widget build(BuildContext context) {
-    final reservaFormState = ref.watch(reservaFormProvider(widget.aula.idAula).notifier);
-    final reservasState = ref.watch(reservaProvider(_dateController.text));
+    final reservaFormState = ref.watch(reservaFormProvider(_dateController.text).notifier);
+    final reservasState = ref.watch(reservaFormProvider(_dateController.text));
     
     final textStyle = Theme.of(context).textTheme;
     final List<Asiento> asientosDeAula = widget.aula.asientos;
 
+    late List<Reserva> reservas = reservasState.reservas;
     late List<Asiento> asientosResevas = [];
 
     for (final reserva in reservasState.reservas) {
@@ -371,28 +367,6 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
       ],
     );
   } 
-
-//   List<String> generarHorasIntermediasPorHora(List<String> horas) {
-//   final List<String> horasIntermedias = [];
-
-//   final List<TimeOfDay> timeOfDayList = horas.map((hora) {
-//     final partes = hora.split(':');
-//     final horaDelDia = TimeOfDay(hour: int.parse(partes[0]), minute: int.parse(partes[1]));
-//     return horaDelDia;
-//   }).toList();
-
-//   // Genera las horas intermedias
-//   for (int i = 0; i < timeOfDayList.length - 1; i++) {
-//     final inicio = timeOfDayList[i];
-//     final fin = timeOfDayList[i + 1];
-
-//     for (TimeOfDay hora = inicio; hora < fin; hora = hora.add(Duration(hours: 1))) {
-//       horasIntermedias.add('${hora.hour}:${hora.minute.toString().padLeft(2, '0')}');
-//     }
-//   }
-
-//   return horasIntermedias;
-// }
 
   Future<void> _selectDate() async{
     DateTime? fecha = await showDatePicker(

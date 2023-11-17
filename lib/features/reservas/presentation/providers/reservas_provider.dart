@@ -1,24 +1,26 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repository.dart';
+import 'package:tfg_app/features/reservas/domain/repositories/reservas_repository.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/escuelas_repository_provider.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/reservas_repository_provider.dart';
 
 //* provider
 final reservaProvider = StateNotifierProvider.family<ReservaNotifier, ReservaState, String>( //*qutar el autodispose, por ahora
   (ref, date) {
-    final escuelasRepository = ref.watch(escuelasRepositoryProvider);
+    final reservasRepository = ref.watch(reservasRepositoryProvider);
     return ReservaNotifier(
-      escuelasRepository: escuelasRepository, 
+      reservasRepository: reservasRepository, 
       date: date
     );
   });
 
 //* notifier
 class ReservaNotifier extends StateNotifier<ReservaState> {
-  final EscuelasRepository escuelasRepository;
+  final ReservasRepository reservasRepository;
 
   ReservaNotifier({
-    required this.escuelasRepository,
+    required this.reservasRepository,
     required String date
   }) : super(ReservaState(date: date)){
     loadReservasByDate();
@@ -32,9 +34,10 @@ class ReservaNotifier extends StateNotifier<ReservaState> {
       state = state.copyWith(
         date: DateTime.now().toString().split(' ')[0]
       );
+      return;
     }
 
-    final reservas = await escuelasRepository.getReservasByDate(state.date);
+    final reservas = await reservasRepository.getReservasByDate(state.date);
 
     state = state.copyWith(
       isLoading: false,

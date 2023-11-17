@@ -34,56 +34,6 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
   }
   
   @override
-  Future<List<Aula>> getAulasByIdEscuela(String idEscuela) async{
-    try {
-      final response = await dio.get('/aulas/getAllAulas/$idEscuela');
-      final List<Aula> aulas = [];
-      for (final aula in response.data ?? []) {
-        aulas.add(Aula.fromJson(aula));
-      }
-      return aulas;
-    } catch (e) {
-      throw Exception();
-    }
-  }
-  
-  @override
-  Future<Aula> getAulaById(String idAula) async{
-    try {
-      final response = await dio.get('/aulas/getAulaById/$idAula');
-      final aula = Aula.fromJson(response.data);
-      return aula;
-    } catch (e) {
-      throw Exception();
-    }
-  }
-  
-  @override
-  Future<List<Reserva>> getReservasByDate(String date) async{
-    try {
-      final response = await dio.get('/reservas/reservasPorFecha/$date');
-      final List<Reserva> reservas = [];
-      for (final reserva in response.data ?? []) {
-        reservas.add(Reserva.fromJson(reserva));
-      }
-      return reservas;
-    } catch (e) {
-      throw Exception();
-    }
-  }
-  
-  @override
-  Future<Reserva> postReserva(Reserva newReserva) async{
-    try {
-      final response = await dio.post('/reservas/newReserva', data: newReserva.toJson());
-      final reserva = Reserva.fromJson(response.data);
-      return reserva;
-    } catch (e) {
-      throw Exception();
-    }
-  }
-  
-  @override
   Future<Escuela> getEscuelaById(String id) async{
     try {
       final response = await dio.get('/escuelas/getEscuelaById/$id');
@@ -100,20 +50,6 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
       final response = await dio.get('/escuelas/getEscuelaByUserId/$id');
       final escuela = Escuela.fromJson(response.data);
       return escuela;
-    } catch (e) {
-      throw Exception();
-    }
-  }
-  
-  @override
-  Future<List<Reserva>> getReservasByUserId(String id) async{
-    try {
-      final response = await dio.get('/reservas/reservasByUserId/$id');
-      final List<Reserva> reservas = [];
-      for (final reserva in response.data ?? []) {
-        reservas.add(Reserva.fromJson(reserva));
-      }
-      return reservas;
     } catch (e) {
       throw Exception();
     }
@@ -159,32 +95,6 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
 
       final escuela = Escuela.fromJson(response.data);
       return escuela;
-      
-    } catch (e) {
-      throw Exception();
-    }
-  }
-  
-  @override
-  Future<Aula> createUpdateAula(Map<String, dynamic> aulaLike) async{
-    try {
-
-      final String? idAula = aulaLike['id'];
-      final String method = idAula == null ? 'POST' : 'PATCH';
-      final String url = idAula == null ? '/aulas/newAula' : '/aulas/updateAula/$idAula';
-
-      aulaLike.remove('id');
-
-      final response = await dio.request(
-        url,
-        data: aulaLike,
-        options: Options(
-          method: method
-        )
-      );
-
-      final aula = Aula.fromJson(response.data);
-      return aula;
       
     } catch (e) {
       throw Exception();

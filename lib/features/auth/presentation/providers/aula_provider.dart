@@ -1,22 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
-import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repository.dart';
-import 'package:tfg_app/features/reservas/presentation/providers/escuelas_repository_provider.dart';
+import 'package:tfg_app/features/reservas/domain/repositories/aulas_repository.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/aulas_repository_provider.dart';
 
 final aulaProvider = StateNotifierProvider.autoDispose.family<AulaNotifier, AulaState, String>(
   (ref, idAula) {
-    final escuelasRepository = ref.watch(escuelasRepositoryProvider);
+    final aulasRepository = ref.watch(aulasRepositoryProvider);
     final userState = ref.watch(authProvider);
-    return AulaNotifier(escuelasRepository: escuelasRepository, idAula: idAula, idEscuela: userState.user!.idEscuela);
+    return AulaNotifier(aulasRepository: aulasRepository, idAula: idAula, idEscuela: userState.user!.idEscuela);
 });
 
 class AulaNotifier extends StateNotifier<AulaState> {
-  final EscuelasRepository escuelasRepository;
+  final AulasRepository aulasRepository;
 
 
   AulaNotifier({
-    required this.escuelasRepository,
+    required this.aulasRepository,
     required String idAula,
     required String idEscuela
   }) : super(AulaState(id: idAula, idEscuela: idEscuela)){
@@ -48,7 +48,7 @@ class AulaNotifier extends StateNotifier<AulaState> {
       state.copyWith(isLoading: true);
     }
 
-    final aula = await escuelasRepository.getAulaById(state.id);
+    final aula = await aulasRepository.getAulaById(state.id);
 
     state = state.copyWith(
       isLoading: false,

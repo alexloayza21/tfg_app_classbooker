@@ -1,16 +1,16 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
-import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repository.dart';
-import 'package:tfg_app/features/reservas/presentation/providers/escuelas_repository_provider.dart';
+import 'package:tfg_app/features/reservas/domain/repositories/aulas_repository.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/aulas_repository_provider.dart';
 
 //* Cada vez que yo cierre la pantalla aulas se hará el autodispose del provider
 //* y cuando se vuelva a buscar las aulas el is loading estará en true
 //* provider
 final aulasProvider = StateNotifierProvider.autoDispose.family<AulasNotifier, AulaState, String>((ref, idEscuela) {
-  final escuelasRepository = ref.watch(escuelasRepositoryProvider);
+  final aulasRepository = ref.watch(aulasRepositoryProvider);
   return AulasNotifier(
-    escuelasRepository: escuelasRepository, 
+    aulasRepository: aulasRepository, 
     idEscuela: idEscuela
   );
 });
@@ -18,10 +18,10 @@ final aulasProvider = StateNotifierProvider.autoDispose.family<AulasNotifier, Au
 //* notifier
 class AulasNotifier extends StateNotifier<AulaState> {
 
-  final EscuelasRepository escuelasRepository;
+  final AulasRepository aulasRepository;
 
   AulasNotifier({ 
-    required this.escuelasRepository,
+    required this.aulasRepository,
     required String idEscuela
   }) : super(AulaState(id: idEscuela)){
     loadEscuelas();
@@ -29,7 +29,7 @@ class AulasNotifier extends StateNotifier<AulaState> {
 
   Future<bool> createOrUpdateAula(Map<String, dynamic> aulaLike) async{
     try {
-      final aula = await escuelasRepository.createUpdateAula(aulaLike);
+      final aula = await aulasRepository.createUpdateAula(aulaLike);
       final isAulaInList = state.aulas.any((element) => element.idAula == aula.idAula);
 
       if(!isAulaInList){
@@ -54,7 +54,7 @@ class AulasNotifier extends StateNotifier<AulaState> {
     if ( state.isLoading == true ) return;
     state = state.copyWith(isLoading: true);
 
-    final aulas = await escuelasRepository.getAulasByIdEscuela(state.id);
+    final aulas = await aulasRepository.getAulasByIdEscuela(state.id);
 
     if (aulas.isEmpty) {
       state = state.copyWith(

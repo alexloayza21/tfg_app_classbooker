@@ -27,13 +27,13 @@ class Asiento {
         numeroAsiento: json["numeroAsiento"] ?? '',
         horaEntrada: json["hora_entrada"] ?? '',
         horaSalida: json["hora_salida"] ?? '',
-        idAula: json["idAula"]
+        idAula: json["idAula"] ?? ''
     );
 
     Map<String, dynamic> toJson() => {
         "numeroAsiento": numeroAsiento,
         "hora_entrada": horaEntrada,
-        "hora_salida": horaSalida
+        "hora_salida": horaSalida,
     };
   
     @override

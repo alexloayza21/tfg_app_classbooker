@@ -15,25 +15,7 @@ class EscuelasRepositoryImpl extends EscuelasRepository {
     return datasource.getAllEscuelas();
   }
 
-  @override
-  Future<List<Aula>> getAulasByIdEscuela(String idEscuela) {
-    return datasource.getAulasByIdEscuela(idEscuela);
-  }
   
-  @override
-  Future<Aula> getAulaById(String idAula) {
-    return datasource.getAulaById(idAula);
-  }
-
-  @override
-  Future<List<Reserva>> getReservasByDate(String date) {
-    return datasource.getReservasByDate(date);
-  }
-  
-  @override
-  Future<Reserva> postReserva(Reserva newReserva) {
-    return datasource.postReserva(newReserva);
-  }
   
   @override
   Future<Escuela> getEscuelaById(String id) {
@@ -50,14 +32,5 @@ class EscuelasRepositoryImpl extends EscuelasRepository {
     return datasource.getEscuelaByUserId(id);
   }
   
-  @override
-  Future<List<Reserva>> getReservasByUserId(String id) {
-    return datasource.getReservasByUserId(id);
-  }
-  
-  @override
-  Future<Aula> createUpdateAula(Map<String, dynamic> aulaLike) {
-    return datasource.createUpdateAula(aulaLike);
-  }
   
 }

@@ -1,40 +1,45 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
-import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repository.dart';
-import 'package:tfg_app/features/reservas/presentation/providers/escuelas_repository_provider.dart';
+import 'package:tfg_app/features/reservas/domain/repositories/reservas_repository.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/reservas_repository_provider.dart';
 
 //*provider
-final reservaFormProvider = StateNotifierProvider.autoDispose.family<ReservaFormNotifier, ReservaFormState, String>((ref, idAula) {
-  final escuelasRepository = ref.watch(escuelasRepositoryProvider);
+final reservaFormProvider = StateNotifierProvider.autoDispose.family<ReservaFormNotifier, ReservaFormState, String>((ref, date) {
+  final reservasRepository = ref.watch(reservasRepositoryProvider);
   return ReservaFormNotifier(
-    escuelasRepository: escuelasRepository, 
-    idAula: idAula
+    reservasRepository: reservasRepository, 
+    date: date
   );
 });
 
 //* notifier
 class ReservaFormNotifier extends StateNotifier<ReservaFormState> {
-  final EscuelasRepository escuelasRepository;
+  final ReservasRepository reservasRepository;
 
   ReservaFormNotifier({
-    required this.escuelasRepository,
-    required String idAula
-  }) : super(ReservaFormState(id: idAula)){
-    loadAula();
+    required this.reservasRepository,
+    required String date
+  }) : super(ReservaFormState(date: date)){
+    loadReservasByDate();
   }
 
-  Future<void> loadAula() async{
-    
-    if (state.isLoading) return;
+  Future<void> loadReservasByDate() async{
+    if ( state.isLoading ) return;
     state = state.copyWith(isLoading: true);
 
-    final aula = await escuelasRepository.getAulaById(state.id);
-    
+    if ( state.date.isEmpty ){
+      state = state.copyWith(
+        date: DateTime.now().toString().split(' ')[0]
+      );
+      return;
+    }
+
+    final reservas = await reservasRepository.getReservasByDate(state.date);
+
     state = state.copyWith(
       isLoading: false,
-      aula: aula
+      reservas: reservas
     );
-    
   }
 
   Future<void> postReserva(Reserva newReserva) async{
@@ -42,7 +47,7 @@ class ReservaFormNotifier extends StateNotifier<ReservaFormState> {
     if (state.isLoading) return;
     state = state.copyWith(isLoading: true);
 
-    await escuelasRepository.postReserva(newReserva);
+    await reservasRepository.postReserva(newReserva);
     
     state = state.copyWith(
       isLoading: false,
@@ -59,24 +64,24 @@ class ReservaFormNotifier extends StateNotifier<ReservaFormState> {
 
 //* state
 class ReservaFormState {
-  final String id;
+  final String date;
   final bool isLoading;
-  final Aula? aula;
+  final List<Reserva> reservas;
 
   ReservaFormState({
-    required this.id, 
+    required this.date, 
     this.isLoading = false, 
-    this.aula 
+    this.reservas = const []
   });
 
-  ReservaFormState copyWith({
-    String? id,
+  ReservaFormState copyWith({    
+    String? date,
     bool? isLoading,
-    Aula? aula
+    List<Reserva>? reservas
   }) => ReservaFormState(
-    id: id ?? this.id,
+    date: date ?? this.date,
     isLoading: isLoading ?? this.isLoading,
-    aula: aula ?? this.aula
+    reservas: reservas ?? this.reservas
   );
 
 }
