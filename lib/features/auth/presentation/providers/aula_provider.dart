@@ -44,8 +44,9 @@ class AulaNotifier extends StateNotifier<AulaState> {
       return; //* sin el return seguirá al getAulById y mandará new como id
     }
 
-    if (state.isLoading == false) return;
-    state.copyWith(isLoading: true);
+    if (state.isLoading == false) { //* if (state.isLoading == false) return; no pasaba de esta linea de este modo
+      state.copyWith(isLoading: true);
+    }
 
     final aula = await escuelasRepository.getAulaById(state.id);
 

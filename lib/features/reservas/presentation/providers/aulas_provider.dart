@@ -51,7 +51,7 @@ class AulasNotifier extends StateNotifier<AulaState> {
   }
 
   Future loadEscuelas() async{
-    if ( state.isLoading ) return;
+    if ( state.isLoading == true ) return;
     state = state.copyWith(isLoading: true);
 
     final aulas = await escuelasRepository.getAulasByIdEscuela(state.id);

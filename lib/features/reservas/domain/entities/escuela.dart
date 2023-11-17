@@ -29,7 +29,9 @@ class Escuela {
         ciudad: json["ciudad"] ?? '',
         codigoPostal: json["codigo_postal"] ?? '',
         provincia: json["provincia"] ?? '',
-        imagen: json["imagen"].toString().startsWith('http') ? json["image"] : '${Environment.apiUrl}/escuelas/downloadImage/${json["imagen"]}',
+        imagen: (json["imagen"] == '') 
+        ? ''
+        : (json["imagen"].toString().startsWith('http')) ? json["image"] : '${Environment.apiUrl}/escuelas/downloadImage/${json["imagen"]}',
         userId: json["userId"] ?? '',
     );
 
