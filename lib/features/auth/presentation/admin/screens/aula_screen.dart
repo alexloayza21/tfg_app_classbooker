@@ -24,17 +24,19 @@ class AulaScreen extends ConsumerWidget {
         title: const Text('Nueva Aula'),
         centerTitle: true,
       ),
-      body: (aula == null) ? const Center(child: CircularProgressIndicator()) : SingleChildScrollView(child: _AulaScreenView(aula: aula)),
+      body: (aula == null) ? const Center(child: CircularProgressIndicator()) : SingleChildScrollView(child: _AulaScreenView(aula: aula, counter: aula.asientos.length,)),
     );
   }
 }
 
 class _AulaScreenView extends ConsumerStatefulWidget {
   const _AulaScreenView({
-    required this.aula
+    required this.aula,
+    required this.counter
   });
 
   final Aula aula;
+  final int counter;
 
   @override
   _NewEscuelaViewState createState() => _NewEscuelaViewState();
@@ -42,7 +44,7 @@ class _AulaScreenView extends ConsumerStatefulWidget {
 
 class _NewEscuelaViewState extends ConsumerState<_AulaScreenView> {
 
-  int counter = 1;
+  late int counter = widget.counter;
 
   List<String> opciones = ['media hora', 'hora'];
 
@@ -205,7 +207,7 @@ class _NewEscuelaViewState extends ConsumerState<_AulaScreenView> {
                             borderRadius: BorderRadius.circular(50)
                           ),
                           child: Center(
-                            child:Text('${counter + (aulaForm.asientos.length-1)}', style: const TextStyle(color: Colors.white),)
+                            child: Text('$counter', style: const TextStyle(color: Colors.white),)
                           )
                         ),
 
@@ -240,7 +242,18 @@ class _NewEscuelaViewState extends ConsumerState<_AulaScreenView> {
                 ),
           
                 TextButton(
-                  onPressed: () async{
+                  onPressed: (widget.aula.idAula == 'new' && counter==0) 
+                  ? () {
+                    showDialog(
+                      context: context, 
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('El aula debe tener al menos 1 aula', style: textStyle.bodyLarge, textAlign: TextAlign.center,),
+                        );
+                      },
+                    );
+                  } 
+                  : () async{
                     ref.read(aulaFormProvider(widget.aula).notifier).onAsientosChanged(await createAsientos(counter));
                     ref.read(aulaFormProvider(widget.aula).notifier).onFormSubmit();
                     // ignore: use_build_context_synchronously
