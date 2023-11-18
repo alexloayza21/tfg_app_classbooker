@@ -21,8 +21,7 @@ class ReservasUserNotifier extends StateNotifier<ReservasUserState> {
 
   Future<void> loadReservas() async{
     try {
-
-      if ( state.isLoading ) return;
+      if (mounted) state = state.copyWith(isLoading: true);
       state = state.copyWith(isLoading: true);
   
       final reservas = await reservasRepository.getReservasByUserId(state.id);
@@ -33,7 +32,9 @@ class ReservasUserNotifier extends StateNotifier<ReservasUserState> {
       );
       
     } catch (e) {
-      throw Exception(e);
+      if (mounted) {
+        throw Exception(e);
+      }
     }
 
   }

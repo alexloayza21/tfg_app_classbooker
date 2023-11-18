@@ -26,6 +26,7 @@ class ReservaNotifier extends StateNotifier<ReservaState> {
 
   Future<void> loadReservasByDate() async{
     try {
+      if (mounted) state = state.copyWith(isLoading: true);
       state = state.copyWith(isLoading: true);
 
       if ( state.date.isEmpty ){
@@ -42,7 +43,9 @@ class ReservaNotifier extends StateNotifier<ReservaState> {
         reservas: reservas
       );
     } catch (e) {
-      throw Exception(e);
+      if (mounted) {
+        throw Exception(e);
+      }
     }
   }
 

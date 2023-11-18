@@ -31,7 +31,8 @@ class EscuelaProfileInfo extends ConsumerWidget {
                 constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height,
                 ),
-                child: (aulasState.aulas.isNotEmpty) ? MasonryGridView.count(
+                child: (aulasState.aulas.isNotEmpty) 
+                ? MasonryGridView.count(
                   itemCount: aulasState.aulas.length,
                   crossAxisCount: 2, 
                   itemBuilder: (context, index) {

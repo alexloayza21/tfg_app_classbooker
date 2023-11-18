@@ -17,14 +17,20 @@ class AulaScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref){
 
     final aulaState = ref.watch(aulaProvider(idAula));
-    final aula = aulaState.aula;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nueva Aula'),
         centerTitle: true,
       ),
-      body: (aula == null) ? const Center(child: CircularProgressIndicator()) : SingleChildScrollView(child: _AulaScreenView(aula: aula, counter: aula.asientos.length,)),
+      body: (aulaState.isLoading) 
+      ? const Center(child: CircularProgressIndicator()) 
+      : SingleChildScrollView(
+        child: _AulaScreenView(
+          aula: aulaState.aula!, 
+          counter: aulaState.aula!.asientos.length,
+          )
+        ),
     );
   }
 }

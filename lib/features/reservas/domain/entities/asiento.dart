@@ -34,7 +34,7 @@ class Asiento {
         "numeroAsiento": numeroAsiento,
         "hora_entrada": horaEntrada,
         "hora_salida": horaSalida,
-        "idAula": idAula,
+        "idAula": (idAula == '') ? null : idAula,
     };
   
     @override

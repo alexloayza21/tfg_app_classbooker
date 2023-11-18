@@ -18,7 +18,7 @@ class UserProfileScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bienvenido ${userState.user!.username}'),
+        title: Text('¡Bienvenido ${userState.user!.username}!'),
         centerTitle: true,
         actions: [
           IconButton(onPressed: () {
@@ -31,7 +31,7 @@ class UserProfileScreen extends ConsumerWidget {
           }, icon: const Icon(Icons.exit_to_app, color: Colors.black,))
         ],
       ),
-      body: _UserProfileView(reservas: reservasState.reservas,),
+      body: (reservasState.isLoading) ? const Center(child: CircularProgressIndicator()) : _UserProfileView(reservas: reservasState.reservas,),
     );
   }
 }
@@ -45,7 +45,11 @@ class _UserProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return reservas.isEmpty
+    ? const Center(
+      child: Text('Aun no tienes reservas hechas 🫠'),
+    )
+    : ListView.builder(
       itemCount: reservas.length,
       itemBuilder: (context, index) {
         final reserva = reservas[index];

@@ -37,6 +37,7 @@ class AulaNotifier extends StateNotifier<AulaState> {
   Future<void> loadAula() async{
 
     try {
+      if (mounted) state = state.copyWith(isLoading: true);
       if (state.id == 'new') {
         state = state.copyWith(
           isLoading: false,
@@ -46,8 +47,9 @@ class AulaNotifier extends StateNotifier<AulaState> {
       }
 
       if (state.isLoading == false) { //* if (state.isLoading == false) return; no pasaba de esta linea de este modo
-        state.copyWith(isLoading: true);
+        state = state.copyWith(isLoading: true);
       }
+      
 
       final aula = await aulasRepository.getAulaById(state.id);
 
@@ -56,7 +58,9 @@ class AulaNotifier extends StateNotifier<AulaState> {
         aula: aula
       );
     } catch (e) {
-      throw Exception();
+      if (mounted) {
+        throw Exception();
+      }
     }
 
   }

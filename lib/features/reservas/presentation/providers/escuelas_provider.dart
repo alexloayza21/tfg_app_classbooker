@@ -44,23 +44,32 @@ class EscuelasNotifier extends StateNotifier<EscuelasState> {
   }
 
   Future loadEscuelas() async {
-    state = state.copyWith(isLoading: true);
+    try {
+      if (mounted) state = state.copyWith(isLoading: true);
+      
+      state = state.copyWith(isLoading: true);
 
-    final escuelas = await escuelasRepository.getAllEscuelas();
+      final escuelas = await escuelasRepository.getAllEscuelas();
 
-    if (escuelas.isEmpty){
+      if (escuelas.isEmpty){
+        state = state.copyWith(
+          isLoading: false,
+          errorEscuelas: 'NO HAY ESCUELAS'
+        );
+        return;
+      }
+
       state = state.copyWith(
         isLoading: false,
-        errorEscuelas: 'NO HAY ESCUELAS'
+        errorEscuelas: '',
+        escuelas: escuelas
       );
-      return;
+      
+    } catch (e) { 
+      if (mounted) {
+      throw Exception(e);
+      }
     }
-
-    state = state.copyWith(
-      isLoading: false,
-      errorEscuelas: '',
-      escuelas: escuelas
-    );
   }
 }
 
