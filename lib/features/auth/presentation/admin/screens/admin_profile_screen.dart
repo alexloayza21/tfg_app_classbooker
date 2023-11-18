@@ -13,7 +13,10 @@ class AdminProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final userState = ref.watch(authProvider);
-    final escuelaState = ref.watch(escuelaProvider(userState.user!.idEscuela));
+    late EscuelaState escuelaState = EscuelaState(id: '');
+    if (userState.user!.idEscuela != '') {    
+      escuelaState = ref.watch(escuelaProvider(userState.user!.idEscuela));
+    }
     final textStyle = Theme.of(context).textTheme;
 
     return Scaffold(
