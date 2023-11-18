@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tfg_app/features/auth/presentation/providers/providers.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
-import 'package:tfg_app/features/reservas/presentation/providers/reservas_form_provider.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/reservas_provider.dart';
 
 class ReservasScreen extends ConsumerWidget {
   const ReservasScreen({super.key, required this.idAula});
@@ -62,7 +63,8 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
 
   @override
   Widget build(BuildContext context) {
-    final reservasState = ref.watch(reservaFormProvider(_dateController.text));
+    final reservasState = ref.watch(reservasProvider(_dateController.text));
+    final reservasNotifier = ref.watch(reservasProvider(_dateController.text).notifier);
     
     final textStyle = Theme.of(context).textTheme;
     final List<Asiento> asientosDeAula = widget.aula.asientos;
@@ -78,7 +80,6 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
     }
 
     print(asientosResevas.length);
-    final reservaFormState = ref.watch(reservaFormProvider(_dateController.text).notifier);
     
     return Column(
       children: [
@@ -297,7 +298,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                 topRight: Radius.circular(30)
               )
             )),
-            onPressed: (reservaFormState.checkHoras(horaEntrada, horaSalida) || listaAsientoToReserva.isEmpty) ? null : () {
+            onPressed: (reservasNotifier.checkHoras(horaEntrada, horaSalida) || listaAsientoToReserva.isEmpty) ? null : () {
               showDialog(
                 context: context, 
                 builder: (context) {
@@ -331,6 +332,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                                 for (var asiento in listaAsientoToReserva) {
                                   asiento.setHoraEntrada = horaEntrada;
                                   asiento.setHoraSalida = horaSalida;
+                                  asiento.idAula = widget.aula.idAula;
                                 }
 
                                 final newReserva = Reserva(
@@ -342,8 +344,8 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                                   asientos: listaAsientoToReserva, 
                                   username: ref.read(authProvider).user!.username, 
                                 );
-                                reservaFormState.postReserva(newReserva);
-                                Navigator.of(context).pop();
+                                reservasNotifier.postReserva(newReserva);
+                                context.push('/userHome');
 
                               }, 
                               child: Text('Aceptar', style: GoogleFonts.montserratAlternates().copyWith(

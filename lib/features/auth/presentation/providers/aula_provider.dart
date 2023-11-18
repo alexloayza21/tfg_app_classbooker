@@ -36,24 +36,28 @@ class AulaNotifier extends StateNotifier<AulaState> {
 
   Future<void> loadAula() async{
 
-    if (state.id == 'new') {
+    try {
+      if (state.id == 'new') {
+        state = state.copyWith(
+          isLoading: false,
+          aula: newAula()
+        );
+        return; //* sin el return seguirá al getAulById y mandará new como id
+      }
+
+      if (state.isLoading == false) { //* if (state.isLoading == false) return; no pasaba de esta linea de este modo
+        state.copyWith(isLoading: true);
+      }
+
+      final aula = await aulasRepository.getAulaById(state.id);
+
       state = state.copyWith(
         isLoading: false,
-        aula: newAula()
+        aula: aula
       );
-      return; //* sin el return seguirá al getAulById y mandará new como id
+    } catch (e) {
+      throw Exception();
     }
-
-    if (state.isLoading == false) { //* if (state.isLoading == false) return; no pasaba de esta linea de este modo
-      state.copyWith(isLoading: true);
-    }
-
-    final aula = await aulasRepository.getAulaById(state.id);
-
-    state = state.copyWith(
-      isLoading: false,
-      aula: aula
-    );
 
   }
 

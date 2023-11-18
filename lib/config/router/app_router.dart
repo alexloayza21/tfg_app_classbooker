@@ -15,6 +15,11 @@ final goRouterProvider = Provider((ref) {
     routes: [
 
       GoRoute(
+        path: '/',
+        builder: (context, state) => const CheckAuthStatusScreen(),
+      ),
+
+      GoRoute(
         path: '/checkAuth',
         builder: (context, state) => const CheckAuthStatusScreen(),
       ),

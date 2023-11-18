@@ -4,7 +4,7 @@ import 'package:tfg_app/features/reservas/domain/repositories/reservas_repositor
 import 'package:tfg_app/features/reservas/presentation/providers/reservas_repository_provider.dart';
 
 //* provider
-final reservaProvider = StateNotifierProvider.family<ReservaNotifier, ReservaState, String>( //*qutar el autodispose, por ahora
+final reservasProvider = StateNotifierProvider.autoDispose.family<ReservaNotifier, ReservaState, String>( //*qutar el autodispose, por ahora
   (ref, date) {
     final reservasRepository = ref.watch(reservasRepositoryProvider);
     return ReservaNotifier(
@@ -25,23 +25,55 @@ class ReservaNotifier extends StateNotifier<ReservaState> {
   }
 
   Future<void> loadReservasByDate() async{
-    if ( state.isLoading ) return;
-    state = state.copyWith(isLoading: true);
+    try {
+      if ( state.isLoading ) return;
+      state = state.copyWith(isLoading: true);
 
-    if ( state.date.isEmpty ){
+      if ( state.date.isEmpty ){
+        state = state.copyWith(
+          date: DateTime.now().toString().split(' ')[0]
+        );
+        return;
+      }
+
+      final reservas = await reservasRepository.getReservasByDate(state.date);
+
       state = state.copyWith(
-        date: DateTime.now().toString().split(' ')[0]
+        isLoading: false,
+        reservas: reservas
       );
-      return;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  Future<bool> postReserva(Reserva newReserva) async{
+
+    try {
+      
+      final reserva = await reservasRepository.postReserva(newReserva);
+      final isReservaInList = state.reservas.any((element) => element.id == reserva.id);
+
+      if (!isReservaInList) {
+        state = state.copyWith(
+          reservas: [...state.reservas, reserva]
+        );
+        return true;
+      }
+      return true;
+
+    } catch (e) {
+      return false;
     }
 
-    final reservas = await reservasRepository.getReservasByDate(state.date);
-
-    state = state.copyWith(
-      isLoading: false,
-      reservas: reservas
-    );
   }
+  
+
+  bool checkHoras(String? horaEntrada, String? horaSalida){
+    if (horaEntrada == horaSalida) return true;
+    return false;
+  }
+
 }
 
 //* state 

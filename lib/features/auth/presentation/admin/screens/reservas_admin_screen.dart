@@ -12,7 +12,7 @@ class ReservasAdminScreen extends ConsumerWidget {
 
     final date = DateTime.now().toString().split(' ')[0];
 
-    final reservaState = ref.watch(reservaProvider(date)); //TODO: cambiar por date
+    final reservaState = ref.watch(reservasProvider(date)); //TODO: cambiar por date
 
     return Scaffold(
       appBar: AppBar(

@@ -83,23 +83,21 @@ class _EscuelaProfileCard extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(child: Text(escuela.nombreEscuela, style: textStyle.titleLarge, textAlign: TextAlign.center,)),
-                SizedBox(
-                  height: 30,
-                  width: double.infinity,
-                  child: Expanded(
-                    child: Text(
-                      '🚩 ${escuela.direccion}, ${escuela.ciudad}, ${escuela.provincia}, ${escuela.codigoPostal} ',
-                      textAlign: TextAlign.center,
-                      style: textStyle.titleMedium,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
+                const Spacer(),
+                const Spacer(),
+                Expanded(
+                  child: Text(
+                    '🚩 ${escuela.direccion}, ${escuela.ciudad}, ${escuela.provincia}, ${escuela.codigoPostal} ',
+                    textAlign: TextAlign.center,
+                    style: textStyle.titleMedium,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                   ),
                 ),
               ],

@@ -19,7 +19,7 @@ class Reserva {
       required this.nombreAula, 
       required this.idEscuela,
       required this.asientos,
-      required this.username,
+      this.username = '',
       this.userId = ''
     });
 

@@ -34,6 +34,7 @@ class Asiento {
         "numeroAsiento": numeroAsiento,
         "hora_entrada": horaEntrada,
         "hora_salida": horaSalida,
+        "idAula": idAula,
     };
   
     @override

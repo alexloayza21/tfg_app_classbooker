@@ -1,39 +1,84 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
-import 'package:tfg_app/features/reservas/domain/repositories/reservas_repository.dart';
-import 'package:tfg_app/features/reservas/presentation/providers/reservas_repository_provider.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/reservas_provider.dart';
 
 //*provider
-final reservaFormProvider = StateNotifierProvider.autoDispose.family<ReservaFormNotifier, ReservaFormState, String>((ref, date) {
-  final reservasRepository = ref.watch(reservasRepositoryProvider);
+final reservaFormProvider = StateNotifierProvider.autoDispose.family<ReservaFormNotifier, ReservaFormState, Reserva>(
+  (ref, reserva) {
+  final onSubmitCallback = ref.watch(reservasProvider('').notifier).postReserva;
   return ReservaFormNotifier(
-    reservasRepository: reservasRepository, 
-    date: date
+    onSubmitCallback: onSubmitCallback, 
+    reserva: reserva
   );
 });
 
 //* notifier
 class ReservaFormNotifier extends StateNotifier<ReservaFormState> {
-  final ReservasRepository reservasRepository;
+  final Future<bool> Function (Reserva newReserva) ? onSubmitCallback;
 
   ReservaFormNotifier({
-    required this.reservasRepository,
-    required String date
-  }) : super(ReservaFormState(date: date)){
-    
+    required this.onSubmitCallback,
+    required Reserva reserva
+  }) : super(ReservaFormState(
+    fecha: reserva.fecha, 
+    horaEntrada: reserva.horaEntrada, 
+    horaSalida: reserva.horaSalida, 
+    nombreAula: reserva.nombreAula, 
+    idEscuela: reserva.idEscuela, 
+    asientos: reserva.asientos
+  ));
+
+  Future<bool> onFormSubmit() async{
+    if ( onSubmitCallback == null) return false;
+    final newReserva = Reserva(
+      fecha: state.fecha, 
+      horaEntrada: state.horaEntrada, 
+      horaSalida: state.horaSalida, 
+      nombreAula: state.nombreAula, 
+      idEscuela: state.idEscuela,
+      asientos: state.asientos
+    );
+    try {
+      return await onSubmitCallback!(newReserva);
+    } catch (e) {
+      return false;
+    }
   }
 
-  Future<void> postReserva(Reserva newReserva) async{
-
-    if (state.isLoading) return;
-    state = state.copyWith(isLoading: true);
-
-    await reservasRepository.postReserva(newReserva);
-    
+  void onFechaChanged(String fecha){
     state = state.copyWith(
-      isLoading: false,
+      fecha: fecha
     );
+  }
 
+  void onHoraEntradaChanged(String horaEntrada){
+    state = state.copyWith(
+      horaEntrada: horaEntrada
+    );
+  }
+
+  void onHoraSalidaChanged(String horaSalida){
+    state = state.copyWith(
+      horaSalida: horaSalida
+    );
+  }
+
+  void onNombreAulaChanged(String nombreAula){
+    state = state.copyWith(
+      nombreAula: nombreAula
+    );
+  }
+
+  void onIdEscuelaChanged(String idEscuela){
+    state = state.copyWith(
+      idEscuela: idEscuela
+    );
+  }
+
+  void onListaAsientos(List<Asiento> asientos){
+    state = state.copyWith(
+      asientos: asientos
+    );
   }
 
   bool checkHoras(String? horaEntrada, String? horaSalida){
@@ -45,24 +90,43 @@ class ReservaFormNotifier extends StateNotifier<ReservaFormState> {
 
 //* state
 class ReservaFormState {
-  final String date;
   final bool isLoading;
-  final List<Reserva> reservas;
+  final String fecha;
+  final String horaEntrada;
+  final String horaSalida;
+  final String nombreAula;
+  final String idEscuela;
+  final List<Asiento> asientos;
 
   ReservaFormState({
-    required this.date, 
     this.isLoading = false, 
-    this.reservas = const []
+    required this.fecha, 
+    required this.horaEntrada, 
+    required this.horaSalida, 
+    required this.nombreAula, 
+    required this.idEscuela, 
+    required this.asientos
   });
 
+
   ReservaFormState copyWith({    
-    String? date,
+    
     bool? isLoading,
-    List<Reserva>? reservas
+    String? fecha,
+    String? horaEntrada,
+    String? horaSalida,
+    String? nombreAula,
+    String? idEscuela,
+    List<Asiento>? asientos,
+
   }) => ReservaFormState(
-    date: date ?? this.date,
     isLoading: isLoading ?? this.isLoading,
-    reservas: reservas ?? this.reservas
+    fecha: fecha ?? this.fecha, 
+    horaEntrada: horaEntrada ?? this.horaEntrada, 
+    horaSalida: horaSalida ?? this.horaSalida, 
+    nombreAula: nombreAula ?? this.nombreAula, 
+    idEscuela: idEscuela ?? this.idEscuela, 
+    asientos: asientos ?? this.asientos
   );
 
 }

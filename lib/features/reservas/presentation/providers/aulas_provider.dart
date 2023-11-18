@@ -51,24 +51,30 @@ class AulasNotifier extends StateNotifier<AulaState> {
   }
 
   Future loadEscuelas() async{
-    if ( state.isLoading == true ) return;
-    state = state.copyWith(isLoading: true);
+    try {
+      
+      if ( state.isLoading == true ) return;
+      state = state.copyWith(isLoading: true);
 
-    final aulas = await aulasRepository.getAulasByIdEscuela(state.id);
+      final aulas = await aulasRepository.getAulasByIdEscuela(state.id);
 
-    if (aulas.isEmpty) {
+      if (aulas.isEmpty) {
+        state = state.copyWith(
+          isLoading: false,
+          errorAulas: 'NO HAY AULAS'
+        );
+        return;
+      }
+
       state = state.copyWith(
         isLoading: false,
-        errorAulas: 'NO HAY AULAS'
+        errorAulas: '',
+        aulas: aulas
       );
-      return;
+      
+    } catch (e) {
+      throw Exception();
     }
-
-    state = state.copyWith(
-      isLoading: false,
-      errorAulas: '',
-      aulas: aulas
-    );
 
   }
   
