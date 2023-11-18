@@ -4,34 +4,30 @@ import 'package:go_router/go_router.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/escuelas_provider.dart';
 import 'package:tfg_app/features/reservas/presentation/widgets/widgets.dart';
 
-class EscuelasScreen extends StatelessWidget {
+class EscuelasScreen extends ConsumerWidget {
   const EscuelasScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final escuelasState = ref.watch(escuelasProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Escuelas'),
         centerTitle: true,
       ),
-      body: const _EscuelasView(),
+      body:  _EscuelasView(escuelasState: escuelasState,),
     );
   }
 }
 
-class _EscuelasView extends ConsumerStatefulWidget {
-  const _EscuelasView();
+class _EscuelasView extends StatelessWidget {
+  const _EscuelasView({required this.escuelasState});
 
-  @override
-  _EscuelasViewState createState() => _EscuelasViewState();
-}
-
-class _EscuelasViewState extends ConsumerState<_EscuelasView> {
+  final EscuelasState escuelasState;
 
   @override
   Widget build(BuildContext context) {
     
-    final escuelasState = ref.watch(escuelasProvider);
     
     return escuelasState.isLoading 
     ? const Center(child: CircularProgressIndicator()) 

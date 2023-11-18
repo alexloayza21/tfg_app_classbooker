@@ -24,7 +24,7 @@ class AulasNotifier extends StateNotifier<AulaState> {
     required this.aulasRepository,
     required String idEscuela
   }) : super(AulaState(id: idEscuela)){
-    loadEscuelas();
+    loadAulas();
   }
 
   Future<bool> createOrUpdateAula(Map<String, dynamic> aulaLike) async{
@@ -50,25 +50,15 @@ class AulasNotifier extends StateNotifier<AulaState> {
     }
   }
 
-  Future loadEscuelas() async{
+  Future loadAulas() async{
     try {
       
-      if ( state.isLoading == true ) return;
       state = state.copyWith(isLoading: true);
 
       final aulas = await aulasRepository.getAulasByIdEscuela(state.id);
 
-      if (aulas.isEmpty) {
-        state = state.copyWith(
-          isLoading: false,
-          errorAulas: 'NO HAY AULAS'
-        );
-        return;
-      }
-
       state = state.copyWith(
         isLoading: false,
-        errorAulas: '',
         aulas: aulas
       );
       
@@ -83,25 +73,21 @@ class AulasNotifier extends StateNotifier<AulaState> {
 //* state
 class AulaState {
   final String id;
-  final String errorAulas;
   final List<Aula> aulas;
   final bool isLoading;
 
   AulaState({
     required this.id, 
-    this.errorAulas = '', 
     this.aulas = const [], 
     this.isLoading = false
   });
 
   AulaState copyWith({
     String? id,
-    String? errorAulas,
     List<Aula>? aulas,
     bool? isLoading
   })=> AulaState(
     id: id ?? this.id,
-    errorAulas: errorAulas ?? this.errorAulas,
     aulas: aulas ?? this.aulas,
     isLoading: isLoading ?? this.isLoading
   );

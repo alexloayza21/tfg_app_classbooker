@@ -46,7 +46,7 @@ class _ReservasAdminView extends StatelessWidget {
     : ListView.builder(
       itemCount: reservas.length,
       itemBuilder: (context, index) {
-        return ReservasCard(reserva: reservas[index]);
+        // return ReservasCard(reserva: reservas[index]);
       },
     );
   }

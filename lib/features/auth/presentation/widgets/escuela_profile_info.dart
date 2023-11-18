@@ -92,12 +92,14 @@ class _EscuelaProfileCard extends StatelessWidget {
                 const Spacer(),
                 const Spacer(),
                 Expanded(
-                  child: Text(
-                    '🚩 ${escuela.direccion}, ${escuela.ciudad}, ${escuela.provincia}, ${escuela.codigoPostal} ',
-                    textAlign: TextAlign.center,
-                    style: textStyle.titleMedium,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
+                  child: Center(
+                    child: Text(
+                      '🚩 ${escuela.direccion}, ${escuela.ciudad}, ${escuela.provincia}, ${escuela.codigoPostal} ',
+                      textAlign: TextAlign.center,
+                      style: textStyle.titleMedium,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
                   ),
                 ),
               ],

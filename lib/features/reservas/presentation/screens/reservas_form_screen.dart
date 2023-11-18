@@ -23,7 +23,12 @@ class ReservasScreen extends ConsumerWidget {
           title: Text('Reservas: ${aulaState.aula?.nombreAula}'),
           centerTitle: true,
         ),
-        body: (aulaState.aula == null) ? const Center(child: CircularProgressIndicator()) : _ReservasView(aula: aulaState.aula!),
+        body: (aulaState.aula == null ) 
+        ? const Center(child: CircularProgressIndicator()) 
+        : _ReservasView(
+          aula: aulaState.aula!, 
+          escuela: ref.watch(escuelaProvider(aulaState.aula!.idEscuela)).escuela,
+        ),
       );
   }
 }
@@ -31,9 +36,11 @@ class ReservasScreen extends ConsumerWidget {
 class _ReservasView extends ConsumerStatefulWidget {
   const _ReservasView({
     required this.aula,
+    this.escuela, 
   });
 
   final Aula aula;
+  final Escuela? escuela;
 
   @override
   _ReservasViewState createState() => _ReservasViewState();
@@ -126,7 +133,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                     setState(() {
                       horaEntrada = value!;
                       listaAsientoToReserva = [];
-                      // isSelected = List.generate(asientosDeAula.length, (index) => false); //TODO:
+                      isSelected = List.generate(asientosDeAula.length, (index) => false);
                     });
                   },
                   icon: const Icon(Icons.access_time_outlined),
@@ -159,7 +166,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                     setState(() {
                       horaSalida = value!;
                       listaAsientoToReserva = [];
-                      // isSelected = List.generate(asientosDeAula.length, (index) => false);//TODO:
+                      isSelected = List.generate(asientosDeAula.length, (index) => false);
                     });
                   },
                   icon: const Icon(Icons.access_time_outlined),
@@ -343,6 +350,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                                   idEscuela: widget.aula.idEscuela,
                                   asientos: listaAsientoToReserva, 
                                   username: ref.read(authProvider).user!.username, 
+                                  nombreEscuela: widget.escuela?.nombreEscuela ?? '',
                                 );
                                 reservasNotifier.postReserva(newReserva);
                                 context.push('/userHome');

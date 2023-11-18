@@ -5,9 +5,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 
 class ReservasCard extends StatelessWidget {
-  const ReservasCard({super.key, required this.reserva});
+  const ReservasCard({super.key, this.username, this.nombreEscuela, this.fecha, this.horaEntrada, this.horaSalida, this.nombreAula, this.asientos});
 
-  final Reserva reserva;
+  final String? fecha;
+  final String? horaEntrada;
+  final String? horaSalida;
+  final String? nombreAula; 
+  final String? username;
+  final String? nombreEscuela; 
+  final List<Asiento>? asientos;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +32,7 @@ class ReservasCard extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         child: Container(
-          height: 150, 
+          height: 180, 
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
@@ -51,7 +57,7 @@ class ReservasCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Nombre del Usuario: ${reserva.username}',
+                  (username != null) ? 'Nombre del Usuario: $username' : 'Nombre de Escuela: $nombreEscuela',
                   style: textStyle.titleLarge,
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
@@ -59,13 +65,13 @@ class ReservasCard extends StatelessWidget {
                 ),
                 
                 Text(
-                  'Aula: ${reserva.nombreAula}\nAsientos: ${reserva.asientos}',
+                  '$nombreAula \nAsientos: $asientos',
                   style: textStyle.titleMedium,
                   textAlign: TextAlign.center,
                 ),
                 
                 Text(
-                  '${reserva.horaEntrada} - ${reserva.horaSalida}',
+                  'Hora: {$horaEntrada - $horaSalida}, Fecha: $fecha',
                   style: textStyle.titleMedium,
                 )
               ],
@@ -77,19 +83,20 @@ class ReservasCard extends StatelessWidget {
             context: context, 
             builder: (context) {
               return AlertDialog.adaptive(
-                title: Center(child: Text(reserva.username, style: textStyle.bodyLarge,)),
+                title: Center(child: Text((username != null) ? '$username' : '$nombreEscuela', style: textStyle.bodyLarge,)),
                 content: Text(
-                  'Aula: ${reserva.nombreAula}\n'
-                  'Asientos: ${reserva.asientos}\n'
-                  'Hora entrada: ${reserva.horaEntrada}\n'
-                  'Hora salida: ${reserva.horaSalida}\n',
+                  '$nombreAula\n'
+                  'Asientos: $asientos\n'
+                  'Hora entrada: $horaEntrada\n'
+                  'Hora salida: $horaSalida\n'
+                  'Fecha: $fecha',
                   textAlign: TextAlign.center,
                 ),
                 actions: [
                   SizedBox(
                     width: double.infinity,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: username!= null ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
                       children: [
                         TextButton(
                           onPressed: () {
@@ -100,6 +107,7 @@ class ReservasCard extends StatelessWidget {
                           ))
                         ),
 
+                        username != null ?
                         TextButton(
                           onPressed: () {
 
@@ -107,7 +115,9 @@ class ReservasCard extends StatelessWidget {
                           child: Text('Confirmar', style: GoogleFonts.montserratAlternates().copyWith(
                             color: Colors.green, fontSize: 15, fontWeight: FontWeight.bold
                           ))
-                        ),
+                        )
+                        : Container()
+                        ,
                       ],
                     ),
                   )

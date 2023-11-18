@@ -33,7 +33,7 @@ class ReservasUserNotifier extends StateNotifier<ReservasUserState> {
       );
       
     } catch (e) {
-      throw Exception();
+      throw Exception(e);
     }
 
   }

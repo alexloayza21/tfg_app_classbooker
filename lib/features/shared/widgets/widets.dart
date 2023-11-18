@@ -1,1 +1,1 @@
-export './reservas_card.dart';
+export 'reservas_card.dart';

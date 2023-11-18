@@ -8,6 +8,7 @@ class Reserva {
     final String nombreAula;
     final List<Asiento> asientos;
     final String idEscuela;
+    final String nombreEscuela;
     final String username;
     final String userId;
 
@@ -19,6 +20,7 @@ class Reserva {
       required this.nombreAula, 
       required this.idEscuela,
       required this.asientos,
+      required this.nombreEscuela,
       this.username = '',
       this.userId = ''
     });
@@ -32,7 +34,8 @@ class Reserva {
         asientos: List<Asiento>.from((json["asientos"] as List<dynamic>?)?.map((x) => Asiento.fromJson(x)) ?? []),
         idEscuela: json["idEscuela"] ?? '',
         username: json["username"] ?? '',
-        userId: json["userId"] ?? ''
+        userId: json["userId"] ?? '', 
+        nombreEscuela: json["nombreEscuela"] ?? ''
     );
 
     Map<String, dynamic> toJson() => {
@@ -43,6 +46,7 @@ class Reserva {
         "asientos": List<dynamic>.from(asientos.map((x) => x.toJson())),
         "idEscuela": idEscuela,
         "username": username,
+        "nombreEscuela": nombreEscuela,
         "userId": userId
     };
 }

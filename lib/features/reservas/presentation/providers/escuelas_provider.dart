@@ -4,7 +4,7 @@ import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repositor
 import 'package:tfg_app/features/reservas/presentation/providers/escuelas_repository_provider.dart';
 
 //* Provider
-final escuelasProvider = StateNotifierProvider<EscuelasNotifier, EscuelasState>((ref) {
+final escuelasProvider = StateNotifierProvider.autoDispose<EscuelasNotifier, EscuelasState>((ref) {
   final escuelasRepository = ref.watch(escuelasRepositoryProvider);
   return EscuelasNotifier(escuelasRepository: escuelasRepository);
 });
@@ -44,7 +44,6 @@ class EscuelasNotifier extends StateNotifier<EscuelasState> {
   }
 
   Future loadEscuelas() async {
-    if (state.isLoading) return;
     state = state.copyWith(isLoading: true);
 
     final escuelas = await escuelasRepository.getAllEscuelas();
@@ -63,7 +62,6 @@ class EscuelasNotifier extends StateNotifier<EscuelasState> {
       escuelas: escuelas
     );
   }
-  
 }
 
 //* State
@@ -71,11 +69,9 @@ class EscuelasState {
   final bool isLoading;
   final String errorEscuelas;
   final List<Escuela> escuelas;
-  final Escuela? escuela;
 
   EscuelasState({
     this.isLoading = false, 
-    this.escuela,
     this.errorEscuelas = '',
     this.escuelas = const []
   });
@@ -88,7 +84,6 @@ class EscuelasState {
   }) => EscuelasState(
     isLoading: isLoading ?? this.isLoading,
     errorEscuelas: errorEscuelas ?? this.errorEscuelas,
-    escuela: escuela ?? this.escuela,
     escuelas: escuelas ?? this.escuelas
   );
 }

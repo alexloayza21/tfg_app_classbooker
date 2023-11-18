@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tfg_app/features/auth/presentation/providers/reservas_user_provider.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
+import 'package:tfg_app/features/shared/widgets/reservas_card.dart';
 
 class UserProfileScreen extends ConsumerWidget {
   const UserProfileScreen({super.key});
@@ -44,7 +45,20 @@ class _UserProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return ListView.builder(
+      itemCount: reservas.length,
+      itemBuilder: (context, index) {
+        final reserva = reservas[index];
+        return ReservasCard(
+          nombreEscuela : reserva.nombreEscuela,
+          nombreAula: reserva.nombreAula,
+          asientos: reserva.asientos,
+          horaEntrada: reserva.horaEntrada,
+          horaSalida: reserva.horaSalida,
+          fecha: reserva.fecha,
+        );
+      },
+    );
   }
 }
 
