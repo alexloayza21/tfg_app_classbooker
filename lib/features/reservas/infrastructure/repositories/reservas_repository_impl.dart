@@ -23,4 +23,9 @@ class ReservasRepositoryImpl extends ReservasRepository {
     return datasource.postReserva(newReserva);
   }
   
+  @override
+  Future<Reserva> deleteReserva(String id) {
+    return datasource.deleteReserva(id);
+  }
+  
 }

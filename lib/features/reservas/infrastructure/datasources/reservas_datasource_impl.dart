@@ -59,4 +59,15 @@ class ReservasDatasourceImpl extends ReservasDatasource {
     }
   }
   
+  @override
+  Future<Reserva> deleteReserva(String id) async{
+    try {
+      final response = await dio.delete('/reservas/deleteReservaByid/$id');
+      final reserva = Reserva.fromJson(response.data);
+      return reserva;
+    } catch (e) {
+      throw Exception();
+    }
+  }
+  
 }

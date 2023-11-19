@@ -28,7 +28,7 @@ class ReservasAdminScreen extends ConsumerWidget {
   }
 }
 
-class _ReservasAdminView extends StatelessWidget {
+class _ReservasAdminView extends ConsumerWidget {
   const _ReservasAdminView({
     required this.reservas,
   });
@@ -36,7 +36,7 @@ class _ReservasAdminView extends StatelessWidget {
   final List<Reserva> reservas;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return (reservas.isEmpty)
     ? Center(
       child: Column(
@@ -52,12 +52,17 @@ class _ReservasAdminView extends StatelessWidget {
       itemBuilder: (context, index) {
         final reserva = reservas[index];
         return ReservasCard(
+          id: reserva.id ?? '',
           username: reserva.username,
           nombreAula: reserva.nombreAula,
           asientos: reserva.asientos,
           horaEntrada: reserva.horaEntrada,
           horaSalida: reserva.horaSalida,
           fecha: reserva.fecha,
+          onPressed: () {
+            ref.read(reservasProvider(DateTime.now().toString().split(' ')[0]).notifier).deleteReserva(reserva.id ?? '');
+            Navigator.pop(context);
+          },
         );
       },
     );

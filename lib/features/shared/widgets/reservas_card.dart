@@ -1,12 +1,15 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 
 class ReservasCard extends StatelessWidget {
-  const ReservasCard({super.key, this.username, this.nombreEscuela, this.fecha, this.horaEntrada, this.horaSalida, this.nombreAula, this.asientos});
+  const ReservasCard({super.key, required this.id,  this.username, this.nombreEscuela, this.fecha, this.horaEntrada, this.horaSalida, this.nombreAula, this.asientos, this.onPressed, });
 
+  final String id;
   final String? fecha;
   final String? horaEntrada;
   final String? horaSalida;
@@ -14,6 +17,7 @@ class ReservasCard extends StatelessWidget {
   final String? username;
   final String? nombreEscuela; 
   final List<Asiento>? asientos;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -99,9 +103,7 @@ class ReservasCard extends StatelessWidget {
                       mainAxisAlignment: username!= null ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
                       children: [
                         TextButton(
-                          onPressed: () {
-
-                          }, 
+                          onPressed: onPressed, 
                           child: Text('Eliminar', style: GoogleFonts.montserratAlternates().copyWith(
                             color: Colors.red, fontSize: 15, fontWeight: FontWeight.bold
                           ))
@@ -109,9 +111,7 @@ class ReservasCard extends StatelessWidget {
 
                         username != null ?
                         TextButton(
-                          onPressed: () {
-
-                          }, 
+                          onPressed: onPressed, 
                           child: Text('Confirmar', style: GoogleFonts.montserratAlternates().copyWith(
                             color: Colors.green, fontSize: 15, fontWeight: FontWeight.bold
                           ))

@@ -86,7 +86,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
       }
     }
 
-    print(asientosResevas.length);
+    // print(asientosResevas.length);
     
     return Column(
       children: [

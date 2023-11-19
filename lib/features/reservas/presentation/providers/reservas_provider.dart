@@ -69,6 +69,20 @@ class ReservaNotifier extends StateNotifier<ReservaState> {
     }
 
   }
+
+  Future<void> deleteReserva(String id) async{
+    try {
+      if (mounted) state = state.copyWith(isLoading: true);
+      state = state.copyWith(isLoading: true);
+      await reservasRepository.deleteReserva(id);
+      state = state.copyWith(isLoading: false);
+    } catch (e) {
+      if (mounted) {
+        throw Exception(e);
+
+      }
+    }
+  }
   
 
   bool checkHoras(String? horaEntrada, String? horaSalida){

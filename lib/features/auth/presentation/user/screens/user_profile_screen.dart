@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tfg_app/features/auth/presentation/providers/reservas_user_provider.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/reservas_provider.dart';
 import 'package:tfg_app/features/shared/widgets/reservas_card.dart';
 
 class UserProfileScreen extends ConsumerWidget {
@@ -36,7 +38,7 @@ class UserProfileScreen extends ConsumerWidget {
   }
 }
 
-class _UserProfileView extends StatelessWidget {
+class _UserProfileView extends ConsumerWidget {
   const _UserProfileView({
     required this.reservas,
   });
@@ -44,7 +46,7 @@ class _UserProfileView extends StatelessWidget {
   final List<Reserva> reservas;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return reservas.isEmpty
     ? const Center(
       child: Text('Aun no tienes reservas hechas 🫠'),
@@ -54,12 +56,17 @@ class _UserProfileView extends StatelessWidget {
       itemBuilder: (context, index) {
         final reserva = reservas[index];
         return ReservasCard(
+          id: reserva.id ?? '',
           nombreEscuela : reserva.nombreEscuela,
           nombreAula: reserva.nombreAula,
           asientos: reserva.asientos,
           horaEntrada: reserva.horaEntrada,
           horaSalida: reserva.horaSalida,
           fecha: reserva.fecha,
+          onPressed: (){
+            ref.read(reservasProvider(DateTime.now().toString().split(' ')[0]).notifier).deleteReserva(reserva.id ?? '');
+            context.pop('/userHome');
+          },
         );
       },
     );
