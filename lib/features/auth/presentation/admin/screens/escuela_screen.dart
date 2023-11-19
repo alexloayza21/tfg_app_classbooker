@@ -142,7 +142,7 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
                   ),
           
                 TextButton(
-                  onPressed: () {
+                  onPressed: ()  {
                     ref.read(escuelaFormProvider(widget.escuela).notifier).onFormSubmit();
                     context.pop('/adminProfile');
                   }, 

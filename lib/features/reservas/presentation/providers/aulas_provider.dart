@@ -65,7 +65,7 @@ class AulasNotifier extends StateNotifier<AulaState> {
       
     } catch (e) {
       if (mounted) {
-        throw Exception();        
+        throw Exception(e);        
       }
     }
 

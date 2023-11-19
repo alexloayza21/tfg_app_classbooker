@@ -26,12 +26,13 @@ class EscuelaFormNotifier extends StateNotifier<EscuelaFormState> {
       ciudad: escuela.ciudad, 
       codigoPostal: escuela.codigoPostal, 
       provincia: escuela.provincia, 
-      imagen: escuela.imagen,
+      imagen: escuela.imagen, 
     )
   );
 
   Future<bool> onFormSubmit() async {
     if ( onSubmitCallback == null ) return false;
+    state = state.copyWith(isPosting: true);
     final escuelaLike = {
       'id': (state.id == 'new') ? null : state.id,
       'nombreEscuela': state.nombreEscuela,
@@ -42,6 +43,7 @@ class EscuelaFormNotifier extends StateNotifier<EscuelaFormState> {
       'imagen': state.imagen.replaceAll('${Environment.apiUrl}/escuelas/downloadImage/', ''),
     };
     try {
+      state = state.copyWith(isPosting: false);
       return await onSubmitCallback!(escuelaLike);
     } catch (e) {
       return false;
@@ -88,6 +90,7 @@ class EscuelaFormNotifier extends StateNotifier<EscuelaFormState> {
 
 class EscuelaFormState {
   final String? id;
+  final bool? isPosting;
   final String nombreEscuela;
   final String direccion;
   final String ciudad;
@@ -98,6 +101,7 @@ class EscuelaFormState {
 
   EscuelaFormState({
     this.id,
+    this.isPosting = false, 
     required this.nombreEscuela, 
     required this.direccion, 
     required this.ciudad, 
@@ -109,6 +113,7 @@ class EscuelaFormState {
 
   EscuelaFormState copyWith({
     String? id,
+    bool? isPosting, 
     String? nombreEscuela,
     String? direccion,
     String? ciudad,
@@ -118,6 +123,7 @@ class EscuelaFormState {
     List<Aula>? aulas,
   }) => EscuelaFormState(
     id: id ?? this.id,
+    isPosting: isPosting ?? this.isPosting,
     nombreEscuela: nombreEscuela ?? this.nombreEscuela, 
     direccion: direccion ?? this.direccion, 
     ciudad: ciudad ?? this.ciudad, 

@@ -82,8 +82,10 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
       final String url = escuelaId == null ? '/escuelas/newEscuela' : '/escuelas/updateEscuelas/$escuelaId';
 
       escuelaLike.remove('id');
-      String fileImage = await _uploadPhoto(escuelaLike['imagen']);
-      escuelaLike['imagen'] = fileImage;
+      if (escuelaLike["imagen"].toString().contains('/')) {
+        String fileImage = await _uploadPhoto(escuelaLike['imagen']);
+        escuelaLike['imagen'] = fileImage;
+      }
 
       final response = await dio.request(
         url,
@@ -97,7 +99,7 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
       return escuela;
       
     } catch (e) {
-      throw Exception();
+      throw Exception(e);
     }
   }
   

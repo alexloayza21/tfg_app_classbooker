@@ -65,7 +65,8 @@ class EscuelasNotifier extends StateNotifier<EscuelasState> {
         escuelas: escuelas
       );
       
-    } catch (e) { 
+    } catch (e) {
+
       if (mounted) {
       throw Exception(e);
       }
