@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tfg_app/config/config.dart';
+import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tfg_app/features/auth/presentation/providers/forms/logtin_form_provider.dart';
 import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
 
@@ -20,16 +21,26 @@ class LoginScreen extends ConsumerWidget {
 }
 
 class _LoginView extends ConsumerWidget {
-
-
   const _LoginView({required this.loginFormState});
-
   final LoginFormState loginFormState;
+
+  void showSnackBar(BuildContext context, String message){
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message))
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
     final color = AppTheme().colorSeed;
     final textStyle = Theme.of(context).textTheme;
+
+    ref.listen(authProvider, (previous, next){
+      if (next.errorMessage.isEmpty) return;
+      showSnackBar(context, next.errorMessage);
+    });
 
     return SafeArea(
       child: SingleChildScrollView(

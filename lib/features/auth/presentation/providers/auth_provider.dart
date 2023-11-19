@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tfg_app/features/auth/domain/domain.dart';
 import 'package:tfg_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:tfg_app/features/auth/infrastructure/errors/auth_errors.dart';
 import 'package:tfg_app/features/auth/infrastructure/repositories/auth_repository_impl.dart';
 import 'package:tfg_app/features/shared/widgets/services/key_value_storage_service.dart';
 import 'package:tfg_app/features/shared/widgets/services/key_value_storage_service_impl.dart';
@@ -31,6 +32,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final user = await authRepository.login(email, password);
       _setLoggedUser(user);
+    } on CustomError catch(e){
+      logout(e.message);
     } catch (e) {
       logout('Error no controlado');
     }
@@ -54,8 +57,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final user = await authRepository.checkAuthStatus(token);
       _setLoggedUser(user);
+    } on CustomError catch(e){
+      logout(e.message);
     } catch (e) {
-      logout();
+      logout('Error no controlado');
     }
   }
 
