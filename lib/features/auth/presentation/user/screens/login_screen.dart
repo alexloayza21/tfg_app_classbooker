@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tfg_app/config/config.dart';
 import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
-import 'package:tfg_app/features/auth/presentation/providers/forms/logtin_form_provider.dart';
+import 'package:tfg_app/features/auth/presentation/providers/forms/login_form_provider.dart';
 import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
 
 class LoginScreen extends ConsumerWidget {
