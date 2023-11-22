@@ -23,4 +23,9 @@ class AulasRepositoryImpl extends AulasRepository {
     return datasource.getAulasByIdEscuela(idEscuela);
   }
   
+  @override
+  Future<Aula> deleteAulaById(String idAula) {
+    return datasource.deleteAulaById(idAula);
+  }
+  
 }

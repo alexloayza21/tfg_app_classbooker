@@ -70,6 +70,29 @@ class AulasNotifier extends StateNotifier<AulaState> {
     }
 
   }
+
+  Future<bool> deleteAula(String idAula) async{
+    try {
+
+      if (mounted) state = state.copyWith(isLoading: true);
+
+      state = state.copyWith(isLoading: true);
+
+      final aulaDeleted = await aulasRepository.deleteAulaById(idAula);      
+
+      state = state.copyWith(
+        isLoading: false,
+        aulas: [...state.aulas.where((element) => element.idAula != aulaDeleted.idAula)]
+      );
+      return true;
+      
+    } catch (e) {
+      if (mounted) {
+        return false;
+      }
+      return false;
+    }
+  }
   
 }
 

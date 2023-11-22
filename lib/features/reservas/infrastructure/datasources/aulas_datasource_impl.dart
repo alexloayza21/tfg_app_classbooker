@@ -71,4 +71,15 @@ class AulasDatasourceImpl extends AulasDatasource {
     }
   }
   
+  @override
+  Future<Aula> deleteAulaById(String idAula) async{
+    try {
+      final response = await dio.delete('/aulas/deleteAula/$idAula');
+      final aula = Aula.fromJson(response.data);
+      return aula;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+  
 }

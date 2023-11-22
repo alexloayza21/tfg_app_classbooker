@@ -44,6 +44,29 @@ class EscuelaProfileInfo extends ConsumerWidget {
                     return GestureDetector(
                       child: AulaGridCard(aula: aula),
                       onTap: () => context.push('/aula/${aula.idAula}'),
+                      onLongPress: () {
+                        showDialog(
+                          context: context, 
+                          builder: (context) {
+                            return AlertDialog.adaptive(
+                              title: Center(child: Text('Borrar ${aula.nombreAula}', textAlign: TextAlign.center, style: textStyle.bodyLarge,)),
+                              actions: [
+                                TextButton(
+                                  onPressed: () async{
+                                   await ref.read(aulasProvider(aula.idEscuela).notifier).deleteAula(aula.idAula);
+                                   Navigator.pop(context);
+                                  }, 
+                                  child: Center(
+                                    child: Text('Borrar', style: GoogleFonts.montserratAlternates().copyWith(
+                                      color: Colors.red, fontSize: 15, fontWeight: FontWeight.bold
+                                    )),
+                                  )
+                                )
+                              ],
+                            );
+                          }
+                        );
+                      },
                     );
                   },
                 )
