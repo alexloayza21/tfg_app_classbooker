@@ -32,7 +32,7 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
     );
   }
 
-  Future<void> loadEscuela() async{
+  Future<bool> loadEscuela() async{
 
     try {
       if(mounted) state = state.copyWith(isLoading: true);
@@ -42,7 +42,7 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
           isLoading: false,
           escuela: newEscuela()
         );
-        return;
+        return true;
       }
 
       if (state.isLoading == false) {
@@ -55,13 +55,40 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
         isLoading: false,
         escuela: escuela
       );
+      return true;
     } catch (e) {
       if (mounted) {
-        throw Exception(e);
+        return false;
       }
+      return false;
     }
     
 
+  }
+
+  Future<bool> deleteEscuela(String id) async{
+    try {
+      if (mounted) state = state.copyWith(isLoading: true);
+
+      state = state.copyWith(isLoading: true);
+      final escuelaDeleted = await escuelasRepository.deleteEscuela(id);
+
+      if (escuelaDeleted.idEscuela == state.escuela!.idEscuela) {
+        state = state.copyWith(
+          isLoading: false,
+          escuela: null
+        );
+        return true;
+      }else{
+        return false;
+      }
+
+    } catch (e) {
+      if (mounted) {
+        return false;
+      }
+      return false;
+    }
   }
 
 }

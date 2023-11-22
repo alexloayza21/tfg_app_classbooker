@@ -54,6 +54,17 @@ class EscuelasDatasourceImpl extends EscuelasDatasource {
       throw Exception();
     }
   }
+  
+  @override
+  Future<Escuela> deleteEscuela(String id) async{
+    try {
+      final response = await dio.delete('/escuelas/deleteEscuela/$id');
+      final escuela = Escuela.fromJson(response.data);
+      return escuela;
+    } catch (e) {
+     throw Exception(e); 
+    }
+  }
 
 
   Future<String> _uploadPhoto(String path) async{

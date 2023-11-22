@@ -30,5 +30,10 @@ class EscuelasRepositoryImpl extends EscuelasRepository {
     return datasource.getEscuelaByUserId(id);
   }
   
+  @override
+  Future<Escuela> deleteEscuela(String id) {
+    return datasource.deleteEscuela(id);
+  }
+  
   
 }

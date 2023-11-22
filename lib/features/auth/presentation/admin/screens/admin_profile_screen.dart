@@ -14,7 +14,9 @@ class AdminProfileScreen extends ConsumerWidget {
     final userState = ref.watch(authProvider);
     final textStyle = Theme.of(context).textTheme;
 
-    return userState.user?.idEscuela == ''
+    final escuelaState = ref.watch(escuelaProvider(userState.user!.idEscuela));
+
+    return userState.user?.idEscuela == '' || escuelaState.escuela == null
     ? Scaffold(
       appBar: AppBar(
         title: Text('¡Bienvenido ${userState.user?.username}!'),

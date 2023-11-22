@@ -5,4 +5,5 @@ abstract class EscuelasDatasource {
   Future<Escuela> getEscuelaById(String id);
   Future<Escuela> getEscuelaByUserId(String id);
   Future<Escuela> createUpdateEscuela(Map<String, dynamic> escuelaLike);
+  Future<Escuela> deleteEscuela(String id);
 }
