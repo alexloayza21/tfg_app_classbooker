@@ -4,9 +4,9 @@ import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repositor
 import 'package:tfg_app/features/reservas/presentation/providers/escuelas_repository_provider.dart';
 
 final escuelaProvider = StateNotifierProvider.autoDispose.family<EscuelaNotifier, EscuelaState, String>(
-  (ref, userId) {
+  (ref, escuelaId) {
     final escuelasRepository = ref.watch(escuelasRepositoryProvider);
-  return EscuelaNotifier(escuelasRepository: escuelasRepository, userId: userId);
+  return EscuelaNotifier(escuelasRepository: escuelasRepository, escuelaId: escuelaId);
 });
 
 class EscuelaNotifier extends StateNotifier<EscuelaState> {
@@ -14,8 +14,8 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
 
   EscuelaNotifier({
     required this.escuelasRepository,
-    required String userId
-  }) : super(EscuelaState(id: userId)){
+    required String escuelaId
+  }) : super(EscuelaState(id: escuelaId)){
     loadEscuela();
   }
   
@@ -49,7 +49,7 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
         state.copyWith(isLoading: true);
       }
 
-      final escuela = await escuelasRepository.getEscuelaByUserId(state.id);
+      final escuela = await escuelasRepository.getEscuelaById(state.id);
 
       state = state.copyWith(
         isLoading: false,
@@ -66,20 +66,6 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
 
   }
 
-  Future<bool> createOrUpdateEscuela(Map<String, dynamic> escuelaLike) async{
-    try {
-      final escuela = await escuelasRepository.createUpdateEscuela(escuelaLike);
-
-      state = state.copyWith(
-        escuela: escuela
-      );
-      return true;
-
-    } catch (e) {
-      return false;
-    }
-  }
-
   Future<bool> deleteEscuela(String id) async{
     try {
       if (mounted) state = state.copyWith(isLoading: true);
@@ -87,12 +73,15 @@ class EscuelaNotifier extends StateNotifier<EscuelaState> {
       state = state.copyWith(isLoading: true);
       final escuelaDeleted = await escuelasRepository.deleteEscuela(id);
 
-      
-      state = state.copyWith(
-        isLoading: false,
-        escuela: null
-      );
-      return true;
+      if (escuelaDeleted.idEscuela == state.escuela!.idEscuela) {
+        state = state.copyWith(
+          isLoading: false,
+          escuela: null
+        );
+        return true;
+      }else{
+        return false;
+      }
 
     } catch (e) {
       if (mounted) {

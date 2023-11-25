@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tfg_app/config/config.dart';
-import 'package:tfg_app/features/auth/presentation/providers/escuela_provider.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
+import 'package:tfg_app/features/reservas/presentation/providers/escuelas_provider.dart';
 
 final escuelaFormProvider = StateNotifierProvider.autoDispose.family<EscuelaFormNotifier, EscuelaFormState, Escuela>(
   (ref, escuela) {
-    final createUpdateCallback = ref.watch(escuelaProvider(escuela.idEscuela!).notifier).createOrUpdateEscuela;
+    final createUpdateCallback = ref.watch(escuelasProvider.notifier).createOrUpdateEscuela;
     return EscuelaFormNotifier(
       onSubmitCallback: createUpdateCallback, 
       escuela: escuela

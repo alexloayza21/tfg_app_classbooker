@@ -93,7 +93,7 @@ class _EscuelaProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push('/escuela/${escuela.userId}');
+        context.push('/escuela/${escuela.idEscuela}');
       },
       onLongPress: () {
         deleteDialog(context);

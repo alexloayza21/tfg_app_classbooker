@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tfg_app/features/auth/presentation/providers/providers.dart';
 import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
+import 'package:tfg_app/features/reservas/domain/domain.dart';
 
 class AdminProfileScreen extends ConsumerWidget {
   const AdminProfileScreen({super.key});
@@ -13,11 +14,14 @@ class AdminProfileScreen extends ConsumerWidget {
 
     final userState = ref.watch(authProvider);
     final textStyle = Theme.of(context).textTheme;
+    final EscuelaState? escuelaState;
+    if (userState.user!.idEscuela != '') {
+     escuelaState = ref.watch(escuelaProvider(userState.user!.idEscuela));
+    }else{
+      escuelaState = null;
+    }
 
-    final escuelaState = ref.watch(escuelaProvider(userState.user!.userId));
-
-    return userState.user?.idEscuela == '' || escuelaState.escuela == null
-    ? Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text('¡Bienvenido ${userState.user?.username}!'),
         centerTitle: true,
@@ -32,34 +36,21 @@ class AdminProfileScreen extends ConsumerWidget {
           }, icon: const Icon(Icons.exit_to_app, color: Colors.black,))
         ],
       ),
-      body: const Padding(
-      padding: EdgeInsets.all(20.0),
-      child: Center(child: Text('Aun no has registrado una escuela 🫠', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),),),
-      floatingActionButton: FloatingActionButton.extended(
+      body: Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: userState.user?.idEscuela == '' || escuelaState!.isLoading
+        ? const Center(child: Text('Aun no has registrado una escuela 🫠', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),)
+        : _ProfileView(escuela: escuelaState.escuela!,),
+      ),
+      floatingActionButton: userState.user?.idEscuela == '' || escuelaState?.escuela == null
+      ? FloatingActionButton.extended(
         onPressed: () {
           context.push('/escuela/new');
         }, 
         label: const Text('Nueva Escuela'),
         icon: const Icon(Icons.add),
-      ),
-    ) 
-    : Scaffold(
-      appBar: AppBar(
-        title: Text('¡Bienvenido ${userState.user?.username}!'),
-        centerTitle: true,
-        actions: [
-          IconButton(onPressed: () {
-            showDialog(
-              context: context, 
-              builder: (context) {
-                return _LogOutDialog(textStyle: textStyle);
-              },
-            );
-          }, icon: const Icon(Icons.exit_to_app, color: Colors.black,))
-        ],
-      ),
-      body: _ProfileView(userState: userState,),
-      floatingActionButton: FloatingActionButton.extended(
+      )
+      : FloatingActionButton.extended(
           onPressed: () {
             context.push('/aula/new');
           }, 
@@ -72,19 +63,16 @@ class AdminProfileScreen extends ConsumerWidget {
 
 class _ProfileView extends ConsumerWidget {
   const _ProfileView({
-    required this.userState,
+    required this.escuela,
   });
 
-  final AuthState userState;
+  final Escuela escuela;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final escuelaState = ref.watch(escuelaProvider(userState.user!.userId));
-    return escuelaState.isLoading
-    ? const Center(child: CircularProgressIndicator()) 
-    : Column(
+    return Column(
       children: [
-        EscuelaProfileInfo(escuela: escuelaState.escuela!,),
+        EscuelaProfileInfo(escuela: escuela,),
       ],
     );
   }
