@@ -14,7 +14,7 @@ class AdminProfileScreen extends ConsumerWidget {
     final userState = ref.watch(authProvider);
     final textStyle = Theme.of(context).textTheme;
 
-    final escuelaState = ref.watch(escuelaProvider(userState.user!.idEscuela));
+    final escuelaState = ref.watch(escuelaProvider(userState.user!.userId));
 
     return userState.user?.idEscuela == '' || escuelaState.escuela == null
     ? Scaffold(
@@ -79,8 +79,8 @@ class _ProfileView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final escuelaState = ref.watch(escuelaProvider(userState.user!.idEscuela));
-    return escuelaState.isLoading 
+    final escuelaState = ref.watch(escuelaProvider(userState.user!.userId));
+    return escuelaState.isLoading
     ? const Center(child: CircularProgressIndicator()) 
     : Column(
       children: [

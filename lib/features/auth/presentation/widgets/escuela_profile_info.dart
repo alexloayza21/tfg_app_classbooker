@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -95,7 +93,7 @@ class _EscuelaProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push('/escuela/${escuela.idEscuela}');
+        context.push('/escuela/${escuela.userId}');
       },
       onLongPress: () {
         deleteDialog(context);

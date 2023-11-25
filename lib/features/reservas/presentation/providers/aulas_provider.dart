@@ -50,7 +50,7 @@ class AulasNotifier extends StateNotifier<AulaState> {
     }
   }
 
-  Future<void> loadAulas() async{
+  Future<bool> loadAulas() async{
     try {
       if (mounted) state = state.copyWith(isLoading: true);
       
@@ -62,11 +62,13 @@ class AulasNotifier extends StateNotifier<AulaState> {
         isLoading: false,
         aulas: aulas
       );
+      return true;
       
     } catch (e) {
       if (mounted) {
-        throw Exception(e);        
+        return false;        
       }
+      return false;
     }
 
   }

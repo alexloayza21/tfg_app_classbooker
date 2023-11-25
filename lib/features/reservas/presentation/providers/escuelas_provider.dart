@@ -20,29 +20,6 @@ class EscuelasNotifier extends StateNotifier<EscuelasState> {
     loadEscuelas();
   }
 
-  Future<bool> createOrUpdateEscuela(Map<String, dynamic> escuelaLike) async{
-    try {
-      final escuela = await escuelasRepository.createUpdateEscuela(escuelaLike);
-      final isEscuelaInList = state.escuelas.any((element) => element.idEscuela == escuela.idEscuela);
-
-      if(!isEscuelaInList){
-        state = state.copyWith(
-          escuelas: [...state.escuelas, escuela]
-        );
-        return true;
-      }
-
-      state = state.copyWith(
-        escuelas: state.escuelas.map(
-          (element) => (element.idEscuela == escuela.idEscuela) ? escuela : element).toList()
-      );
-      return true;
-
-    } catch (e) {
-      return false;
-    }
-  }
-
   Future loadEscuelas() async {
     try {
       if (mounted) state = state.copyWith(isLoading: true);
