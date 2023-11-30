@@ -29,17 +29,21 @@ class AulasNotifier extends StateNotifier<AulaState> {
 
   Future<bool> createOrUpdateAula(Map<String, dynamic> aulaLike) async{
     try {
+      state = state.copyWith(isLoading: true);
       final aula = await aulasRepository.createUpdateAula(aulaLike);
+      print(state.aulas);
       final isAulaInList = state.aulas.any((element) => element.idAula == aula.idAula);
 
       if(!isAulaInList){
         state = state.copyWith(
+          isLoading: false,
           aulas: [...state.aulas, aula]
         );
         return true;
       }
 
       state = state.copyWith(
+        isLoading: false,
         aulas: state.aulas.map(
           (element) => (element.idAula == aula.idAula) ? aula : element).toList()
       );

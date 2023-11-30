@@ -26,7 +26,7 @@ class EscuelaScreen extends ConsumerWidget {
         title: const Text('Nueva Escuela'),
         centerTitle: true,
       ),
-      body: (escuela == null) ? const Center(child: CircularProgressIndicator(),) : _EscuelaView(escuela: escuela)
+      body: (escuela == null || escuelaState.isLoading) ? const Center(child: CircularProgressIndicator(),) : _EscuelaView(escuela: escuela)
     );
   }
 }
@@ -54,8 +54,8 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
+    _controller.dispose();
   }
 
   @override

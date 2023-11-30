@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tfg_app/features/auth/presentation/providers/escuela_provider.dart';
+import 'package:tfg_app/features/auth/presentation/providers/escuela_admin_provider.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/aulas_provider.dart';
 import 'package:tfg_app/features/reservas/presentation/widgets/widgets.dart';
@@ -41,7 +41,7 @@ class EscuelaProfileInfo extends ConsumerWidget {
                     final aula = aulasState.aulas[index];
                     return GestureDetector(
                       child: AulaGridCard(aula: aula),
-                      onTap: () => context.push('/aula/${aula.idAula}'),
+                      onTap: () => context.push('/adminProfile/aula/${aula.idAula}'),
                       onLongPress: () {
                         showDialog(
                           context: context, 
@@ -93,7 +93,7 @@ class _EscuelaProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push('/escuela/${escuela.idEscuela}');
+        context.push('/adminProfile/escuela/${escuela.idEscuela}');
       },
       onLongPress: () {
         deleteDialog(context);
@@ -186,7 +186,7 @@ class _AlertDialogDelete extends ConsumerWidget {
           children: [
             TextButton(
               onPressed: () async{
-                await ref.read(escuelaProvider(escuela.idEscuela!).notifier).deleteEscuela(escuela.idEscuela!);
+                await ref.read(escuelaProfileProvider(escuela.idEscuela!).notifier).deleteEscuela(escuela.idEscuela!);
                 Navigator.pop(context);
               }, 
               child: Text('Borrar', style:GoogleFonts.montserratAlternates().copyWith(

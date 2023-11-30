@@ -67,18 +67,19 @@ final goRouterProvider = Provider((ref) {
       ),
 
       GoRoute(
-        path: '/escuela/:idEscuela',
-        builder: (context, state) => EscuelaScreen(escuelaId: state.pathParameters['idEscuela'] ?? ''),
-      ),
-
-      GoRoute(
-        path: '/aula/:idAula',
-        builder: (context, state) => AulaScreen(idAula: state.pathParameters['idAula'] ?? ''),
-      ),
-
-      GoRoute(
         path: '/adminProfile',
         builder: (context, state) => const AdminProfileScreen(),
+        routes: [
+          GoRoute(
+            path: 'escuela/:idEscuela',
+            builder: (context, state) => EscuelaScreen(escuelaId: state.pathParameters['idEscuela'] ?? ''),
+          ),
+
+          GoRoute(
+            path: 'aula/:idAula',
+            builder: (context, state) => AulaScreen(idAula: state.pathParameters['idAula'] ?? ''),
+          ),
+        ]
       )
 
     ],

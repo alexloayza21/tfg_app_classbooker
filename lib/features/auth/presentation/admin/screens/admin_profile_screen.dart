@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tfg_app/features/auth/presentation/providers/escuela_admin_provider.dart';
 import 'package:tfg_app/features/auth/presentation/providers/providers.dart';
 import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
@@ -14,13 +15,8 @@ class AdminProfileScreen extends ConsumerWidget {
 
     final userState = ref.watch(authProvider);
     final textStyle = Theme.of(context).textTheme;
-    final EscuelaState? escuelaState;
-    if (userState.user!.idEscuela != '') {
-     escuelaState = ref.watch(escuelaProvider(userState.user!.idEscuela));
-    }else{
-      escuelaState = null;
-    }
 
+    final escuelaState = ref.watch(escuelaProfileProvider(userState.user!.userId));
     return Scaffold(
       appBar: AppBar(
         title: Text('¡Bienvenido ${userState.user?.username}!'),
@@ -38,21 +34,21 @@ class AdminProfileScreen extends ConsumerWidget {
       ),
       body: Padding(
       padding: const EdgeInsets.all(20.0),
-      child: userState.user?.idEscuela == '' || escuelaState!.isLoading
+      child: userState.user?.idEscuela == '' || escuelaState.isLoading
         ? const Center(child: Text('Aun no has registrado una escuela 🫠', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),)
-        : _ProfileView(escuela: escuelaState.escuela!,),
+        : _ProfileView(escuela: escuelaState.escuela!),
       ),
-      floatingActionButton: userState.user?.idEscuela == '' || escuelaState?.escuela == null
+      floatingActionButton: userState.user?.idEscuela == '' || escuelaState.escuela == null
       ? FloatingActionButton.extended(
         onPressed: () {
-          context.push('/escuela/new');
+          context.push('/adminProfile/escuela/new');
         }, 
         label: const Text('Nueva Escuela'),
         icon: const Icon(Icons.add),
       )
       : FloatingActionButton.extended(
           onPressed: () {
-            context.push('/aula/new');
+            context.push('/adminProfile/aula/new');
           }, 
           label: const Text('Añadir Aula'),
           icon: const Icon(Icons.add),
@@ -62,9 +58,7 @@ class AdminProfileScreen extends ConsumerWidget {
 }
 
 class _ProfileView extends ConsumerWidget {
-  const _ProfileView({
-    required this.escuela,
-  });
+  const _ProfileView({required this.escuela});
 
   final Escuela escuela;
 
