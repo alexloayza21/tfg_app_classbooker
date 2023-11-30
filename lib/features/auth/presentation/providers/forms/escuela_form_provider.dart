@@ -5,7 +5,7 @@ import 'package:tfg_app/features/reservas/domain/domain.dart';
 
 final escuelaFormProvider = StateNotifierProvider.autoDispose.family<EscuelaFormNotifier, EscuelaFormState, Escuela>(
   (ref, escuela) {
-    final createUpdateCallback = ref.watch(escuelaProfileProvider(escuela.idEscuela!).notifier).createOrUpdateEscuela;
+    final createUpdateCallback = ref.watch(escuelaProfileProvider(escuela.userId).notifier).createOrUpdateEscuela;
     return EscuelaFormNotifier(
       onSubmitCallback: createUpdateCallback, 
       escuela: escuela

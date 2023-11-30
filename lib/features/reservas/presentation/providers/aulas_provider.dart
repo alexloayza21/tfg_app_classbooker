@@ -7,7 +7,8 @@ import 'package:tfg_app/features/reservas/presentation/providers/aulas_repositor
 //* Cada vez que yo cierre la pantalla aulas se hará el autodispose del provider
 //* y cuando se vuelva a buscar las aulas el is loading estará en true
 //* provider
-final aulasProvider = StateNotifierProvider.autoDispose.family<AulasNotifier, AulaState, String>((ref, idEscuela) {
+final aulasProvider = StateNotifierProvider.autoDispose.family<AulasNotifier, AulaState, String>(
+  (ref, idEscuela) {
   final aulasRepository = ref.watch(aulasRepositoryProvider);
   return AulasNotifier(
     aulasRepository: aulasRepository, 

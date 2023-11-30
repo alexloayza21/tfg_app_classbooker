@@ -50,12 +50,22 @@ class EscuelaProfileNotifier extends StateNotifier<EscuelaProfileState> {
       state = state.copyWith(isLoading: true);
       final escuelaCU = await escuelasRepository.createUpdateEscuela(escuelaLike);
 
-      
-      state = state.copyWith(
-        isLoading: false,
-        escuela: state.escuela ?? escuelaCU 
-      );
-      return true;
+      if (state.escuela!.idEscuela == escuelaCU.idEscuela) {
+        state = state.copyWith(
+          isLoading: false,
+          escuela: escuelaCU
+        );
+        return true;
+      }
+
+      if (state.escuela == null) {      
+        state = state.copyWith(
+          isLoading: false,
+          escuela: escuelaCU 
+        );
+        return true;
+      }
+      return false;
 
     } catch (e) {
       return false;
