@@ -33,7 +33,7 @@ class AdminProfileScreen extends ConsumerWidget {
         ],
       ),
       body: Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(10.0),
       child: userState.user?.idEscuela == '' || escuelaState.isLoading
         ? const Center(child: Text('Aun no has registrado una escuela 🫠', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),)
         : _ProfileView(escuela: escuelaState.escuela!),

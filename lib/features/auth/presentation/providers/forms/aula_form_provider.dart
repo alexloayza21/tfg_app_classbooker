@@ -4,7 +4,7 @@ import 'package:tfg_app/features/reservas/presentation/providers/aulas_provider.
 
 final aulaFormProvider = StateNotifierProvider.autoDispose.family<AulaFormNotifier, AulaFormState, Aula>
 ((ref, aula) {
-  final createUpdateCallback = ref.watch(aulasProvider(aula.idAula).notifier).createOrUpdateAula;
+  final createUpdateCallback = ref.watch(aulasProvider(aula.idEscuela).notifier).createOrUpdateAula;
   return AulaFormNotifier(
     onSubmitCallback: createUpdateCallback, 
     aula: aula

@@ -31,37 +31,17 @@ class EscuelaScreen extends ConsumerWidget {
   }
 }
 
-class _EscuelaView extends ConsumerStatefulWidget {
+class _EscuelaView extends ConsumerWidget {
   const _EscuelaView({
     required this.escuela,
   });
 
   final Escuela escuela;
-
-  @override
-  _NewEscuelaViewState createState() => _NewEscuelaViewState();
-}
-
-class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProviderStateMixin{
   
-  late AnimationController _controller;
-
   @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this);
-  }
+  Widget build(BuildContext context, WidgetRef ref) {
 
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    final escuelaForm = ref.watch(escuelaFormProvider(widget.escuela));
+    final escuelaForm = ref.watch(escuelaFormProvider(escuela));
 
 
     return SingleChildScrollView(
@@ -72,7 +52,7 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
             onTap: () async {
               final photoPath = await CameraGalleryServiceImpl().selectPhoto();
               if (photoPath == null) return;
-              ref.read(escuelaFormProvider(widget.escuela).notifier).updateEscuelaImage(photoPath);
+              ref.read(escuelaFormProvider(escuela).notifier).updateEscuelaImage(photoPath);
               photoPath;
             },
             child: Padding(
@@ -98,25 +78,25 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
             isTopField: true,
             label: 'Nombre Escuela',
             initialValue: escuelaForm.nombreEscuela,
-            onChanged: ref.watch(escuelaFormProvider(widget.escuela).notifier).onNombreEscuelaChanged,
+            onChanged: ref.watch(escuelaFormProvider(escuela).notifier).onNombreEscuelaChanged,
           ),
     
           CustomFormField(
             label: 'Dirección',
             initialValue: escuelaForm.direccion,
-            onChanged: ref.watch(escuelaFormProvider(widget.escuela).notifier).onDireccionChanged,
+            onChanged: ref.watch(escuelaFormProvider(escuela).notifier).onDireccionChanged,
           ),
     
           CustomFormField(
             label: 'Ciudad',
             initialValue: escuelaForm.ciudad,
-            onChanged: ref.watch(escuelaFormProvider(widget.escuela).notifier).onCiudadChanged,
+            onChanged: ref.watch(escuelaFormProvider(escuela).notifier).onCiudadChanged,
           ),
     
           CustomFormField(
             label: 'Provincia',
             initialValue: escuelaForm.provincia,
-            onChanged: ref.watch(escuelaFormProvider(widget.escuela).notifier).onProvinciaChanged,
+            onChanged: ref.watch(escuelaFormProvider(escuela).notifier).onProvinciaChanged,
           ),
       
           CustomFormField(
@@ -124,7 +104,7 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
             label: 'Código Postal',
             initialValue: escuelaForm.codigoPostal,
             keyboardType: TextInputType.number,
-            onChanged: ref.watch(escuelaFormProvider(widget.escuela).notifier).onCodigoPostalChanged,
+            onChanged: ref.watch(escuelaFormProvider(escuela).notifier).onCodigoPostalChanged,
           ),
 
           Padding(
@@ -143,7 +123,7 @@ class _NewEscuelaViewState extends ConsumerState<_EscuelaView> with TickerProvid
           
                 TextButton(
                   onPressed: ()  {
-                    ref.read(escuelaFormProvider(widget.escuela).notifier).onFormSubmit();
+                    ref.read(escuelaFormProvider(escuela).notifier).onFormSubmit();
                     context.pop('/adminProfile');
                   }, 
                   child: Text('Guardar', style: GoogleFonts.montserratAlternates()
