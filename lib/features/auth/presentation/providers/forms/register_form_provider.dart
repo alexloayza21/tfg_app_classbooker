@@ -37,7 +37,7 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
 
   onFormSubmit() async{
     state = state.copyWith(isPosting: true);
-    await registerUserCallback(state.username, state.email, state.password, state.isAdmin);
+    await registerUserCallback(state.username.trim(), state.email.trim(), state.password.trim(), state.isAdmin);
     state = state.copyWith(isPosting: false);
   }
 }

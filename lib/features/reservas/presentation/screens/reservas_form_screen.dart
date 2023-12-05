@@ -353,7 +353,7 @@ class _ReservasViewState extends ConsumerState<_ReservasView> {
                                   nombreEscuela: widget.escuela?.nombreEscuela ?? '',
                                 );
                                 reservasNotifier.postReserva(newReserva);
-                                context.push('/userHome');
+                                GoRouter.of(context).go('/userHome');
 
                               }, 
                               child: Text('Aceptar', style: GoogleFonts.montserratAlternates().copyWith(

@@ -32,12 +32,9 @@ class AdminProfileScreen extends ConsumerWidget {
           }, icon: const Icon(Icons.exit_to_app, color: Colors.black,))
         ],
       ),
-      body: Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: userState.user?.idEscuela == '' || escuelaState.isLoading
+      body: userState.user?.idEscuela == '' || escuelaState.isLoading
         ? const Center(child: Text('Aun no has registrado una escuela 🫠', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),)
         : _ProfileView(escuela: escuelaState.escuela!),
-      ),
       floatingActionButton: userState.user?.idEscuela == '' || escuelaState.escuela == null
       ? FloatingActionButton.extended(
         onPressed: () {

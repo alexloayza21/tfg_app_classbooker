@@ -39,7 +39,7 @@ class _EscuelasView extends StatelessWidget {
           children: [
             GestureDetector(
               child: EscuelaCard(escuela: escuela),
-              onTap: () => context.push('/aulas/${escuela.idEscuela}'),
+              onTap: () => context.push('/escuelas/aulas/${escuela.idEscuela}'),
             )
           ],
         );

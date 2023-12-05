@@ -26,52 +26,49 @@ class EscuelaProfileInfo extends ConsumerWidget {
           _EscuelaProfileCard(escuela: escuela, textStyle: textStyle),
     
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Container(
-                width: double.infinity,
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height,
-                ),
-                child: (aulasState.aulas.isNotEmpty) 
-                ? MasonryGridView.count(
-                  itemCount: aulasState.aulas.length,
-                  crossAxisCount: 2, 
-                  itemBuilder: (context, index) {
-                    final aula = aulasState.aulas[index];
-                    return GestureDetector(
-                      child: AulaGridCard(aula: aula),
-                      onTap: () => context.push('/adminProfile/aula/${aula.idAula}'),
-                      onLongPress: () {
-                        showDialog(
-                          context: context, 
-                          builder: (context) {
-                            return AlertDialog.adaptive(
-                              title: Center(child: Text('Borrar ${aula.nombreAula}', textAlign: TextAlign.center, style: textStyle.bodyLarge,)),
-                              actions: [
-                                TextButton(
-                                  onPressed: () async{
-                                   await ref.read(aulasProvider(aula.idEscuela).notifier).deleteAula(aula.idAula);
-                                   Navigator.pop(context);
-                                  }, 
-                                  child: Center(
-                                    child: Text('Borrar', style: GoogleFonts.montserratAlternates().copyWith(
-                                      color: Colors.red, fontSize: 15, fontWeight: FontWeight.bold
-                                    )),
-                                  )
-                                )
-                              ],
-                            );
-                          }
-                        );
-                      },
-                    );
-                  },
-                )
-                : const Center(
-                  child: Text('No tienes aulas 🫠'),
-                )
+            child: Container(
+              width: double.infinity,
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height,
               ),
+              child: (aulasState.aulas.isNotEmpty) 
+              ? MasonryGridView.count(
+                itemCount: aulasState.aulas.length,
+                crossAxisCount: 2, 
+                itemBuilder: (context, index) {
+                  final aula = aulasState.aulas[index];
+                  return GestureDetector(
+                    child: AulaGridCard(aula: aula),
+                    onTap: () => context.push('/adminProfile/aula/${aula.idAula}'),
+                    onLongPress: () {
+                      showDialog(
+                        context: context, 
+                        builder: (context) {
+                          return AlertDialog.adaptive(
+                            title: Center(child: Text('Borrar ${aula.nombreAula}', textAlign: TextAlign.center, style: textStyle.bodyLarge,)),
+                            actions: [
+                              TextButton(
+                                onPressed: () async{
+                                 await ref.read(aulasProvider(aula.idEscuela).notifier).deleteAula(aula.idAula);
+                                 Navigator.pop(context);
+                                }, 
+                                child: Center(
+                                  child: Text('Borrar', style: GoogleFonts.montserratAlternates().copyWith(
+                                    color: Colors.red, fontSize: 15, fontWeight: FontWeight.bold
+                                  )),
+                                )
+                              )
+                            ],
+                          );
+                        }
+                      );
+                    },
+                  );
+                },
+              )
+              : const Center(
+                child: Text('No tienes aulas 🫠'),
+              )
             ),
           ),
         ],

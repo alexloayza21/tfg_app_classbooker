@@ -51,7 +51,7 @@ class _AulasView extends StatelessWidget {
           final aula = aulas[index];
           return GestureDetector(
             child: AulaGridCard(aula: aula),
-            onTap: () => context.push('/reservasForm/${aula.idAula}'),
+            onTap: () => context.push('/escuelas/reservasForm/${aula.idAula}'),
           );
         },
       ),

@@ -47,6 +47,7 @@ class _UserProfileView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userState = ref.watch(authProvider);
     return reservas.isEmpty
     ? const Center(
       child: Text('Aun no tienes reservas hechas 🫠'),
@@ -64,8 +65,8 @@ class _UserProfileView extends ConsumerWidget {
           horaSalida: reserva.horaSalida,
           fecha: reserva.fecha,
           onPressed: (){
-            ref.read(reservasProvider(DateTime.now().toString().split(' ')[0]).notifier).deleteReserva(reserva.id ?? '');
-            context.pop('/userHome');
+            ref.read(reservasUserProvider(userState.user!.userId).notifier).deleteReserva(reserva.id ?? '');
+            Navigator.pop(context);
           },
         );
       },

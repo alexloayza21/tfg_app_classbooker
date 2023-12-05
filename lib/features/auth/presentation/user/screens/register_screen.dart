@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tfg_app/config/theme/app_theme.dart';
 import 'package:tfg_app/features/auth/presentation/providers/forms/register_form_provider.dart';
+import 'package:tfg_app/features/auth/presentation/providers/providers.dart';
 import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -23,6 +24,13 @@ class _RegisterView extends ConsumerWidget {
     super.key,
   });
 
+  void showSnackBar(BuildContext context, String message){
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message))
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
@@ -30,6 +38,13 @@ class _RegisterView extends ConsumerWidget {
     final textStyle = Theme.of(context).textTheme;
 
     final registerFormState = ref.watch(registerFormProvider);
+
+    ref.listen(authProvider, (previous, next){
+      if (next.errorMessage.isEmpty) return;
+      showSnackBar(context, next.errorMessage);
+    });
+
+    final authState = ref.watch(authProvider);
 
     return SafeArea(
       child: SingleChildScrollView(

@@ -37,16 +37,17 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: '/escuelas',
         builder: (context, state) => const EscuelasScreen(),
-      ),
+        routes: [
+          GoRoute(
+            path: 'aulas/:idEscuela',
+            builder: (context, state) => AulasScreen(idEscuela: state.pathParameters['idEscuela'] ?? '',),
+          ),
 
-      GoRoute(
-        path: '/aulas/:idEscuela',
-        builder: (context, state) => AulasScreen(idEscuela: state.pathParameters['idEscuela'] ?? '',),
-      ),
-
-      GoRoute(
-        path: '/reservasForm/:idAula',
-        builder: (context, state) => ReservasScreen(idAula: state.pathParameters['idAula'] ?? '',),
+          GoRoute(
+            path: 'reservasForm/:idAula',
+            builder: (context, state) => ReservasScreen(idAula: state.pathParameters['idAula'] ?? '',),
+          ),
+        ]
       ),
 
       GoRoute(
