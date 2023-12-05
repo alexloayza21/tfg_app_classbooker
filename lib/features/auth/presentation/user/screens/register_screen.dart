@@ -44,8 +44,6 @@ class _RegisterView extends ConsumerWidget {
       showSnackBar(context, next.errorMessage);
     });
 
-    final authState = ref.watch(authProvider);
-
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tfg_app/features/auth/presentation/providers/reservas_user_provider.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
-import 'package:tfg_app/features/reservas/presentation/providers/reservas_provider.dart';
 import 'package:tfg_app/features/shared/widgets/reservas_card.dart';
 
 class UserProfileScreen extends ConsumerWidget {
