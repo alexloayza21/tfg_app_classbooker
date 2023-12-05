@@ -70,17 +70,24 @@ class ReservaNotifier extends StateNotifier<ReservaState> {
 
   }
 
-  Future<void> deleteReserva(String id) async{
+  Future<bool> deleteReserva(String id) async{
     try {
       if (mounted) state = state.copyWith(isLoading: true);
       state = state.copyWith(isLoading: true);
-      await reservasRepository.deleteReserva(id);
-      state = state.copyWith(isLoading: false);
+
+      final reserva = await reservasRepository.deleteReserva(id);
+
+      state = state.copyWith(
+        isLoading: false,
+        reservas: [...state.reservas.where((element) => element.id != reserva.id)]
+      );
+      return true;
+      
     } catch (e) {
       if (mounted) {
-        throw Exception(e);
-
+        return false;
       }
+      return false;
     }
   }
   

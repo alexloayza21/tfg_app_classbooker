@@ -32,7 +32,7 @@ class AulasNotifier extends StateNotifier<AulaState> {
     try {
       state = state.copyWith(isLoading: true);
       final aula = await aulasRepository.createUpdateAula(aulaLike);
-      print(state.aulas.toString());
+      // print(state.aulas.toString());
       final isAulaInList = state.aulas.any((element) => element.idAula == aula.idAula);
 
       if(!isAulaInList){
