@@ -90,6 +90,7 @@ class _LoginView extends ConsumerWidget {
                         hint: 'example@gmail.com',
                         keyboardType: TextInputType.emailAddress,
                         onChanged: ref.read(loginFormProvider.notifier).onEmailChange,
+                        errorMessage: loginFormState.isFormPosted ? loginFormState.email.errorMessage : null,
                       ),
 
                       const Spacer(),
@@ -100,6 +101,7 @@ class _LoginView extends ConsumerWidget {
                         label: 'Contraseña',
                         obscureText: true,
                         onChanged: ref.read(loginFormProvider.notifier).onPasswordChange,
+                        errorMessage: loginFormState.isFormPosted ? loginFormState.password.errorMessage : null,
                       ),
 
                       const Spacer(),

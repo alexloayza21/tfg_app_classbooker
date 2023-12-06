@@ -59,7 +59,7 @@ class _RegisterView extends ConsumerWidget {
               ),
       
               Container(
-                height: 480,
+                height: 530,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -99,6 +99,7 @@ class _RegisterView extends ConsumerWidget {
                         hint: 'example@gmail.com',
                         keyboardType: TextInputType.emailAddress,
                         onChanged: ref.read(registerFormProvider.notifier).onEmailChange,
+                        errorMessage: registerFormState.isFormPosted ? registerFormState.email.errorMessage : null ,
                       ),
 
                       const Spacer(),
@@ -109,6 +110,7 @@ class _RegisterView extends ConsumerWidget {
                         label: 'Contraseña',
                         obscureText: true,
                         onChanged: ref.read(registerFormProvider.notifier).onPasswordChange,
+                        errorMessage: registerFormState.isFormPosted ? registerFormState.password.errorMessage : null,
                       ),
 
                       Padding(
