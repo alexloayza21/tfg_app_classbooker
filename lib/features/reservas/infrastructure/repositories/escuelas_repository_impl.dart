@@ -21,11 +21,6 @@ class EscuelasRepositoryImpl extends EscuelasRepository {
   }
   
   @override
-  Future<Escuela> createUpdateEscuela(Map<String, dynamic> escuelaLike) {
-    return datasource.createUpdateEscuela(escuelaLike);
-  }
-  
-  @override
   Future<Escuela> getEscuelaByUserId(String id) {
     return datasource.getEscuelaByUserId(id);
   }
@@ -33,6 +28,21 @@ class EscuelasRepositoryImpl extends EscuelasRepository {
   @override
   Future<Escuela> deleteEscuela(String id) {
     return datasource.deleteEscuela(id);
+  }
+  
+  // @override
+  // Future<Escuela> postEscuela(Map<String, dynamic> escuelaLike) {
+  //   return datasource.postEscuela(escuelaLike);
+  // }
+
+  @override
+  Future<Escuela> postEscuela(Escuela newEscuela) {
+    return datasource.postEscuela(newEscuela);
+  }
+  
+  @override
+  Future<Escuela> updateEscuela(Map<String, dynamic> escuelaLike) {
+    return datasource.updateEscuela(escuelaLike);
   }
   
   

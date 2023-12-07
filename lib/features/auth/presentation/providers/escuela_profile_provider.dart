@@ -4,9 +4,9 @@ import 'package:tfg_app/features/reservas/domain/repositories/escuelas_repositor
 import 'package:tfg_app/features/reservas/presentation/providers/escuelas_repository_provider.dart';
 
 final escuelaProfileProvider = StateNotifierProvider.autoDispose.family<EscuelaProfileNotifier, EscuelaProfileState, String>(
-  (ref, escuelaId) {
+  (ref, userId) {
     final escuelasRepository = ref.watch(escuelasRepositoryProvider);
-    return EscuelaProfileNotifier(escuelasRepository: escuelasRepository, escuelaId: escuelaId);
+    return EscuelaProfileNotifier(escuelasRepository: escuelasRepository, userId: userId);
 });
 
 class EscuelaProfileNotifier extends StateNotifier<EscuelaProfileState> {
@@ -14,8 +14,8 @@ class EscuelaProfileNotifier extends StateNotifier<EscuelaProfileState> {
 
   EscuelaProfileNotifier({
     required this.escuelasRepository,
-    required String escuelaId
-  }) : super(EscuelaProfileState(id: escuelaId)){
+    required String userId
+  }) : super(EscuelaProfileState(id: userId)){
     loadEscuela();
   }
 
@@ -37,7 +37,7 @@ class EscuelaProfileNotifier extends StateNotifier<EscuelaProfileState> {
       return true;
     } catch (e) {
       if (mounted) {
-        return false;
+        return true;
       }
       return false;
     }
@@ -45,18 +45,18 @@ class EscuelaProfileNotifier extends StateNotifier<EscuelaProfileState> {
 
   }
 
-  Future<bool> createOrUpdateEscuela(Map<String, dynamic> escuelaLike) async{
+  Future<bool> postEscuela(Escuela newEscuela) async{
     try {
       state = state.copyWith(isLoading: true);
-      final escuelaCU = await escuelasRepository.createUpdateEscuela(escuelaLike);
+      final escuelaCU = await escuelasRepository.postEscuela(newEscuela);
 
-      if (state.escuela?.idEscuela == escuelaCU.idEscuela) {
-        state = state.copyWith(
-          isLoading: false,
-          escuela: escuelaCU
-        );
-        return true;
-      }
+      // if (state.escuela?.idEscuela == escuelaCU.idEscuela) {
+      //   state = state.copyWith(
+      //     isLoading: false,
+      //     escuela: escuelaCU
+      //   );
+      //   return true;
+      // }
 
       state = state.copyWith(
         isLoading: false,
@@ -69,6 +69,30 @@ class EscuelaProfileNotifier extends StateNotifier<EscuelaProfileState> {
     }
   }
 
+  Future<bool> updateEscuela(Map<String, dynamic> escuelaLike) async{
+    try {
+      state = state.copyWith(isLoading: true);
+      final escuelaCU = await escuelasRepository.updateEscuela(escuelaLike);
+
+      // if (state.escuela?.idEscuela == escuelaCU.idEscuela) {
+      //   state = state.copyWith(
+      //     isLoading: false,
+      //     escuela: escuelaCU
+      //   );
+      //   return true;
+      // }
+
+      state = state.copyWith(
+        isLoading: false,
+        escuela: escuelaCU 
+      );
+      return true;
+
+    } catch (e) {
+      return false;
+    }
+  }
+  
   Future<bool> deleteEscuela(String id) async{
     try {
       if (mounted) state = state.copyWith(isLoading: true);
@@ -76,10 +100,12 @@ class EscuelaProfileNotifier extends StateNotifier<EscuelaProfileState> {
       state = state.copyWith(isLoading: true);
       await escuelasRepository.deleteEscuela(id);
 
-      state = state.copyWith(
-        isLoading: false,
-        escuela: null
-      );
+      if ( state.escuela != null){
+        state = state.copyWith(
+          isLoading: false,
+          escuela: null
+        );
+      }
       return true;
 
     } catch (e) {

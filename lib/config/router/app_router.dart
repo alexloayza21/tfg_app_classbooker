@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tfg_app/config/router/app_router_notifier.dart';
+import 'package:tfg_app/features/auth/presentation/admin/screens/escuela_post_screen.dart';
 import 'package:tfg_app/features/auth/presentation/admin/screens/screens.dart';
 import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tfg_app/features/auth/presentation/user/screens/screens.dart';
@@ -59,29 +60,35 @@ final goRouterProvider = Provider((ref) {
 
       GoRoute(
         path: '/adminHome',
-        builder: (context, state) => const AdminHomeScreen()
-      ),
-
-      GoRoute(
-        path: '/reservasAdmin',
-        builder: (context, state) => const ReservasAdminScreen(),
-      ),
-
-      GoRoute(
-        path: '/adminProfile',
-        builder: (context, state) => const AdminProfileScreen(),
+        builder: (context, state) => const AdminHomeScreen(),
         routes: [
           GoRoute(
-            path: 'escuela/:idEscuela',
-            builder: (context, state) => EscuelaScreen(escuelaId: state.pathParameters['idEscuela'] ?? ''),
+            path: 'reservasAdmin',
+            builder: (context, state) => const ReservasAdminScreen(),
           ),
 
           GoRoute(
-            path: 'aula/:idAula',
-            builder: (context, state) => AulaScreen(idAula: state.pathParameters['idAula'] ?? ''),
-          ),
+            path: 'adminProfile',
+            builder: (context, state) => const AdminProfileScreen(),
+            routes: [
+              GoRoute(
+                path: 'escuelaUpdate/:idEscuela',
+                builder: (context, state) => EscuelaUpdateScreen(escuelaId: state.pathParameters['idEscuela'] ?? ''),
+              ),
+
+              GoRoute(
+                path: 'escuelaPost/:idEscuela',
+                builder: (context, state) => EscuelaPostScreen(escuelaId: state.pathParameters['idEscuela'] ?? ''),
+              ),
+
+              GoRoute(
+                path: 'aula/:idAula',
+                builder: (context, state) => AulaScreen(idAula: state.pathParameters['idAula'] ?? ''),
+              ),
+            ]
+          )
         ]
-      )
+      ),
 
     ],
 

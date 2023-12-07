@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -39,7 +40,21 @@ class _LoginView extends ConsumerWidget {
 
     ref.listen(authProvider, (previous, next){
       if (next.errorMessage.isEmpty) return;
-      showSnackBar(context, next.errorMessage);
+      // showSnackBar(context, next.errorMessage);
+      final snackBar = SnackBar(
+        padding: const EdgeInsets.all(20),
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Error Login', 
+          message: next.errorMessage,
+          contentType: ContentType.failure
+        )
+      );
+      ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(snackBar);
     });
 
     return SafeArea(
