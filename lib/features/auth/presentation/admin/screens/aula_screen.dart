@@ -263,7 +263,7 @@ class _NewEscuelaViewState extends ConsumerState<_AulaScreenView> {
                     ref.read(aulaFormProvider(widget.aula).notifier).onAsientosChanged(await createAsientos(counter));
                     ref.read(aulaFormProvider(widget.aula).notifier).onFormSubmit();
                     // ignore: use_build_context_synchronously
-                    context.pop('/adminProfile');  
+                    context.pop('/adminHome/adminProfile');  
                   }, 
                 child: Text('Guardar', style: GoogleFonts.montserratAlternates()
                 .copyWith( color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold ),)
