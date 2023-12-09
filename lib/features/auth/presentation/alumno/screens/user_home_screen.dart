@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tfg_app/features/auth/presentation/user/screens/screens.dart';
+import 'package:tfg_app/features/auth/presentation/alumno/screens/screens.dart';
 import 'package:tfg_app/features/reservas/presentation/screens/screens.dart';
 
 class UserHomeScreen extends StatefulWidget {

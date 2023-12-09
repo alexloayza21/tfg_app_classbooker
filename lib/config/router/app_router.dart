@@ -4,7 +4,7 @@ import 'package:tfg_app/config/router/app_router_notifier.dart';
 import 'package:tfg_app/features/auth/presentation/admin/screens/escuela_post_screen.dart';
 import 'package:tfg_app/features/auth/presentation/admin/screens/screens.dart';
 import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
-import 'package:tfg_app/features/auth/presentation/user/screens/screens.dart';
+import 'package:tfg_app/features/auth/presentation/alumno/screens/screens.dart';
 import 'package:tfg_app/features/reservas/presentation/screens/screens.dart';
 
 final goRouterProvider = Provider((ref) {
