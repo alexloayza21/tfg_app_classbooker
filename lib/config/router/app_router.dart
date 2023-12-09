@@ -53,7 +53,7 @@ final goRouterProvider = Provider((ref) {
 
       GoRoute(
         path: '/userHome',
-        builder: (context, state) => const UserHomeScreen()
+        builder: (context, state) => const AlumnoHomeScreen()
       ),
 
 

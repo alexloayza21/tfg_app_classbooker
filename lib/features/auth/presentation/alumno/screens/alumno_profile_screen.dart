@@ -6,8 +6,8 @@ import 'package:tfg_app/features/auth/presentation/providers/reservas_user_provi
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/shared/widgets/reservas_card.dart';
 
-class UserProfileScreen extends ConsumerWidget {
-  const UserProfileScreen({super.key});
+class AlumnoProfileScreen extends ConsumerWidget {
+  const AlumnoProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,13 +31,13 @@ class UserProfileScreen extends ConsumerWidget {
           }, icon: const Icon(Icons.exit_to_app, color: Colors.black,))
         ],
       ),
-      body: (reservasState.isLoading) ? const Center(child: CircularProgressIndicator()) : _UserProfileView(reservas: reservasState.reservas,),
+      body: (reservasState.isLoading) ? const Center(child: CircularProgressIndicator()) : _AlumnoProfileView(reservas: reservasState.reservas,),
     );
   }
 }
 
-class _UserProfileView extends ConsumerWidget {
-  const _UserProfileView({
+class _AlumnoProfileView extends ConsumerWidget {
+  const _AlumnoProfileView({
     required this.reservas,
   });
 
@@ -75,7 +75,6 @@ class _UserProfileView extends ConsumerWidget {
 
 class _LogOutDialog extends ConsumerWidget {
   const _LogOutDialog({
-    super.key,
     required this.textStyle,
   });
 
