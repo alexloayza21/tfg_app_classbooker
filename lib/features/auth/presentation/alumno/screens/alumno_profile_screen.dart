@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:tfg_app/config/config.dart';
 import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tfg_app/features/auth/presentation/providers/reservas_user_provider.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
@@ -31,7 +33,16 @@ class AlumnoProfileScreen extends ConsumerWidget {
           }, icon: const Icon(Icons.exit_to_app, color: Colors.black,))
         ],
       ),
-      body: (reservasState.isLoading) ? const Center(child: CircularProgressIndicator()) : _AlumnoProfileView(reservas: reservasState.reservas,),
+      body: (reservasState.isLoading) 
+      ? const Center(child: CircularProgressIndicator()) 
+      : LiquidPullToRefresh(
+        onRefresh: () async {  
+          await ref.read(reservasUserProvider(userState.user!.userId).notifier).loadReservas();
+        },
+        color: AppTheme().colorSeed,
+        showChildOpacityTransition: false,
+        springAnimationDurationInMilliseconds: 400,
+        child: _AlumnoProfileView(reservas: reservasState.reservas,)),
     );
   }
 }
@@ -47,8 +58,13 @@ class _AlumnoProfileView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userState = ref.watch(authProvider);
     return reservas.isEmpty
-    ? const Center(
-      child: Text('Aun no tienes reservas hechas 🫠'),
+    ? ListView(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: MediaQuery.sizeOf(context).height/2.5),
+          child: const Center(child: Text('Aun no tienes reservas hechas 🫠')),
+        ),
+      ],
     )
     : ListView.builder(
       itemCount: reservas.length,

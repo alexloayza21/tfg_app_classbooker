@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:tfg_app/config/config.dart';
 import 'package:tfg_app/features/auth/presentation/providers/providers.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/reservas_provider.dart';
@@ -23,7 +25,16 @@ class ReservasAdminScreen extends ConsumerWidget {
         title: const Text('Reservas de hoy'),
         centerTitle: true,
       ),
-      body: (reservaState.isLoading) ? const Center(child: CircularProgressIndicator()) :_ReservasAdminView(reservas: reservas,),
+      body: (reservaState.isLoading) 
+      ? const Center(child: CircularProgressIndicator()) 
+      : LiquidPullToRefresh(
+        onRefresh: () async{  
+          await ref.read(reservasProvider(date).notifier).loadReservasByDate();
+        },
+        color: AppTheme().colorSeed,
+        showChildOpacityTransition: false,
+        springAnimationDurationInMilliseconds: 400,
+        child: _ReservasAdminView(reservas: reservas,)),
     );
   }
 }
@@ -39,11 +50,17 @@ class _ReservasAdminView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return (reservas.isEmpty)
     ? Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: ListView(
         children: [
-          Image.asset('assets/lottieFiles/emptyGif.gif'),
-          const Text('Hoy no hay reservas'),
+          Padding(
+            padding: EdgeInsets.only(top: MediaQuery.sizeOf(context).height/3.5),
+            child: Column(
+              children: [
+                Image.asset('assets/lottieFiles/emptyGif.gif'),
+                const Text('Hoy no hay reservas'),
+              ],
+            ),
+          )
         ],
       ),
     )
