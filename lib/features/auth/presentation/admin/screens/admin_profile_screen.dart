@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:tfg_app/config/config.dart';
 import 'package:tfg_app/features/auth/presentation/providers/escuela_profile_provider.dart';
 import 'package:tfg_app/features/auth/presentation/providers/providers.dart';
 import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
@@ -33,7 +35,23 @@ class AdminProfileScreen extends ConsumerWidget {
         ],
       ),
       body: userState.user?.idEscuela == '' || escuelaState.escuela == null
-        ? const Center(child: Text('Aun no has registrado una escuela 🫠', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),)
+        ? LiquidPullToRefresh(
+          onRefresh: () async{  
+            ref.read(escuelaProfileProvider(userState.user?.userId ?? '').notifier).loadEscuela();
+          },
+          color: AppTheme().colorSeed,
+          showChildOpacityTransition: false,
+          springAnimationDurationInMilliseconds: 400,
+          child: ListView(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/2.5),
+                child: Center(
+                  child: Text('Aun no has registrado una escuela 🫠', style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),),
+              ),
+            ],
+          ),
+        )
         :  _ProfileView(escuela: escuelaState.escuela),
       floatingActionButton: userState.user?.idEscuela == '' || escuelaState.escuela == null
       ? FloatingActionButton.extended(
