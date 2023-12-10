@@ -8,7 +8,7 @@ final aulaProvider = StateNotifierProvider.autoDispose.family<AulaNotifier, Aula
   (ref, idAula) {
     final aulasRepository = ref.watch(aulasRepositoryProvider);
     final userState = ref.watch(authProvider);
-    return AulaNotifier(aulasRepository: aulasRepository, idAula: idAula, idEscuela: userState.user!.idEscuela);
+    return AulaNotifier(aulasRepository: aulasRepository, idAula: idAula, idEscuela: userState.user?.idEscuela ?? '');
 });
 
 class AulaNotifier extends StateNotifier<AulaState> {

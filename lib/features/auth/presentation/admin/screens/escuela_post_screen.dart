@@ -130,8 +130,8 @@ class _EscuelaView extends ConsumerWidget {
                       showSnackbar(context);
                       Future.delayed(const Duration(seconds: 1));
                     });
-                    GoRouter.of(context).pop();
-                    GoRouter.of(context).pushReplacement('/adminHome');
+                    // GoRouter.of(context).pop();
+                    GoRouter.of(context).push('/adminHome');
                   }, 
                   child: Text('Guardar', style: GoogleFonts.montserratAlternates()
                   .copyWith( color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold ),)

@@ -241,7 +241,7 @@ class _NewEscuelaViewState extends ConsumerState<_AulaScreenView> {
           
                 TextButton(
                   onPressed: () {
-                  context.pop('/adminProfile');
+                  context.pop();
                 }, 
                 child: Text('Cancelar', style: GoogleFonts.montserratAlternates()
                 .copyWith( color: Colors.red, fontSize: 20, fontWeight: FontWeight.bold ),)
@@ -262,8 +262,7 @@ class _NewEscuelaViewState extends ConsumerState<_AulaScreenView> {
                   : () async{
                     ref.read(aulaFormProvider(widget.aula).notifier).onAsientosChanged(await createAsientos(counter));
                     ref.read(aulaFormProvider(widget.aula).notifier).onFormSubmit();
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
+                    context.pop();
                   }, 
                 child: Text('Guardar', style: GoogleFonts.montserratAlternates()
                 .copyWith( color: Colors.green, fontSize: 20, fontWeight: FontWeight.bold ),)
