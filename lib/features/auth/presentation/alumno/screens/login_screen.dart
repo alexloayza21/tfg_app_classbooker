@@ -1,28 +1,29 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
-import 'package:tfg_app/config/theme/app_theme.dart';
-import 'package:tfg_app/features/auth/presentation/providers/forms/register_form_provider.dart';
-import 'package:tfg_app/features/auth/presentation/providers/providers.dart';
+import 'package:tfg_app/config/config.dart';
+import 'package:tfg_app/features/auth/presentation/providers/auth_provider.dart';
+import 'package:tfg_app/features/auth/presentation/providers/forms/login_form_provider.dart';
 import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
 
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
+class LoginScreen extends ConsumerWidget {
+  const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loginFormState = ref.watch(loginFormProvider);
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
-      body: const _RegisterView(),
+      body: _LoginView(loginFormState: loginFormState,),
     );
   }
 }
 
-class _RegisterView extends ConsumerWidget {
-  const _RegisterView({
-    super.key,
-  });
+class _LoginView extends ConsumerWidget {
+  const _LoginView({required this.loginFormState});
+  final LoginFormState loginFormState;
 
   void showSnackBar(BuildContext context, String message){
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -37,11 +38,23 @@ class _RegisterView extends ConsumerWidget {
     final color = AppTheme().colorSeed;
     final textStyle = Theme.of(context).textTheme;
 
-    final registerFormState = ref.watch(registerFormProvider);
-
     ref.listen(authProvider, (previous, next){
       if (next.errorMessage.isEmpty) return;
-      showSnackBar(context, next.errorMessage);
+      // showSnackBar(context, next.errorMessage);
+      final snackBar = SnackBar(
+        padding: const EdgeInsets.all(20),
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Error Login', 
+          message: next.errorMessage,
+          contentType: ContentType.failure
+        )
+      );
+      ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(snackBar);
     });
 
     return SafeArea(
@@ -59,7 +72,7 @@ class _RegisterView extends ConsumerWidget {
               ),
       
               Container(
-                height: 530,
+                height: 450,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -79,27 +92,20 @@ class _RegisterView extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
       
-                      const Text('Registrar', style: TextStyle(fontSize: 20),),
+                      const Text('Iniciar Sesión', style: TextStyle(fontSize: 20),),
 
-                      const SizedBox(height: 30,),
-        
-                      CustomFormField(
-                        isTopField: true,
-                        isBottomField: true,
-                        label: 'Nombre de Usuario',
-                        onChanged: ref.read(registerFormProvider.notifier).onUsernameChange,                        
-                      ),
-
+                      const SizedBox(height: 20,),
                       const Spacer(),
-        
+                      const Spacer(),
+                      
                       CustomFormField(
                         isTopField: true,
                         isBottomField: true,
                         label: 'Correo electrónico',
                         hint: 'example@gmail.com',
                         keyboardType: TextInputType.emailAddress,
-                        onChanged: ref.read(registerFormProvider.notifier).onEmailChange,
-                        errorMessage: registerFormState.isFormPosted ? registerFormState.email.errorMessage : null ,
+                        onChanged: ref.read(loginFormProvider.notifier).onEmailChange,
+                        errorMessage: loginFormState.isFormPosted ? loginFormState.email.errorMessage : null,
                       ),
 
                       const Spacer(),
@@ -109,72 +115,49 @@ class _RegisterView extends ConsumerWidget {
                         isBottomField: true,
                         label: 'Contraseña',
                         obscureText: true,
-                        onChanged: ref.read(registerFormProvider.notifier).onPasswordChange,
-                        errorMessage: registerFormState.isFormPosted ? registerFormState.password.errorMessage : null,
+                        onChanged: ref.read(loginFormProvider.notifier).onPasswordChange,
+                        errorMessage: loginFormState.isFormPosted ? loginFormState.password.errorMessage : null,
                       ),
 
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                      
-                            Checkbox(
-                              value: !registerFormState.isAdmin, 
-                              onChanged: (value) => ref.read(registerFormProvider.notifier).onIsAdminChanged(value),
-                            ),
-                            
-                            const Text('Alumno'),
-                      
-                            const Spacer(),
-                      
-                            Checkbox(
-                              value: registerFormState.isAdmin, 
-                              onChanged: (value) => ref.read(registerFormProvider.notifier).onIsAdminChanged(!value!),
-                            ),
-                            
-                            const Text('Administrador'),
-                      
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 10,),
+                      const Spacer(),
         
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
-                        height: 60,
+                        height: 70,
                         width: double.infinity,
                         child: FilledButton.tonal(
-                          onPressed: registerFormState.isPosting ? null
+                          onPressed: loginFormState.isPosting
+                          ? null
                           : () {
-                            ref.read(registerFormProvider.notifier).onFormSubmit();
+                            ref.read(loginFormProvider.notifier).onFormSubmit();
+                            FocusManager.instance.primaryFocus?.unfocus();
                           }, 
-                          child: Text('Registrar', style: textStyle.bodyMedium,),
+                          child: Text('Iniciar Sesión', style: textStyle.bodyMedium,),
                         ),
                       ),
                       
         
                       TextButton(
                         onPressed: () {
-                          context.go('/login');
+                          context.go('/register');
                         }, 
-                        child: Text('¿Ya estas registrado? Inicia sesión.', style: textStyle.bodySmall,)
+                        child: Text('¿No estas registrado? Registrate.', style: textStyle.bodySmall,)
                       )
         
                     ],
                   ),
                 )
               ),
-              
-              const SizedBox(height: 30,),
-              
+
+              const SizedBox(height: 30),
+      
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Lottie.asset(
-                    'assets/lottieFiles/dude_standing.json',
-                    height: 130,
-                    width: 130,
+                    'assets/lottieFiles/login_book.json',
+                    height: 160,
+                    width: 160,
                     fit: BoxFit.cover
                   )
                 ],

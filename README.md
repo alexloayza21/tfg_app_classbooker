@@ -1,2 +1,2 @@
 
-Duplicar el archicho '.env.template' y renombrar '.env'
+Duplicar el archicho '.env.template' y renombrarlo como '.env'

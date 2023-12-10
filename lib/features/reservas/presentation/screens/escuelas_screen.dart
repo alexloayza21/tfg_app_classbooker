@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:tfg_app/config/config.dart';
 import 'package:tfg_app/features/reservas/presentation/providers/escuelas_provider.dart';
 import 'package:tfg_app/features/reservas/presentation/widgets/widgets.dart';
 
@@ -15,7 +17,13 @@ class EscuelasScreen extends ConsumerWidget {
         title: const Text('Escuelas'),
         centerTitle: true,
       ),
-      body:  _EscuelasView(escuelasState: escuelasState,),
+      body:  LiquidPullToRefresh(onRefresh: () async { 
+        await ref.read(escuelasProvider.notifier).loadEscuelas();
+       },
+       color: AppTheme().colorSeed,
+       showChildOpacityTransition: false,
+       springAnimationDurationInMilliseconds: 400,
+      child: _EscuelasView(escuelasState: escuelasState,)),
     );
   }
 }

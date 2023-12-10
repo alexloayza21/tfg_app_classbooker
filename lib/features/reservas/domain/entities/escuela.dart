@@ -8,7 +8,7 @@ class Escuela {
     final String ciudad;
     final String codigoPostal;
     final String provincia;
-    final String imagen;
+    late String imagen;
     final String userId;
 
     Escuela({
@@ -21,6 +21,10 @@ class Escuela {
         this.imagen = '',
         this.userId = ''
     });
+
+    set imagenUrl(String image){
+      imagen = image;
+    }
 
     factory Escuela.fromJson(Map<String, dynamic> json) => Escuela(
         idEscuela: json["_id"] ?? '',

@@ -1,17 +1,18 @@
 import 'dart:io';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tfg_app/features/auth/presentation/providers/escuela_provider.dart';
-import 'package:tfg_app/features/auth/presentation/providers/forms/escuela_form_provider.dart';
+import 'package:tfg_app/features/auth/presentation/providers/forms/escuela_update_form_provider.dart';
 import 'package:tfg_app/features/auth/presentation/widgets/widgets.dart';
 import 'package:tfg_app/features/reservas/domain/domain.dart';
 import 'package:tfg_app/features/shared/widgets/services/camera_gallery_service_impl.dart';
 
-class EscuelaScreen extends ConsumerWidget {
-  const EscuelaScreen({super.key, required this.escuelaId});
+class EscuelaUpdateScreen extends ConsumerWidget {
+  const EscuelaUpdateScreen({super.key, required this.escuelaId});
 
   final String escuelaId;
 
@@ -23,7 +24,7 @@ class EscuelaScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nueva Escuela'),
+        title: Text(escuela?.nombreEscuela ?? ''),
         centerTitle: true,
       ),
       body: (escuela == null || escuelaState.isLoading) ? const Center(child: CircularProgressIndicator(),) : _EscuelaView(escuela: escuela)
@@ -41,7 +42,7 @@ class _EscuelaView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final escuelaForm = ref.watch(escuelaFormProvider(escuela));
+    final escuelaForm = ref.watch(escuelaUpdateFormProvider(escuela));
 
 
     return SingleChildScrollView(
@@ -52,7 +53,7 @@ class _EscuelaView extends ConsumerWidget {
             onTap: () async {
               final photoPath = await CameraGalleryServiceImpl().selectPhoto();
               if (photoPath == null) return;
-              ref.read(escuelaFormProvider(escuela).notifier).updateEscuelaImage(photoPath);
+              ref.read(escuelaUpdateFormProvider(escuela).notifier).updateEscuelaImage(photoPath);
               photoPath;
             },
             child: Padding(
@@ -78,25 +79,25 @@ class _EscuelaView extends ConsumerWidget {
             isTopField: true,
             label: 'Nombre Escuela',
             initialValue: escuelaForm.nombreEscuela,
-            onChanged: ref.watch(escuelaFormProvider(escuela).notifier).onNombreEscuelaChanged,
+            onChanged: ref.watch(escuelaUpdateFormProvider(escuela).notifier).onNombreEscuelaChanged,
           ),
     
           CustomFormField(
             label: 'Dirección',
             initialValue: escuelaForm.direccion,
-            onChanged: ref.watch(escuelaFormProvider(escuela).notifier).onDireccionChanged,
+            onChanged: ref.watch(escuelaUpdateFormProvider(escuela).notifier).onDireccionChanged,
           ),
     
           CustomFormField(
             label: 'Ciudad',
             initialValue: escuelaForm.ciudad,
-            onChanged: ref.watch(escuelaFormProvider(escuela).notifier).onCiudadChanged,
+            onChanged: ref.watch(escuelaUpdateFormProvider(escuela).notifier).onCiudadChanged,
           ),
     
           CustomFormField(
             label: 'Provincia',
             initialValue: escuelaForm.provincia,
-            onChanged: ref.watch(escuelaFormProvider(escuela).notifier).onProvinciaChanged,
+            onChanged: ref.watch(escuelaUpdateFormProvider(escuela).notifier).onProvinciaChanged,
           ),
       
           CustomFormField(
@@ -104,7 +105,7 @@ class _EscuelaView extends ConsumerWidget {
             label: 'Código Postal',
             initialValue: escuelaForm.codigoPostal,
             keyboardType: TextInputType.number,
-            onChanged: ref.watch(escuelaFormProvider(escuela).notifier).onCodigoPostalChanged,
+            onChanged: ref.watch(escuelaUpdateFormProvider(escuela).notifier).onCodigoPostalChanged,
           ),
 
           Padding(
@@ -123,7 +124,12 @@ class _EscuelaView extends ConsumerWidget {
           
                 TextButton(
                   onPressed: ()  {
-                    ref.read(escuelaFormProvider(escuela).notifier).onFormSubmit();
+                    ref.read(escuelaUpdateFormProvider(escuela).notifier).onFormSubmit()
+                    .then((value) {
+                      if (!value) return;
+                      showSnackbar(context);
+                      Future.delayed(const Duration(seconds: 1));
+                    });
                     context.pop('/adminProfile');
                   }, 
                   child: Text('Guardar', style: GoogleFonts.montserratAlternates()
@@ -138,6 +144,22 @@ class _EscuelaView extends ConsumerWidget {
       ),
     );
   }
+  
+  void showSnackbar(BuildContext context) {
+      final snackBar = SnackBar(
+        padding: const EdgeInsets.all(20),
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Update Escuela',
+          message: 'Escuela Actualizada Correctamente',
+          contentType: ContentType.success
+        )
+      );
+      ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(snackBar);}
 }
 
 class _ImageSelector extends StatelessWidget {

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:tfg_app/features/auth/presentation/user/screens/screens.dart';
+import 'package:tfg_app/features/auth/presentation/alumno/screens/screens.dart';
 import 'package:tfg_app/features/reservas/presentation/screens/screens.dart';
 
-class UserHomeScreen extends StatefulWidget {
-  const UserHomeScreen({super.key});
+class AlumnoHomeScreen extends StatefulWidget {
+  const AlumnoHomeScreen({super.key});
 
   @override
-  State<UserHomeScreen> createState() => _UserHomeScreenState();
+  State<AlumnoHomeScreen> createState() => _AlumnoHomeScreenState();
 }
 
-class _UserHomeScreenState extends State<UserHomeScreen> {
+class _AlumnoHomeScreenState extends State<AlumnoHomeScreen> {
 
   int _currentIndex = 0;
-  final viewRoutes = const [EscuelasScreen(), UserProfileScreen()]; 
+  final viewRoutes = const [EscuelasScreen(), AlumnoProfileScreen()]; 
 
   @override
   Widget build(BuildContext context) {
